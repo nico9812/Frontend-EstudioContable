@@ -1,0 +1,18 @@
+.body{
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+.content{
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: 50px;
+}
+
+.calclien{
+  margin-top: 30px;
+}
