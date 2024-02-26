@@ -1,7 +1,6 @@
 import axios from 'axios'
 import Cookies from "js-cookie"
 import { VITE_APP_API_URL } from "src/constants";
-console.log(VITE_APP_API_URL, 'asdasdasdasd')
 
 const axiosService = axios.create({
     baseURL: VITE_APP_API_URL
