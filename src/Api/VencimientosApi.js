@@ -1,4 +1,4 @@
-import axiosService from 'src/Api/axiosService';
+import axiosService from '../services/axiosService';
 
 const vencimientosApi = axiosService;
 
