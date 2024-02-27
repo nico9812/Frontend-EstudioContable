@@ -5,7 +5,9 @@ export const Home = () => {
   const username = useSelector(selectCurrentUserName);
   return (
     <>
-      <h1>Bienvenido, {username}.</h1>
+      <h1>
+        Bienvenido, {username.charAt(0).toUpperCase() + username.slice(1)}.
+      </h1>
       <p>Para continuar seleccione algo</p>
     </>
   );
