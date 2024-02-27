@@ -1,7 +1,7 @@
 
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
-import { UsPro } from '../../components/listarProgramas';
+import { UsPro } from '../../hooks/listarProgramas';
 import { TableGen } from '../../components/table';
 
 import { Link} from "react-router-dom";

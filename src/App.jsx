@@ -1,48 +1,46 @@
-import { React } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { Login } from './pages/Login/Login';
+import { Login } from '@/pages/login/Login';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import Layout from './components/layouts/Layout';
-import LoginLayout from './components/layouts/LoginLayout';
+import LoginLayout from '@/layouts/LoginLayout';
 
-import { Error_404 } from './pages/Errors/404';
-import { ListarCategorias } from './pages/documentos/categorias';
+import { Home } from '@/pages/home/Home';
+import RequireAuth from '@/routes/PrivateRoutes';
 
-import { Logout } from './pages/users/logout';
+import { Error_404 } from '@/pages/Errors/404';
+import { ListarCategorias } from '@/pages/documentos/categorias';
+import { Logout } from '@/pages/users/Logout';
 
-import { Clientes } from './pages/users/clientes';
+import { Clientes } from '@/pages/users/clientes';
 
 import {
-  ListarVencimientosconta,
   ListarVencimientosclien,
-} from './pages/vencimientos/listarvencimientos';
+  ListarVencimientosconta
+} from '@/pages/vencimientos/listarvencimientos';
 
 import {
-  ListarDocumentosconta,
   ListarDocumentosclien,
-} from './pages/documentos/documentosconta';
+  ListarDocumentosconta
+} from '@/pages/documentos/documentosconta';
 
-import { Sidebar } from './components/SideBar';
 import {
   ListarProgramasClien,
-  ListarProgramasConta,
-} from './pages/programas/programas';
-
-import RequireAuth from '@/routes/PrivateRoutes';
+  ListarProgramasConta
+} from '@/pages/programas/programas';
 
 function App() {
   return (
     <Routes>
-      <Route path="*" element={<Navigate to="/404" />} />
+      <Route path="/*" element={<Navigate to="/404" />} />
       <Route path="/404/" element={<Error_404 />} />
 
-      <Route path="/" element={<LoginLayout />}>
+      <Route exact path="/" element={<Navigate to="login" replace />} />
+
+      <Route path="login" element={<LoginLayout />}>
         <Route index element={<Login />} />
-
-        <Route path="main" element={<RequireAuth />}>
-          <Route index element={<h1>HGola</h1>} />
-        </Route>
-
+      </Route>
+      <Route path="logout" element={<Logout />} />
+      <Route path="dashboard" element={<RequireAuth />}>
+        <Route index element={<Home />} />
         {/* <Route path="main" element={<RequireAuth />}>
           <Route path="contador/clientes" element={<ContadorLayout />}>
             <Route index element={<Clientes />} />

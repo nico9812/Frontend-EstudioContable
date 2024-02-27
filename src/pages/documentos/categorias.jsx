@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import Modal from 'react-modal';
 import React, { useState} from 'react';
 import {useForm} from "react-hook-form";
-import { UsCat } from '../../components/listarCategorias';
+import { UsCat } from '../../hooks/listarCategorias';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { GuardarCat, ModificarCat, DeleteCat } from '../../Api/DocumentosApi';

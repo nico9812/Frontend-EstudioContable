@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 import { Calendario } from '../../components/calendario';
 import { useParams } from 'react-router-dom';
-import { UsVen } from '../../components/listarVencimiento';
+import { UsVen } from '../../hooks/listarVencimiento';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 

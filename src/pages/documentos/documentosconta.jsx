@@ -1,13 +1,13 @@
 
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
-import { UsDoc } from '../../components/listarDocumentos';
+import { UsDoc } from '../../hooks/listarDocumentos';
 import { CardDoc, CardDocCli } from '../../components/cardDoc';
 import Modal from 'react-modal';
 import React, { useState } from 'react';
 import { DeleteDoc, GuardarDocumento } from '../../Api/DocumentosApi';
 import { useForm } from "react-hook-form";
-import { UsCat } from '../../components/listarCategorias';
+import { UsCat } from '../../hooks/listarCategorias';
 import FormData from 'form-data';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

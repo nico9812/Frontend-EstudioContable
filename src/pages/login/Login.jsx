@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +22,7 @@ const loginSchema = yup.object().shape({
   password: yup
     .string()
     .max(30, 'Debe tener una longitud de 30 caracteres')
-    .required('Este campo es requerido.'),
+    .required('Este campo es requerido.')
 });
 
 export function Login() {
@@ -31,10 +30,9 @@ export function Login() {
     register,
     handleSubmit,
     formState: { errors, isDirty },
-    reset,
-    watch,
+    reset
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(loginSchema)
   });
 
   const dispatch = useDispatch();
@@ -42,14 +40,17 @@ export function Login() {
 
   const navigate = useNavigate();
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async data => {
     try {
       const userData = await login(data).unwrap();
       dispatch(setCredentials({ ...userData }));
+      reset();
+      toast.success('Iniciaste sesión exitosamente');
+      navigate('/dashboard');
     } catch (error) {
       console.log(error);
       if (error.status === 'FETCH_ERROR') {
-        toast.error('Hubo un error a la hora de conectarse con el servidor.')
+        toast.error('Hubo un error a la hora de conectarse con el servidor.');
       }
       if (error.response.data.errors.errors) {
         toast.error(error.response.data.errors.errors);

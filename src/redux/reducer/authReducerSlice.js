@@ -1,24 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  group: 0,
+  id: 0,
+  token: '',
+  username: ''
+};
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { user: null, token: null },
+  initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, accessToken } = action.payload;
-      state.user = user;
-      state.token = accessToken;
+      const payload = action.payload;
+      return {
+        ...state,
+        group: payload.group,
+        id: payload.id,
+        token: payload.token,
+        username: payload.username
+      };
     },
-    logOut: (state, action) => {
-      state.user = null;
-      state.token = null;
-    },
-  },
+    // eslint-disable-next-line no-unused-vars
+    logOut: (state, action) => initialState
+  }
 });
 
 export const { setCredentials, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state) => state.auth.user;
-export const selectCurrentToken = (state) => state.auth.token;
+export const selectCurrentUser = state => state.auth;
+export const selectCurrentUserName = state => state.auth.username;
+export const selectCurrentToken = state => state.auth.token;
+export const selectCurrentGroup = state => state.auth.group;
+export const selectCurrentUserId = state => state.auth.id;
