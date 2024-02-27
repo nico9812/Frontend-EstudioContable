@@ -8,6 +8,7 @@ export const Home = () => {
       <h1>
         Bienvenido, {username.charAt(0).toUpperCase() + username.slice(1)}.
       </h1>
+      <p> Creo que mereces un chicle </p>
       <p>Para continuar seleccione algo</p>
     </>
   );
