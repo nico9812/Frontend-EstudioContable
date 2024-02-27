@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: VITE_APP_API_URL,
-  credentials: 'include',
+  credentials: 'same-origin',
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
     if (token !== undefined || token !== '') {
