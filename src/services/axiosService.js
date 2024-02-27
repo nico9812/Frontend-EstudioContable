@@ -1,22 +1,22 @@
-import axios from 'axios'
-import Cookies from "js-cookie"
-import { VITE_APP_API_URL } from "src/constants";
+import { VITE_APP_API_URL } from '@/constants';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const axiosService = axios.create({
-    baseURL: VITE_APP_API_URL
-})
+const axiosInstance = axios.create({
+  baseURL: VITE_APP_API_URL,
+});
 
-axiosService.interceptors.request.use(
-    config => {
-        if (Cookies.get('token') !== undefined) {
-            config.headers['Authorization'] = 'Token ' + Cookies.get('token');
-        }
-
-        return config;
-    },
-    error => {
-        return Promise.reject(error.data.error.message);
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (Cookies.get('token') !== undefined) {
+      config.headers['Authorization'] = 'Token ' + Cookies.get('token');
     }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error.data.error.message);
+  }
 );
 
-export default axiosService;
+export default axiosInstance;

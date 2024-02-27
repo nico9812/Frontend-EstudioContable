@@ -1,48 +1,104 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Home } from "./pages/home";
-import { Login } from "./pages/users/login";
-import { AuthContextProvider } from "./utils/authContext";
-import {PublicRoute} from "./utils/PublicRoutes";
-import {PrivateRouteClient, PrivateRouteConta, PrivateRoute} from "./utils/privateRoutes";
-import { Logout } from "./pages/users/logout";
-import { Clientes } from "./pages/users/clientes";
-import { ListarVencimientosconta, ListarVencimientosclien } from "./pages/vencimientos/listarvencimientos";
-import { ListarDocumentosconta, ListarDocumentosclien } from "./pages/documentos/documentosconta";
-import { Sidebar } from './components/sidebar'
-import { ListarProgramasClien,ListarProgramasConta } from "./pages/programas/programas";
-import { Error_404 } from "./pages/Errors/404";
-import { ListarCategorias } from "./pages/documentos/categorias";
+import { Login } from '@/pages/login/Login';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import LoginLayout from '@/layouts/LoginLayout';
+
+import { Home } from '@/pages/home/Home';
+import RequireAuth from '@/routes/PrivateRoutes';
+
+import { Error_404 } from '@/pages/Errors/404';
+import { ListarCategorias } from '@/pages/documentos/categorias';
+import { Logout } from '@/pages/users/Logout';
+
+import { Clientes } from '@/pages/users/clientes';
+
+import {
+  ListarVencimientosclien,
+  ListarVencimientosconta
+} from '@/pages/vencimientos/listarvencimientos';
+
+import {
+  ListarDocumentosclien,
+  ListarDocumentosconta
+} from '@/pages/documentos/documentosconta';
+
+import {
+  ListarProgramasClien,
+  ListarProgramasConta
+} from '@/pages/programas/programas';
 
 function App() {
-
   return (
-    <AuthContextProvider>
-      <BrowserRouter>
-        <Sidebar />
-        <Routes>
-          
-          <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="Clientes/" element={<PrivateRouteConta><Clientes /></PrivateRouteConta>} />
-          <Route path="Clientes/Vencimientos/:id" element={<PrivateRouteConta><ListarVencimientosconta /></PrivateRouteConta>} />
-          <Route path="Clientes/Documentos/:id" element={<PrivateRouteConta><ListarDocumentosconta /></PrivateRouteConta>} />
-          <Route path="Clientes/Documentos/:id/categorias/" element={<PrivateRouteConta><ListarCategorias /></PrivateRouteConta>} />
-          <Route path="Clientes/Programas/:id" element={<PrivateRouteConta><ListarProgramasConta /></PrivateRouteConta>} />
+    <Routes>
+      <Route path="/*" element={<Navigate to="/404" />} />
+      <Route path="/404/" element={<Error_404 />} />
 
-          <Route path="/Vencimientos/" element={<PrivateRouteClient><ListarVencimientosclien /></PrivateRouteClient>} />
-          <Route path="/Documentos/" element={<PrivateRouteClient><ListarDocumentosclien /></PrivateRouteClient>} />
-          <Route path="/Programas/" element={<PrivateRouteClient><ListarProgramasClien /></PrivateRouteClient>} />
+      <Route exact path="/" element={<Navigate to="login" replace />} />
 
-          <Route path="logout/" element={<PrivateRoute><Logout /></PrivateRoute>} /> 
+      <Route path="login" element={<LoginLayout />}>
+        <Route index element={<Login />} />
+      </Route>
+      <Route path="logout" element={<Logout />} />
+      <Route path="dashboard" element={<RequireAuth />}>
+        <Route index element={<Home />} />
+        {/* <Route path="main" element={<RequireAuth />}>
+          <Route path="contador/clientes" element={<ContadorLayout />}>
+            <Route index element={<Clientes />} />
+            <Route
+              path="clientes/vencimientos/:id"
+              element={<ListarVencimientosconta />}
+            />
+            <Route
+              path="clientes/documentos/:id"
+              element={<ListarDocumentosconta />}
+            />
+            <Route
+              path="clientes/documentos/:id/categorias/"
+              element={<ListarCategorias />}
+            />
+            <Route
+              path="clientes/programas/:id"
+              element={<ListarProgramasConta />}
+            />
+          </Route>
 
-          <Route path="*" element={<Navigate to="/404" />} />
-          <Route path="/404/" element={<Error_404/>} />
-        {/* <Route path="/" element={<Navigate to="/" />} /> */}
+          <Route
+            path="/vencimientos/"
+            element={
+              <PrivateRouteClient>
+                <ListarVencimientosclien />
+              </PrivateRouteClient>
+            }
+          />
+          <Route
+            path="/documentos/"
+            element={
+              <PrivateRouteClient>
+                <ListarDocumentosclien />
+              </PrivateRouteClient>
+            }
+          />
+          <Route
+            path="/programas/"
+            element={
+              <PrivateRouteClient>
+                <ListarProgramasClien />
+              </PrivateRouteClient>
+            }
+          />
 
-        </Routes>
-      </BrowserRouter>
-    </AuthContextProvider>
-    
-  )
+          <Route
+            path="logout/"
+            element={
+              <PrivateRoute>
+                <Logout />
+              </PrivateRoute>
+            }
+          />
+        </Route> */}
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;

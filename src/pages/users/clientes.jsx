@@ -1,13 +1,12 @@
-import '../../static/css/home.css';
+
 import React, { useEffect, useState } from 'react';
 import { DeleteUsuario, RegistrarUsuario, ModificarUsuario } from '../../Api/UsuariosApi';
 import Cookies from 'js-cookie';
 import { Link} from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import { TableGen } from '../../components/table';
-import '../../static/css/clientes.css'
 import { Button } from 'react-bootstrap';
-import { Users } from '../../components/listarClientes';
+import { Users } from '../../hooks/listarClientes';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';

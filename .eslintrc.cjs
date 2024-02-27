@@ -1,34 +1,35 @@
 module.exports = {
-  "root": true,
-  "env": {
-    "browser": true,
-    "es2020": true,
-    "node": true
+  root: true,
+  env: {
+    browser: true,
+    es2020: true,
+    node: true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended"
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:react/jsx-runtime',
+    'eslint-config-prettier'
   ],
-  "ignorePatterns": ["dist", ".eslintrc.cjs"],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+  ignorePatterns: ['dist'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module'
   },
-  "settings": {
-    "react": {
-      "version": "18.2"
+  settings: {
+    react: {
+      version: '18.2'
     }
   },
-  "plugins": ["react-refresh", "node"],
-  "rules": {
-    "react-refresh/only-export-components": [
-      "warn",
-      { "allowConstantExport": true }
+  plugins: ['react-refresh', 'node'],
+  rules: {
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true }
     ]
   },
-  "globals": {
-    "process": true
+  globals: {
+    process: true
   }
-}
+};

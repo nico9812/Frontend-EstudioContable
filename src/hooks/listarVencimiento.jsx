@@ -34,11 +34,11 @@ export function UsVen(iduser) {
     };
 
     if (!token) {
-        return { vencimientos: [], actualizarVencimientos: () => {} };
+        return { vencimientos: [], actualizarVencimientos: () => { } };
     }
 
     if (error) {
-        return { vencimientos: [], actualizarVencimientos: () => {} };
+        return { vencimientos: [], actualizarVencimientos: () => { } };
     }
 
     return { vencimientos, actualizarVencimientos, iduser };
