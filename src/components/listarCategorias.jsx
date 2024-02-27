@@ -1,4 +1,4 @@
-import '../static/css/home.css';
+
 import React, { useEffect, useState } from 'react';
 import { ListarCat } from '../Api/DocumentosApi';
 import Cookies from 'js-cookie';
@@ -35,11 +35,11 @@ export function UsCat() {
     };
 
     if (!token) {
-        return { categorias: [], actualizarCategorias: () => {} };
+        return { categorias: [], actualizarCategorias: () => { } };
     }
 
     if (error) {
-        return { categorias: [], actualizarCategorias: () => {} };
+        return { categorias: [], actualizarCategorias: () => { } };
     }
 
     return { categorias, actualizarCategorias };

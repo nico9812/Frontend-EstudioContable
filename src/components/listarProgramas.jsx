@@ -1,4 +1,4 @@
-import '../static/css/home.css';
+
 import React, { useEffect, useState } from 'react';
 import { ListarPro, BuscarPro } from '../Api/Programas';
 import Cookies from 'js-cookie';
@@ -35,7 +35,7 @@ export function UsPro(iduser) {
 
     const buscarProgramas = async (search) => {
         try {
-            const response = await BuscarPro(search,iduser);
+            const response = await BuscarPro(search, iduser);
             setProgramas(response.data);
         } catch (error) {
             Cookies.remove('token');
@@ -44,13 +44,13 @@ export function UsPro(iduser) {
     };
 
     if (!token) {
-        return { programas: [], actualizarProgramas: () => {} };
+        return { programas: [], actualizarProgramas: () => { } };
     }
 
     if (error) {
-        return { programas: [], actualizarProgramas: () => {} };
+        return { programas: [], actualizarProgramas: () => { } };
     }
 
-    return { programas, actualizarProgramas,buscarProgramas, iduser };
+    return { programas, actualizarProgramas, buscarProgramas, iduser };
 }
 

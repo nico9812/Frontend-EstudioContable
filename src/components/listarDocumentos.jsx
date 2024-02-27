@@ -1,4 +1,4 @@
-import '../static/css/home.css';
+
 import React, { useEffect, useState } from 'react';
 import { ListarDoc, FiltrarDoc } from '../Api/DocumentosApi';
 import Cookies from 'js-cookie';
@@ -34,9 +34,9 @@ export function UsDoc(iduser) {
         }
     };
 
-    const filtrarDocumentos = async (categoria,id) => {
+    const filtrarDocumentos = async (categoria, id) => {
         try {
-            const response = await FiltrarDoc(categoria,id);
+            const response = await FiltrarDoc(categoria, id);
             setDocumentos(response.data);
         } catch (error) {
             Cookies.remove('token');
@@ -45,11 +45,11 @@ export function UsDoc(iduser) {
     };
 
     if (!token) {
-        return { documentos: [], actualizarDocumentos: () => {} };
+        return { documentos: [], actualizarDocumentos: () => { } };
     }
 
     if (error) {
-        return { documentos: [], actualizarDocumentos: () => {} };
+        return { documentos: [], actualizarDocumentos: () => { } };
     }
 
     return { documentos, actualizarDocumentos, iduser, filtrarDocumentos };

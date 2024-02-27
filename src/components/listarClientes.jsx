@@ -39,7 +39,7 @@ export function Users() {
     const buscarUsuarios = async (search) => {
         try {
             const response = await BuscarUsuario(search);
-            if(response){
+            if (response) {
                 setUsuarios(response.data);
             }
         } catch (error) {
@@ -50,11 +50,11 @@ export function Users() {
     };
 
     if (!token) {
-        return { usuarios: [], actualizarUsuarios: () => {} };
+        return { usuarios: [], actualizarUsuarios: () => { } };
     }
 
     if (error) {
-        return { usuarios: [], actualizarUsuarios: () => {} };
+        return { usuarios: [], actualizarUsuarios: () => { } };
     }
 
     return { usuarios, actualizarUsuarios, buscarUsuarios };

@@ -1,0 +1,9 @@
+body {
+  font-size: larger;
+  background-color: #efefef;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}

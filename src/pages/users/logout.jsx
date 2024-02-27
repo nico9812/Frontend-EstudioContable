@@ -1,29 +1,25 @@
-import { Navigate } from "react-router-dom";
-import { useAuthContext } from "../../utils/authContext";
+import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
-import { LogoutUser } from "../../Api/UsuariosApi";
+import { LogoutUser } from '../../Api/UsuariosApi';
 
+export function Logout() {
+  const token = Cookies.get('token');
 
-export function Logout(){
-    const { logout } = useAuthContext();
-    const token = Cookies.get('token');
+  useEffect(() => {
+    const performLogout = async () => {
+      Cookies.remove('token');
+      Cookies.remove('group');
+      Cookies.remove('id');
+      logout();
+    };
 
-    useEffect(() => {
-        const performLogout = async () => {
-            Cookies.remove('token');
-            Cookies.remove('group');
-            Cookies.remove('id');
-            logout();
-        };
+    performLogout();
+  }, []);
 
-        performLogout();
+  if (token != undefined && token != '') {
+    LogoutUser();
+  }
 
-    }, []);
-    
-    if (token != undefined && token != ''){
-        LogoutUser();
-    }
-
-    return <Navigate to="/" />;
+  return <Navigate to="/" />;
 }

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import {Calendar, dayjsLocalizer} from 'react-big-calendar';
+import { useState, useEffect } from 'react';
+import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import "../static/css/calendario.css";
 import dayjs from 'dayjs';
 import "dayjs/locale/es"
 import Modal from 'react-modal';
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { GuardarVencimiento, ModificarVencimiento, DeleteVencimiento } from '../Api/VencimientosApi';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom"
@@ -36,7 +35,7 @@ const messages = {
 export function Calendario(dat) {
   const localizer = dayjsLocalizer(dayjs);
   const { register, handleSubmit, reset, setValue } = useForm();
-  
+
   const [eventos, setEventos] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalAbiertoMod, setModalAbiertoMod] = useState(false);
@@ -49,12 +48,14 @@ export function Calendario(dat) {
   const navigate = useNavigate();
 
   const id = dat.datos.iduser ? dat.datos.iduser : null;
-  const datos = dat.datos
-  const [vencimientoSelected, setVencimientoSelected] = useState(null); 
-  
+
+  const { actualizarVencimientos, vencimientos } = dat.datos
+
+  const [vencimientoSelected, setVencimientoSelected] = useState(null);
+
   // Agregar vencimiento
 
-  const onSubmit = handleSubmit(async data =>{
+  const onSubmit = handleSubmit(async data => {
     data.propietario = id;
     setErrorForm({});
     try {
@@ -63,17 +64,17 @@ export function Calendario(dat) {
         Cookies.remove('token');
       }
       if (response.status === 201) {
-        datos.actualizarVencimientos();
+        actualizarVencimientos();
         cerrarModal();
         reset();
       } else {
-          console.log('error')
+        console.log('error')
       }
-    }catch (error) {
-        if (error.response) {
-            setErrorForm(error.response.data.errors || {});
-            // Aquí puedes manejar los errores, mostrar mensajes, etc.
-        }
+    } catch (error) {
+      if (error.response) {
+        setErrorForm(error.response.data.errors || {});
+        // Aquí puedes manejar los errores, mostrar mensajes, etc.
+      }
     }
   })
 
@@ -109,22 +110,25 @@ export function Calendario(dat) {
   };
 
   const transformarEventos = () => {
-    
-    return datos.vencimientos.map((evento) => (
-      {
-      id: evento.id,
-      title: evento.nombre,
-      start: dayjs(evento.fecha),
-      end: dayjs(evento.fecha),
-      alarma: evento.alarma,
-    }));
+
+    const datosMapeados = vencimientos.map((evento) => {
+      return {
+        id: evento.id,
+        title: evento.nombre,
+        start: dayjs(evento.fecha),
+        end: dayjs(evento.fecha),
+        alarma: evento.alarma,
+      }
+    });
+
+    return datosMapeados
   };
 
   useEffect(() => {
-    if(datos){
+    if (vencimientos.length > 0) {
       setEventos(transformarEventos());
     }
-  }, [datos ? datos.vencimientos : null]);
+  }, [vencimientos]);
 
   // Personalizar barra de opciones 
   const CustomToolbar = toolbar => {
@@ -148,7 +152,7 @@ export function Calendario(dat) {
         </span>
         <span>{toolbar.label}</span>
       </div>
-      
+
     );
   };
 
@@ -170,30 +174,30 @@ export function Calendario(dat) {
     abrirModalMod(); // Abre el modal para confirmar la eliminación
   };
 
-  const onSubmitMod = handleSubmit(async data =>{
+  const onSubmitMod = handleSubmit(async data => {
     data.propietario = id;
     setErrorForm({});
     try {
-      const response = await ModificarVencimiento(vencimientoSelected.id,data);
+      const response = await ModificarVencimiento(vencimientoSelected.id, data);
       setVencimientoSelected(null);
       if (response.status == 401) {
         Cookies.remove('token');
       }
       if (response.status === 200) {
-        datos.actualizarVencimientos();
+        actualizarVencimientos();
         cerrarModalMod();
         reset();
-        if(showMore){
+        if (showMore) {
           cerrarShowMore();
         }
       } else {
-          console.log('error')
+        console.log('error')
       }
-    }catch (error) {
-        if (error.response) {
-            setErrorForm(error.response.data.errors || {});
-            // Aquí puedes manejar los errores, mostrar mensajes, etc.
-        }
+    } catch (error) {
+      if (error.response) {
+        setErrorForm(error.response.data.errors || {});
+        // Aquí puedes manejar los errores, mostrar mensajes, etc.
+      }
     }
   })
 
@@ -206,8 +210,8 @@ export function Calendario(dat) {
   };
 
   const cerrarModalMod = () => {
-  setModalAbiertoMod(false);
-  reset();
+    setModalAbiertoMod(false);
+    reset();
   };
 
   // Eliminar Vencimiento
@@ -221,31 +225,31 @@ export function Calendario(dat) {
   };
 
   const handleDeleteVen = async (id) => {
-      
-    if (id){
+
+    if (id) {
       try {
-          const response = await DeleteVencimiento(id);
-          setVencimientoSelected(null);
-          if (response.status == 204) {
-            datos.actualizarVencimientos();
-            cerrarConfirm();
-            cerrarModalMod();
-            if(showMore){
-              cerrarShowMore();
-            }
+        const response = await DeleteVencimiento(id);
+        setVencimientoSelected(null);
+        if (response.status == 204) {
+          actualizarVencimientos();
+          cerrarConfirm();
+          cerrarModalMod();
+          if (showMore) {
+            cerrarShowMore();
           }
-          if (response.status == 401) {
-            Cookies.remove('token');
-          }
+        }
+        if (response.status == 401) {
+          Cookies.remove('token');
+        }
       } catch (error) {
-          if (error.response.data.errors) {
-              setErrorForm(error.response.data.errors || {});
-          }
+        if (error.response.data.errors) {
+          setErrorForm(error.response.data.errors || {});
+        }
       }
-    };
+    }
   };
 
-  // ver mas de un evento 
+  // ver mas de un evento
 
   const abrirShowMore = (events, date) => {
     setEventsForDay(events.filter(event =>
@@ -263,7 +267,7 @@ export function Calendario(dat) {
 
   return (
     <div className='calenadrVen'>
-        <Calendar 
+      <Calendar
         localizer={localizer}
         views={["month"]}
         messages={messages}
@@ -274,145 +278,145 @@ export function Calendario(dat) {
         components={{
           toolbar: CustomToolbar,
         }}
-        />
+      />
 
-        <Modal
-            isOpen={modalAbierto}
-            onRequestClose={cerrarModal}
-            contentLabel="NuevoVencimiento"
-            className="mi-modalForm"
-            overlayClassName="mi-overlay"
-            style={{
-              overlay: {
-                zIndex: 1000 // ajusta este valor según sea necesario
-              },
-              content: {
-                zIndex: 1001 // ajusta este valor según sea necesario
-              }
-            }}
-        >
-          <Form  onSubmit={onSubmit} className='login'>
-                <h2>Nuevo Vencimiento</h2>
-                <Form.Group as={Row} className="mb-4" controlId="formPlaintextnombre">
-                    <Col sm="15">
-                    <Form.Control size='lg' type='text' placeholder="Nombre del Vencimiento" {...register("nombre",{required:true})} />
-                    </Col>
-                    {errorForm.nombre && <span>{errorForm.nombre[0]}</span>}
-                </Form.Group>
+      <Modal
+        isOpen={modalAbierto}
+        onRequestClose={cerrarModal}
+        contentLabel="NuevoVencimiento"
+        className="mi-modalForm"
+        overlayClassName="mi-overlay"
+        style={{
+          overlay: {
+            zIndex: 1000 // ajusta este valor según sea necesario
+          },
+          content: {
+            zIndex: 1001 // ajusta este valor según sea necesario
+          }
+        }}
+      >
+        <Form onSubmit={onSubmit} className='login'>
+          <h2>Nuevo Vencimiento</h2>
+          <Form.Group as={Row} className="mb-4" controlId="formPlaintextnombre">
+            <Col sm="15">
+              <Form.Control size='lg' type='text' placeholder="Nombre del Vencimiento" {...register("nombre", { required: true })} />
+            </Col>
+            {errorForm.nombre && <span>{errorForm.nombre[0]}</span>}
+          </Form.Group>
 
-                <Form.Group as={Row} className="mb-4" controlId="formPlaintextfecha">
-                    <Col sm="15">
-                    <Form.Control size='lg' type='date' placeholder="fecha" {...register("fecha",{required:true})} />
-                    </Col>
-                    {errorForm.fecha && <span>{errorForm.fecha[0]}</span>}
-                </Form.Group>
+          <Form.Group as={Row} className="mb-4" controlId="formPlaintextfecha">
+            <Col sm="15">
+              <Form.Control size='lg' type='date' placeholder="fecha" {...register("fecha", { required: true })} />
+            </Col>
+            {errorForm.fecha && <span>{errorForm.fecha[0]}</span>}
+          </Form.Group>
 
-                <Form.Check type="switch" id="custom-switch" label="¿Alarma activada?" {...register("alarma")}/>
+          <Form.Check type="switch" id="custom-switch" label="¿Alarma activada?" {...register("alarma")} />
 
-                {errorForm && <span>{errorForm[0]}</span>}
-                <Col sm="15" className='d-flex justify-content-between mt-5'>
-                    <Button variant="success" type='submit'>Guardar</Button>
-                    <Button variant="secondary" onClick={cerrarModal}>Cancelar</Button>
-                </Col>
-            </Form>
-        </Modal>
+          {errorForm && <span>{errorForm[0]}</span>}
+          <Col sm="15" className='d-flex justify-content-between mt-5'>
+            <Button variant="success" type='submit'>Guardar</Button>
+            <Button variant="secondary" onClick={cerrarModal}>Cancelar</Button>
+          </Col>
+        </Form>
+      </Modal>
 
-        <Modal
-            isOpen={modalAbiertoMod}
-            onRequestClose={cerrarModalMod}
-            contentLabel="Modificacion"
-            className="mi-modalForm"
-            overlayClassName="mi-overlay"
-            style={{
-              overlay: {
-                zIndex: 1000 // ajusta este valor según sea necesario
-              },
-              content: {
-                zIndex: 1001 // ajusta este valor según sea necesario
-              }
-            }}
-        >
-          <Form  onSubmit={onSubmitMod} className='login'>
-              <h2>Modificar</h2>
-              <Form.Group as={Row} className="mb-4" controlId="formPlaintextnombre">
-                  <Col sm="15">
-                  <Form.Control size='lg' type='text' placeholder="Nombre del Vencimiento" {...register("nombre",{required:true})} />
-                  </Col>
-                  {errorForm.nombre && <span>{errorForm.nombre[0]}</span>}
-              </Form.Group>
+      <Modal
+        isOpen={modalAbiertoMod}
+        onRequestClose={cerrarModalMod}
+        contentLabel="Modificacion"
+        className="mi-modalForm"
+        overlayClassName="mi-overlay"
+        style={{
+          overlay: {
+            zIndex: 1000 // ajusta este valor según sea necesario
+          },
+          content: {
+            zIndex: 1001 // ajusta este valor según sea necesario
+          }
+        }}
+      >
+        <Form onSubmit={onSubmitMod} className='login'>
+          <h2>Modificar</h2>
+          <Form.Group as={Row} className="mb-4" controlId="formPlaintextnombre">
+            <Col sm="15">
+              <Form.Control size='lg' type='text' placeholder="Nombre del Vencimiento" {...register("nombre", { required: true })} />
+            </Col>
+            {errorForm.nombre && <span>{errorForm.nombre[0]}</span>}
+          </Form.Group>
 
-              <Form.Group as={Row} className="mb-4" controlId="formPlaintextfecha">
-                  <Col sm="15">
-                  <Form.Control size='lg' type='date' placeholder="fecha" {...register("fecha",{required:true})} />
-                  </Col>
-                  {errorForm.fecha && <span>{errorForm.fecha[0]}</span>}
-              </Form.Group>
+          <Form.Group as={Row} className="mb-4" controlId="formPlaintextfecha">
+            <Col sm="15">
+              <Form.Control size='lg' type='date' placeholder="fecha" {...register("fecha", { required: true })} />
+            </Col>
+            {errorForm.fecha && <span>{errorForm.fecha[0]}</span>}
+          </Form.Group>
 
-              <Form.Check type="switch" id="custom-switch" label="¿Alarma activada?" {...register("alarma")}/>
+          <Form.Check type="switch" id="custom-switch" label="¿Alarma activada?" {...register("alarma")} />
 
-              {errorForm && <span>{errorForm[0]}</span>}
-              <Col sm="15" className='d-flex justify-content-between mt-5'>
-                  <Button variant="success" type='submit'>Guardar</Button>
-                  <Button variant="secondary" onClick={cerrarModalMod}>Cancelar</Button>
-                  <Button variant="danger" onClick={abrirConfirm}>Eliminar</Button>
-              </Col>
-          </Form>
-        </Modal>  
+          {errorForm && <span>{errorForm[0]}</span>}
+          <Col sm="15" className='d-flex justify-content-between mt-5'>
+            <Button variant="success" type='submit'>Guardar</Button>
+            <Button variant="secondary" onClick={cerrarModalMod}>Cancelar</Button>
+            <Button variant="danger" onClick={abrirConfirm}>Eliminar</Button>
+          </Col>
+        </Form>
+      </Modal>
 
-        <Modal
-              isOpen={confirmarEliminarMod}
-              onRequestClose={cerrarConfirm}
-              contentLabel="Confirmación"
-              className="mi-modal"
-              overlayClassName="mi-overlay"
-              style={{
-                overlay: {
-                  zIndex: 1001 // ajusta este valor según sea necesario
-                },
-                content: {
-                  zIndex: 1002 // ajusta este valor según sea necesario
-                }
-              }}
-          >
-              <p>¿Estás seguro que deseas borrar el vencimiento {vencimientoSelected !== null && (vencimientoSelected.title)} de la fecha {vencimientoSelected !== null && (vencimientoSelected.start.format('DD-MM-YYYY'))} ?</p>
-              <div className='d-flex justify-content-between'>
-              <Button variant="danger" onClick={() => handleDeleteVen(vencimientoSelected.id)}>Eliminar</Button>
-              <Button variant="secondary" onClick={cerrarConfirm}>Cancelar</Button>
-              </div>
-          </Modal>
+      <Modal
+        isOpen={confirmarEliminarMod}
+        onRequestClose={cerrarConfirm}
+        contentLabel="Confirmación"
+        className="mi-modal"
+        overlayClassName="mi-overlay"
+        style={{
+          overlay: {
+            zIndex: 1001 // ajusta este valor según sea necesario
+          },
+          content: {
+            zIndex: 1002 // ajusta este valor según sea necesario
+          }
+        }}
+      >
+        <p>¿Estás seguro que deseas borrar el vencimiento {vencimientoSelected !== null && (vencimientoSelected.title)} de la fecha {vencimientoSelected !== null && (vencimientoSelected.start.format('DD-MM-YYYY'))} ?</p>
+        <div className='d-flex justify-content-between'>
+          <Button variant="danger" onClick={() => handleDeleteVen(vencimientoSelected.id)}>Eliminar</Button>
+          <Button variant="secondary" onClick={cerrarConfirm}>Cancelar</Button>
+        </div>
+      </Modal>
 
-          <Modal
-              isOpen={showMore}
-              onRequestClose={cerrarShowMore}
-              contentLabel="Confirmación"
-              className="mi-modal"
-              overlayClassName="mi-overlay"
-              style={{
-                overlay: {
-                  zIndex: 999 // ajusta este valor según sea necesario
-                },
-                content: {
-                  zIndex: 1000 // ajusta este valor según sea necesario
-                }
-              }}
-              >
-              {eventsForDay !== null && (
-                <>
-                  <h2>{eventsForDay[0].start.format('DD-MM-YYYY')}</h2>
-                <div className='showMoreList'>
+      <Modal
+        isOpen={showMore}
+        onRequestClose={cerrarShowMore}
+        contentLabel="Confirmación"
+        className="mi-modal"
+        overlayClassName="mi-overlay"
+        style={{
+          overlay: {
+            zIndex: 999 // ajusta este valor según sea necesario
+          },
+          content: {
+            zIndex: 1000 // ajusta este valor según sea necesario
+          }
+        }}
+      >
+        {eventsForDay !== null && (
+          <>
+            <h2>{eventsForDay[0].start.format('DD-MM-YYYY')}</h2>
+            <div className='showMoreList'>
 
-                <ListGroup>
-                  {eventsForDay.map((ven) => (
-                    <ListGroup.Item action variant={ven.alarma ? ("danger") : ("info")} key={ven.id} onClick={group === '1' ? () => onSelectEventShow(ven) : undefined}>
-                      {ven.title}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-                </div>
-                </>
-              )}
-              <Button className='mt-5' variant="secondary" onClick={cerrarShowMore}>Cerrar</Button>
-          </Modal>
+              <ListGroup>
+                {eventsForDay.map((ven) => (
+                  <ListGroup.Item action variant={ven.alarma ? ("danger") : ("info")} key={ven.id} onClick={group === '1' ? () => onSelectEventShow(ven) : undefined}>
+                    {ven.title}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </div>
+          </>
+        )}
+        <Button className='mt-5' variant="secondary" onClick={cerrarShowMore}>Cerrar</Button>
+      </Modal>
     </div>
   );
 }

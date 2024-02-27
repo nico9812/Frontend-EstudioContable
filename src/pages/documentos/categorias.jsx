@@ -1,10 +1,5 @@
-import '../../static/css/home.css';
+
 import Cookies from 'js-cookie';
-import { useParams } from 'react-router-dom';
-import { UsDoc } from '../../components/listarDocumentos';
-import { CardDoc, CardDocCli } from '../../components/cardDoc';
-import FormData from 'form-data';
-import { useRef } from 'react';
 import Modal from 'react-modal';
 import React, { useState} from 'react';
 import {useForm} from "react-hook-form";
