@@ -22,6 +22,10 @@ export const ObtenerUsuario = (id) => {
   return axiosService.get(`/users/${id}/`);
 };
 
+export const ObtenerDatosSession = (id) => {
+  return axiosService.get(`/DatosSession/${id}/`);
+};
+
 export const BuscarUsuario = (search) => {
   return axiosService.get(`/UserSearch/${search}/`);
 };
