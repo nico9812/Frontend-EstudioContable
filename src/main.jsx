@@ -11,14 +11,28 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import App from '@/App';
+import { VITE_ENV_MODE } from '@/constants';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <StrictMode>
+
+console.log(VITE_ENV_MODE);
+
+if (VITE_ENV_MODE === 'produccion' || VITE_ENV_MODE === 'testing') {
+  root.render(
+    <StrictMode>
+      <PersistGate loading={null} persistor={persistor}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </PersistGate>
+    </StrictMode>
+  );
+} else if (VITE_ENV_MODE === 'desarrollo' || VITE_ENV_MODE === undefined) {
+  root.render(
     <PersistGate loading={null} persistor={persistor}>
       <Provider store={store}>
         <App />
       </Provider>
     </PersistGate>
-  </StrictMode>
-);
+  );
+}

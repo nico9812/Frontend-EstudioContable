@@ -14,6 +14,7 @@ import { Error_404 } from '@/pages/Errors/404';
 import { Login } from '@/pages/auth/Login';
 import { Logout } from '@/pages/auth/Logout';
 import { Clientes } from '@/pages/users/Clientes';
+import DashboardLayout from '@/layouts/DashboardLayout';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -32,15 +33,15 @@ import {
 } from '@/pages/programas/programas'; */
 
 function ReactRouting() {
-  const getGroups = useSelector(selectCurrentGroup);
-
   const location = useLocation();
   const previosLocation = location.state?.previosLocation;
 
+  const currentGroup = useSelector(selectCurrentGroup);
+
   function Redireccion() {
-    if (getGroups === 1) {
+    if (currentGroup === 1) {
       return <Navigate to="contador" replace />;
-    } else if (getGroups === 2) {
+    } else if (currentGroup === 2) {
       return <Navigate to="cliente" replace />;
     }
   }
@@ -58,75 +59,83 @@ function ReactRouting() {
         <Route path="login" element={<LoginLayout />}>
           <Route index element={<Login />} />
         </Route>
-        <Route path="logout" element={<Logout />} />
+        <Route path="logout" element={<RequireAuth />}>
+          <Route index element={<Logout />} />
+        </Route>
 
         {/* Rutas protegidas */}
         <Route path="dashboard" element={<RequireAuth />}>
-          {/* Redirección para usuarios */}
-          <Route index element={<Redireccion />} />
-          {/* Contador */}
-          <Route path="contador" element={<ContadorLayout />}>
-            <Route index element={<Clientes />} />
+          <Route element={<DashboardLayout />}>
+            {/* Redirección para usuarios */}
+            <Route index element={<Redireccion />} />
+            {/* Contador */}
+            <Route
+              path="contador"
+              element={<ContadorLayout grupo={currentGroup} />}
+            >
+              <Route index element={<Clientes />} />
+            </Route>
+            {/* Cliente */}
+            <Route
+              path="cliente"
+              element={<ClienteLayout grupo={currentGroup} />}
+            >
+              <Route index element={<>Hola</>} />
+            </Route>
+            {/* <Route path="main" element={<RequireAuth />}>
+            <Route path="contador/clientes" element={<ContadorLayout />}>
+              <Route index element={<Clientes />} />
+              <Route
+                path="clientes/vencimientos/:id"
+                element={<ListarVencimientosconta />}
+              />
+              <Route
+                path="clientes/documentos/:id"
+                element={<ListarDocumentosconta />}
+              />
+              <Route
+                path="clientes/documentos/:id/categorias/"
+                element={<ListarCategorias />}
+              />
+              <Route
+                path="clientes/programas/:id"
+                element={<ListarProgramasConta />}
+              />
+            </Route>
+            <Route
+              path="/vencimientos/"
+              element={
+                <PrivateRouteClient>
+                  <ListarVencimientosclien />
+                </PrivateRouteClient>
+              }
+            />
+            <Route
+              path="/documentos/"
+              element={
+                <PrivateRouteClient>
+                  <ListarDocumentosclien />
+                </PrivateRouteClient>
+              }
+            />
+            <Route
+              path="/programas/"
+              element={
+                <PrivateRouteClient>
+                  <ListarProgramasClien />
+                </PrivateRouteClient>
+              }
+            />
+            <Route
+              path="logout/"
+              element={
+                <PrivateRoute>
+                  <Logout />
+                </PrivateRoute>
+              }
+            />
+                    </Route> */}
           </Route>
-          {/* Cliente */}
-          <Route path="cliente" element={<ClienteLayout />}>
-            <Route index element={<>Hola</>} />
-          </Route>
-          {/* <Route path="main" element={<RequireAuth />}>
-          <Route path="contador/clientes" element={<ContadorLayout />}>
-            <Route index element={<Clientes />} />
-            <Route
-              path="clientes/vencimientos/:id"
-              element={<ListarVencimientosconta />}
-            />
-            <Route
-              path="clientes/documentos/:id"
-              element={<ListarDocumentosconta />}
-            />
-            <Route
-              path="clientes/documentos/:id/categorias/"
-              element={<ListarCategorias />}
-            />
-            <Route
-              path="clientes/programas/:id"
-              element={<ListarProgramasConta />}
-            />
-          </Route>
-
-          <Route
-            path="/vencimientos/"
-            element={
-              <PrivateRouteClient>
-                <ListarVencimientosclien />
-              </PrivateRouteClient>
-            }
-          />
-          <Route
-            path="/documentos/"
-            element={
-              <PrivateRouteClient>
-                <ListarDocumentosclien />
-              </PrivateRouteClient>
-            }
-          />
-          <Route
-            path="/programas/"
-            element={
-              <PrivateRouteClient>
-                <ListarProgramasClien />
-              </PrivateRouteClient>
-            }
-          />
-
-          <Route
-            path="logout/"
-            element={
-              <PrivateRoute>
-                <Logout />
-              </PrivateRoute>
-            }
-          />
-        </Route> */}
         </Route>
       </Routes>
       {previosLocation && (

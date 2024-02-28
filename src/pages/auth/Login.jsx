@@ -40,7 +40,7 @@ export function Login() {
 
   const navigate = useNavigate();
 
-  const onSubmit = handleSubmit(async data => {
+  const onSubmit = async data => {
     try {
       const userData = await login(data).unwrap();
       dispatch(setCredentials({ ...userData }));
@@ -56,7 +56,7 @@ export function Login() {
         toast.error(error.response.data.errors.errors);
       }
     }
-  });
+  };
 
   return (
     <Flex direction="column" className="gap-2 p-2 px-2">
@@ -72,7 +72,10 @@ export function Login() {
           <strong>Sistema</strong>
         </h4>
       </Flex>
-      <Form className="d-flex flex-column gap-3" onSubmit={onSubmit}>
+      <Form
+        className="d-flex flex-column gap-3"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Form.Group controlId="username">
           <Form.Label>Usuario</Form.Label>
           <Form.Control
