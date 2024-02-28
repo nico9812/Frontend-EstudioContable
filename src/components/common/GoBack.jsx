@@ -1,4 +1,3 @@
-import React from 'react';
 import IconButton from 'components/common/IconButton';
 import PropTypes from 'prop-types';
 
@@ -7,7 +6,7 @@ const VolverAtras = ({
   ruta,
   replaceTrue,
   locationState,
-  accionar = null,
+  accionar = null
 }) => {
   const navegador = () => {
     if (replaceTrue) {
@@ -43,7 +42,7 @@ VolverAtras.propTypes = {
   ruta: PropTypes.string.isRequired,
   replaceTrue: PropTypes.bool,
   accionar: PropTypes.func,
-  locationState: PropTypes.object,
+  locationState: PropTypes.object
 };
 
 export default VolverAtras;

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 export const Home = () => {
   const username = useSelector(selectCurrentUserName);
+
   return (
     <>
       <h1>

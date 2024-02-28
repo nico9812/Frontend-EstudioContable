@@ -16,16 +16,12 @@ const BtnAccion = ({
   accion,
   ruta,
   parametro,
-  state,
+  state
 }) => {
   const composeRoute = parametro ? ruta + parametro : ruta;
   return (
-    <OverlayTrigger
-      placement={placement}
-      overlay={<Tooltip>{title}</Tooltip>}
-    >
+    <OverlayTrigger placement={placement} overlay={<Tooltip>{title}</Tooltip>}>
       {accion ? (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div className="cursor-pointer" onClick={accion}>
           <FontAwesomeIcon icon={icon} className={variant} size="lg" />
         </div>

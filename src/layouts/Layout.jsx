@@ -12,7 +12,7 @@ const Layout = () => {
     <div className="App wrapper">
       <SideBar toggleSidebar={toggleSidebar} sidebarIsOpen={sidebarIsOpen} />
       <Content toggleSidebar={toggleSidebar} sidebarIsOpen={sidebarIsOpen}>
-        <div className="px-4">
+        <div className="shadow-lg p-3 mb-5 bg-white rounded">
           <Outlet />
         </div>
       </Content>

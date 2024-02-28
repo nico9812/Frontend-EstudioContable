@@ -1,7 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
 const ContadorLayout = () => {
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 };
 
 export default ContadorLayout;

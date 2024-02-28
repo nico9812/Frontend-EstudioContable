@@ -28,7 +28,7 @@ export const TopBar = ({ toggleSidebar }) => {
         color="light"
         light
         expand="xs"
-        className="navbar shadow-sm p-3 mb-5 bg-white rounded"
+        className="navbar shadow-lg p-3 mb-5 bg-white rounded"
       >
         <Row className="g-0 w-100 align-items-center">
           <Col className="d-flex justify-content-xs-start">
@@ -37,7 +37,7 @@ export const TopBar = ({ toggleSidebar }) => {
             </Button>
           </Col>
 
-          <Col className="d-none d-lg-flex justify-content-end">
+          <Col className="d-flex justify-content-end">
             <Nav className="mrx-auto" navbar>
               <UncontrolledDropdown
                 className="d-flex align-items-center"
