@@ -1,4 +1,4 @@
-import ContentUsers from '@/components/users/ContentUsers';
+import ContentClientes from '@/components/users/ContentClientes';
 import { Card } from 'react-bootstrap';
 
 export const Clientes = () => {
@@ -8,7 +8,7 @@ export const Clientes = () => {
         <Card.Title>Lista de Clientes</Card.Title>
       </Card.Header>
       <Card.Body>
-        <ContentUsers />
+        <ContentClientes />
       </Card.Body>
     </Card>
   );

@@ -15,8 +15,6 @@ import { VITE_ENV_MODE } from '@/constants';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-console.log(VITE_ENV_MODE);
-
 if (VITE_ENV_MODE === 'produccion' || VITE_ENV_MODE === 'testing') {
   root.render(
     <StrictMode>

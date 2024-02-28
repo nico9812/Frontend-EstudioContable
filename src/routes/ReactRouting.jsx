@@ -9,12 +9,15 @@ import LoginLayout from '@/layouts/LoginLayout';
 import ContadorLayout from '@/layouts/ContadorLayout';
 import ClienteLayout from '@/layouts/ClienteLayout';
 
-import { Error_404 } from '@/pages/Errors/404';
+import Error404 from '@/pages/Errors/404';
 
 import { Login } from '@/pages/auth/Login';
 import { Logout } from '@/pages/auth/Logout';
 import { Clientes } from '@/pages/users/Clientes';
 import DashboardLayout from '@/layouts/DashboardLayout';
+import ErrorLayout from '@/layouts/ErrorLayout';
+import { ModalUsable } from '@/components/common/ModalUsable';
+import ModalFormUser from '@/components/users/ModalFormUser';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -34,7 +37,7 @@ import {
 
 function ReactRouting() {
   const location = useLocation();
-  const previosLocation = location.state?.previosLocation;
+  const background = location.state && location.state.backgroundLocation;
 
   const currentGroup = useSelector(selectCurrentGroup);
 
@@ -48,10 +51,12 @@ function ReactRouting() {
 
   return (
     <>
-      <Routes>
+      <Routes location={background || location}>
+        <Route path="/*" element={<Navigate to="/404" replace />} />
         {/* Rutas de Errores */}
-        <Route path="/*" element={<Navigate to="/404" />} />
-        <Route path="/404/" element={<Error_404 />} />
+        <Route element={<ErrorLayout />}>
+          <Route path="/404/" element={<Error404 />} />
+        </Route>
 
         <Route exact path="/" element={<Navigate to="login" replace />} />
 
@@ -138,9 +143,16 @@ function ReactRouting() {
           </Route>
         </Route>
       </Routes>
-      {previosLocation && (
+      {background && (
         <Routes>
-          <Route path="/test" element={<></>} />
+          <Route
+            path="/dashboard/contador/add"
+            element={
+              <ModalUsable>
+                <ModalFormUser />
+              </ModalUsable>
+            }
+          />
         </Routes>
       )}
     </>

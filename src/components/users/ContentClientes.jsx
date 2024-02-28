@@ -1,10 +1,9 @@
 import { useGetUsersQuery } from '@/redux/api/usersApiSlice';
-import { TableUser } from './TableUser';
+import { TableClientes } from '@/components/users/TableClientes';
 import { extractRawData } from '@/helpers';
 import { AccionesBtn } from '@/components/users/AccionesBtn';
-import Flex from '../common/Flex';
 
-const ContentUsers = () => {
+const ContentClientes = () => {
   const {
     data: users,
     isLoading,
@@ -52,9 +51,9 @@ const ContentUsers = () => {
   } else if (isSuccess) {
     const renderedUsers = extractRawData(users.entities);
 
-    content = <TableUser data={renderedUsers} columns={columns} />;
+    content = <TableClientes data={renderedUsers} columns={columns} />;
   }
   return content;
 };
 
-export default ContentUsers;
+export default ContentClientes;

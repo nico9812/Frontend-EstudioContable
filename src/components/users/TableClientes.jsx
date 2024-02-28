@@ -1,23 +1,34 @@
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table';
 import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Flex from '../common/Flex';
-import { Filters } from './Filters';
+import { TableHeader } from './Filters';
+import { useState } from 'react';
 
-export const TableUser = ({ data, columns }) => {
+export const TableClientes = ({ data, columns }) => {
+  const [columnFilters, setColumnFilters] = useState([]);
+
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel()
+    state: {
+      columnFilters
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel()
   });
 
   return (
     <Flex direction="column" className="gap-3">
-      <Filters />
+      <TableHeader
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      />
       <Table striped bordered hover responsive size="sm">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
@@ -51,7 +62,7 @@ export const TableUser = ({ data, columns }) => {
   );
 };
 
-TableUser.propTypes = {
+TableClientes.propTypes = {
   data: PropTypes.array,
   columns: PropTypes.array
 };
