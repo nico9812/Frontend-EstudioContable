@@ -4,7 +4,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 
 const BtnAccion = ({
   // Apariencia
@@ -15,10 +14,8 @@ const BtnAccion = ({
   // Acciones
   accion,
   ruta,
-  parametro,
   state
 }) => {
-  const composeRoute = parametro ? ruta + parametro : ruta;
   return (
     <OverlayTrigger placement={placement} overlay={<Tooltip>{title}</Tooltip>}>
       {accion ? (
@@ -26,7 +23,7 @@ const BtnAccion = ({
           <FontAwesomeIcon icon={icon} className={variant} size="lg" />
         </div>
       ) : (
-        <Link to={composeRoute} state={state}>
+        <Link to={ruta} state={state}>
           <FontAwesomeIcon icon={icon} className={variant} size="lg" />
         </Link>
       )}

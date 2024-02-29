@@ -8,46 +8,46 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 
-export const AccionesBtn = ({ editId }) => {
+export const AccionesBtn = ({ sentId, location = null }) => {
   const acciones = [
     {
-      id: 1,
       icon: faEdit,
       title: 'Editar',
-      ruta: `edit/${editId}`,
-      variant: 'primary'
+      ruta: `clientes/editar/${sentId}`,
+      variant: 'primary',
+      state: {
+        backgroundLocation: location
+      }
     },
     {
-      id: 2,
       icon: faCalendarAlt,
       title: 'Ver Vencimientos',
-      ruta: `vencimientos/${editId}`,
+      ruta: `vencimientos/${sentId}`,
       variant: 'primary'
     },
     {
-      id: 3,
       icon: faFilePdf,
       title: 'Ver Documentos',
-      ruta: `documentos/${editId}`,
+      ruta: `documentos/${sentId}`,
       variant: 'primary'
     },
     {
-      id: 4,
       icon: faClipboardList,
       title: 'Ver Programas',
-      ruta: `programas/${editId}`,
+      ruta: `programas/${sentId}`,
       variant: 'primary'
     }
   ];
   return (
     <Flex justifyContent="evenly">
-      {acciones.map(({ id, icon, title, ruta, variant }) => (
+      {acciones.map(({ icon, title, ruta, variant, state }, i) => (
         <BtnAccion
-          key={id}
+          key={i}
           variant={variant}
           title={title}
           ruta={ruta}
           icon={icon}
+          {...(state && { state })}
         />
       ))}
     </Flex>
@@ -55,5 +55,6 @@ export const AccionesBtn = ({ editId }) => {
 };
 
 AccionesBtn.propTypes = {
-  editId: PropTypes.number
+  sentId: PropTypes.number,
+  location: PropTypes.object
 };

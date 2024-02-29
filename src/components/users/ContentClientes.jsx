@@ -2,8 +2,11 @@ import { useGetUsersQuery } from '@/redux/api/usersApiSlice';
 import { TableClientes } from '@/components/users/TableClientes';
 import { extractRawData } from '@/helpers';
 import { AccionesBtn } from '@/components/users/AccionesBtn';
+import { useLocation } from 'react-router-dom';
 
 const ContentClientes = () => {
+  const location = useLocation();
+
   const {
     data: users,
     isLoading,
@@ -37,7 +40,9 @@ const ContentClientes = () => {
       accessorKey: 'actions',
       header: 'Acciones',
       cell: props => {
-        return <AccionesBtn editId={props.row?.original?.id} />;
+        return (
+          <AccionesBtn sentId={props.row?.original?.id} location={location} />
+        );
       }
     }
   ];
@@ -51,7 +56,13 @@ const ContentClientes = () => {
   } else if (isSuccess) {
     const renderedUsers = extractRawData(users.entities);
 
-    content = <TableClientes data={renderedUsers} columns={columns} />;
+    content = (
+      <TableClientes
+        data={renderedUsers}
+        columns={columns}
+        location={location}
+      />
+    );
   }
   return content;
 };

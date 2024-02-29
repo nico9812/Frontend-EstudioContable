@@ -3,11 +3,8 @@ import Flex from '../common/Flex';
 import BtnAccion from '../common/BtnAction';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 
-export const TableHeader = ({ columnFilters, setColumnFilters }) => {
-  const location = useLocation();
-
+export const TableHeader = ({ columnFilters, setColumnFilters, location }) => {
   const taksName = columnFilters.find(f => f.id === 'username')?.value || '';
 
   const onFilterChange = (id, value) => {
@@ -42,8 +39,7 @@ export const TableHeader = ({ columnFilters, setColumnFilters }) => {
         title="Agregar"
         ruta="add"
         state={{
-          backgroundLocation: location,
-          title: 'Agregar Cliente'
+          backgroundLocation: location
         }}
         icon={faPlusCircle}
       />
@@ -53,5 +49,6 @@ export const TableHeader = ({ columnFilters, setColumnFilters }) => {
 
 TableHeader.propTypes = {
   columnFilters: PropTypes.array,
-  setColumnFilters: PropTypes.func
+  setColumnFilters: PropTypes.func,
+  location: PropTypes.object
 };

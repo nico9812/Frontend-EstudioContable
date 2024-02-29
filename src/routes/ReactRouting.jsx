@@ -153,6 +153,14 @@ function ReactRouting() {
               </ModalUsable>
             }
           />
+          <Route
+            path="/dashboard/contador/clientes/editar/:userId"
+            element={
+              <ModalUsable>
+                <ModalFormUser />
+              </ModalUsable>
+            }
+          />
         </Routes>
       )}
     </>

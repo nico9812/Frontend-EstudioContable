@@ -10,7 +10,7 @@ import Flex from '../common/Flex';
 import { TableHeader } from './Filters';
 import { useState } from 'react';
 
-export const TableClientes = ({ data, columns }) => {
+export const TableClientes = ({ data, columns, location }) => {
   const [columnFilters, setColumnFilters] = useState([]);
 
   const table = useReactTable({
@@ -28,6 +28,7 @@ export const TableClientes = ({ data, columns }) => {
       <TableHeader
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
+        location={location}
       />
       <Table striped bordered hover responsive size="sm">
         <thead>
@@ -64,5 +65,6 @@ export const TableClientes = ({ data, columns }) => {
 
 TableClientes.propTypes = {
   data: PropTypes.array,
-  columns: PropTypes.array
+  columns: PropTypes.array,
+  location: PropTypes.object
 };
