@@ -33,7 +33,7 @@ export const vencimientosApISlice = apiSlice.injectEndpoints({
     updateVencimiento: builder.mutation({
       query: dataReceived => {
         return {
-          url: `/vencimientos/${dataReceived.userId}/`,
+          url: `/vencimientos/${dataReceived.vencimientoId}/`,
           method: 'PATCH',
           body: {
             ...dataReceived.data

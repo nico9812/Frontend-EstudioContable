@@ -16,8 +16,6 @@ const ContentCalendario = () => {
     error
   } = useGetVencimientosQuery(userId);
 
-  console.log(vencimientos);
-
   let content;
 
   if (isLoading) {
@@ -27,10 +25,9 @@ const ContentCalendario = () => {
   } else if (isSuccess) {
     const renderedVencimientos = extractRawData(vencimientos);
 
-    console.log(renderedVencimientos);
-
     content = <Calendario vencimientos={renderedVencimientos} />;
   }
   return content;
 };
+
 export default ContentCalendario;

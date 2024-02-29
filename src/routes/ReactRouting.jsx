@@ -20,6 +20,7 @@ import { ModalUsable } from '@/components/common/ModalUsable';
 import ModalFormUser from '@/components/users/ModalFormUser';
 import { Vencimientos } from '@/pages/vencimientos/Vencimientos';
 import ModalFormVencimiento from '@/components/vencimientos/ModalFormVencimiento';
+import VerMasVencimientos from '@/components/vencimientos/VerMasVencimientos';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -169,6 +170,14 @@ function ReactRouting() {
             element={
               <ModalUsable>
                 <ModalFormVencimiento />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/vencimientos/:userId/mostrar-mas"
+            element={
+              <ModalUsable>
+                <VerMasVencimientos />
               </ModalUsable>
             }
           />

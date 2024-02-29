@@ -6,6 +6,11 @@ import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { LoadingIndicator } from '../common/LoadingIndicator';
+import {
+  useAddNewVencimientoMutation,
+  useUpdateVencimientoMutation
+} from '@/redux/api/vencimientosApiSlice';
+import { toast } from 'react-toastify';
 
 const addOrEditPasswordSchema = yup.object().shape({
   nombre: yup
@@ -20,9 +25,12 @@ const addOrEditPasswordSchema = yup.object().shape({
 });
 
 const ModalFormVencimiento = ({ location, navigateBack }) => {
+  const { userId } = useParams();
   const isLoading = false;
   const isEditPage = location.pathname.includes('edit');
-  const { userId } = useParams();
+
+  const [addNewVencimiento] = useAddNewVencimientoMutation();
+  const [updateVencimiento] = useUpdateVencimientoMutation();
 
   const {
     register,
@@ -48,28 +56,28 @@ const ModalFormVencimiento = ({ location, navigateBack }) => {
 
   const onSubmit = async data => {
     console.log(data);
-    // if (!isEditPage) {
-    //   try {
-    //     await addNewUser(data).unwrap();
-    //     reset();
-    //     navigateBack();
-    //     toast.success('El cliente fue creado exitosamente.');
-    //   } catch (err) {
-    //     console.error('Failed to save the post', err);
-    //   }
-    // } else {
-    //   try {
-    //     await updateUser({
-    //       data,
-    //       userId
-    //     }).unwrap();
-    //     reset();
-    //     navigateBack();
-    //     toast.success('El cliente fue editado exitosamente.');
-    //   } catch (err) {
-    //     console.error('Failed to save the post', err);
-    //   }
-    // }
+    if (!isEditPage) {
+      try {
+        await addNewVencimiento({ ...data, propietario: userId }).unwrap();
+        reset();
+        navigateBack();
+        toast.success('El Vencimiento fue creado exitosamente.');
+      } catch (err) {
+        console.error('Failed to save the post', err);
+      }
+    } else {
+      try {
+        await updateVencimiento({
+          data: { ...data, propietario: userId },
+          userId
+        }).unwrap();
+        reset();
+        navigateBack();
+        toast.success('El cliente fue editado exitosamente.');
+      } catch (err) {
+        console.error('Failed to save the post', err);
+      }
+    }
   };
 
   return isLoading ? (

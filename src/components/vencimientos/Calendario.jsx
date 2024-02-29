@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { VencimientoHooks } from '@/hooks/VencimientoHooks';
 import { Button } from 'react-bootstrap';
 import IconAction from '@/components/common/IconAction';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
@@ -31,6 +31,7 @@ const messages = {
 export const Calendario = ({ vencimientos }) => {
   const { id: userId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const localizer = dayjsLocalizer(dayjs);
 
   const group = useSelector(selectCurrentGroup);
@@ -38,7 +39,7 @@ export const Calendario = ({ vencimientos }) => {
   const { eventos } = VencimientoHooks(vencimientos);
 
   // eslint-disable-next-line no-unused-vars
-  const eventStyleGetter = (event, start, end, isSelected) => {
+  const eventStyleGetter = event => {
     let backgroundColor = event.alarma ? 'red' : 'green';
     const style = {
       backgroundColor: backgroundColor,
@@ -79,6 +80,14 @@ export const Calendario = ({ vencimientos }) => {
     );
   };
 
+  const onShowMore = () => {
+    navigate(`/dashboard/contador/vencimientos/${userId}/mostrar-mas`, {
+      state: {
+        backgroundLocation: location
+      }
+    });
+  };
+
   return (
     <div className="calendario w-100 p-4 text-dark">
       <Calendar
@@ -88,7 +97,7 @@ export const Calendario = ({ vencimientos }) => {
         events={eventos}
         // onSelectEvent={group == 1 ? onSelectEvent : undefined}
         eventPropGetter={eventStyleGetter}
-        // onShowMore={abrirShowMore}
+        onShowMore={onShowMore}
         components={{
           toolbar: CustomToolbar
         }}
@@ -96,6 +105,7 @@ export const Calendario = ({ vencimientos }) => {
     </div>
   );
 };
+
 Calendario.propTypes = {
   vencimientos: PropTypes.array
 };
