@@ -117,9 +117,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
   ) : (
     <>
       <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">
-          {location.title || 'Titulo'}
-        </Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
         <CloseButton
           className="btn btn-circle btn-sm transition-base p-0"
           onClick={navigateBack}
@@ -127,7 +125,6 @@ const ModalFormUser = ({ location, navigateBack }) => {
       </Modal.Header>
       <Modal.Body>
         <Form autoComplete="off" className="d-flex flex-column gap-3 my-3 mx-4">
-          <h3>{titulo}</h3>
           {isEditPage && (
             <Form.Group>
               <Form.Check
@@ -215,6 +212,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
     </>
   );
 };
+
 ModalFormUser.propTypes = {
   location: PropTypes.object,
   navigateBack: PropTypes.func

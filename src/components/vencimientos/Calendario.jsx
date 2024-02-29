@@ -1,21 +1,26 @@
+import '@/components/vencimientos/calendario.scss';
+
 import { useState, useEffect } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
-import "react-big-calendar/lib/css/react-big-calendar.css"
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dayjs from 'dayjs';
-import "dayjs/locale/es"
+import 'dayjs/locale/es';
 import Modal from 'react-modal';
-import { useForm } from "react-hook-form";
-import { GuardarVencimiento, ModificarVencimiento, DeleteVencimiento } from '../Api/VencimientosApi';
-import Cookies from 'js-cookie';
-import { useNavigate } from "react-router-dom"
+import { useForm } from 'react-hook-form';
+import {
+  GuardarVencimiento,
+  ModificarVencimiento,
+  DeleteVencimiento
+} from '../../Api/VencimientosApi';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { useSelector } from 'react-redux';
+import { selectCurrentGroup } from '@/redux/reducer/authReducerSlice';
 
-
-dayjs.locale("es");
+dayjs.locale('es');
 
 const messages = {
   today: 'Hoy',
@@ -31,10 +36,11 @@ const messages = {
   showMore: total => `Ver más (${total})`
 };
 
-
 export function Calendario(dat) {
   const localizer = dayjsLocalizer(dayjs);
   const { register, handleSubmit, reset, setValue } = useForm();
+
+  const group = useSelector(selectCurrentGroup);
 
   const [eventos, setEventos] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -44,12 +50,9 @@ export function Calendario(dat) {
   const [showMore, setShowMore] = useState(false);
   const [errorForm, setErrorForm] = useState({});
 
-  const group = Cookies.get('group')
-  const navigate = useNavigate();
-
   const id = dat.datos.iduser ? dat.datos.iduser : null;
 
-  const { actualizarVencimientos, vencimientos } = dat.datos
+  const { actualizarVencimientos, vencimientos } = dat.datos;
 
   const [vencimientoSelected, setVencimientoSelected] = useState(null);
 
@@ -60,15 +63,12 @@ export function Calendario(dat) {
     setErrorForm({});
     try {
       const response = await GuardarVencimiento(data);
-      if (response.status == 401) {
-        Cookies.remove('token');
-      }
       if (response.status === 201) {
         actualizarVencimientos();
         cerrarModal();
         reset();
       } else {
-        console.log('error')
+        console.log('error');
       }
     } catch (error) {
       if (error.response) {
@@ -76,14 +76,13 @@ export function Calendario(dat) {
         // Aquí puedes manejar los errores, mostrar mensajes, etc.
       }
     }
-  })
-
+  });
 
   const abrirModal = () => {
     setModalAbierto(true);
     setModalAbiertoMod(false);
-    setShowMore(false)
-    setConfirmarEliminarMod(false)
+    setShowMore(false);
+    setConfirmarEliminarMod(false);
     reset();
   };
 
@@ -92,36 +91,36 @@ export function Calendario(dat) {
     reset();
   };
 
-  // Listar Eventos 
+  // Listar Eventos
 
+  // eslint-disable-next-line no-unused-vars
   const eventStyleGetter = (event, start, end, isSelected) => {
-    let backgroundColor = event.alarma ? 'red' : 'green'; // Asigna colores diferentes según la alarma esté activada o no
+    let backgroundColor = event.alarma ? 'red' : 'green';
     const style = {
       backgroundColor: backgroundColor,
       borderRadius: '0px',
       opacity: 0.8,
       color: 'white',
       border: '0px',
-      display: 'block',
+      display: 'block'
     };
     return {
-      style: style,
+      style: style
     };
   };
 
   const transformarEventos = () => {
-
-    const datosMapeados = vencimientos.map((evento) => {
+    const datosMapeados = vencimientos.map(evento => {
       return {
         id: evento.id,
         title: evento.nombre,
         start: dayjs(evento.fecha),
         end: dayjs(evento.fecha),
-        alarma: evento.alarma,
-      }
+        alarma: evento.alarma
+      };
     });
 
-    return datosMapeados
+    return datosMapeados;
   };
 
   useEffect(() => {
@@ -130,12 +129,10 @@ export function Calendario(dat) {
     }
   }, [vencimientos]);
 
-  // Personalizar barra de opciones 
+  // Personalizar barra de opciones
   const CustomToolbar = toolbar => {
-
     return (
       <div className="rbc-toolbar d-flex justify-content-between">
-
         <span className="rbc-btn-group">
           <button type="button" onClick={() => toolbar.onNavigate('TODAY')}>
             Hoy
@@ -146,17 +143,16 @@ export function Calendario(dat) {
           <button type="button" onClick={() => toolbar.onNavigate('NEXT')}>
             Siguiente
           </button>
-          {group === '1' && (
+          {group == 1 && (
             <button onClick={abrirModal}>Nuevo Vencimiento</button>
           )}
         </span>
         <span>{toolbar.label}</span>
       </div>
-
     );
   };
 
-  // Editar Vencimientos 
+  // Editar Vencimientos
 
   const onSelectEvent = evento => {
     setVencimientoSelected(evento); // Almacena la ID del evento seleccionado
@@ -166,7 +162,7 @@ export function Calendario(dat) {
     abrirModalMod(); // Abre el modal para confirmar la eliminación
   };
 
-  const onSelectEventShow = (evento) => {
+  const onSelectEventShow = evento => {
     setVencimientoSelected(evento); // Almacena el evento seleccionado
     setValue('nombre', evento.title);
     setValue('alarma', evento.alarma);
@@ -180,9 +176,6 @@ export function Calendario(dat) {
     try {
       const response = await ModificarVencimiento(vencimientoSelected.id, data);
       setVencimientoSelected(null);
-      if (response.status == 401) {
-        Cookies.remove('token');
-      }
       if (response.status === 200) {
         actualizarVencimientos();
         cerrarModalMod();
@@ -191,7 +184,7 @@ export function Calendario(dat) {
           cerrarShowMore();
         }
       } else {
-        console.log('error')
+        console.log('error');
       }
     } catch (error) {
       if (error.response) {
@@ -199,14 +192,13 @@ export function Calendario(dat) {
         // Aquí puedes manejar los errores, mostrar mensajes, etc.
       }
     }
-  })
-
+  });
 
   const abrirModalMod = () => {
     setModalAbiertoMod(true);
     setModalAbierto(false);
-    setShowMore(false)
-    setConfirmarEliminarMod(false)
+    setShowMore(false);
+    setConfirmarEliminarMod(false);
   };
 
   const cerrarModalMod = () => {
@@ -224,8 +216,7 @@ export function Calendario(dat) {
     setConfirmarEliminarMod(false);
   };
 
-  const handleDeleteVen = async (id) => {
-
+  const handleDeleteVen = async id => {
     if (id) {
       try {
         const response = await DeleteVencimiento(id);
@@ -238,9 +229,6 @@ export function Calendario(dat) {
             cerrarShowMore();
           }
         }
-        if (response.status == 401) {
-          Cookies.remove('token');
-        }
       } catch (error) {
         if (error.response.data.errors) {
           setErrorForm(error.response.data.errors || {});
@@ -252,13 +240,13 @@ export function Calendario(dat) {
   // ver mas de un evento
 
   const abrirShowMore = (events, date) => {
-    setEventsForDay(events.filter(event =>
-      dayjs(event.start).isSame(date, 'day')
-    ));
+    setEventsForDay(
+      events.filter(event => dayjs(event.start).isSame(date, 'day'))
+    );
     setShowMore(true);
     setModalAbierto(false);
-    setModalAbiertoMod(false)
-    setConfirmarEliminarMod(false)
+    setModalAbiertoMod(false);
+    setConfirmarEliminarMod(false);
   };
 
   const cerrarShowMore = () => {
@@ -266,17 +254,17 @@ export function Calendario(dat) {
   };
 
   return (
-    <div className='calenadrVen'>
+    <div className="calendario w-100 p-4 text-dark">
       <Calendar
         localizer={localizer}
-        views={["month"]}
+        views={['month']}
         messages={messages}
         events={eventos}
-        onSelectEvent={group === '1' ? onSelectEvent : undefined}
+        onSelectEvent={group == 1 ? onSelectEvent : undefined}
         eventPropGetter={eventStyleGetter}
         onShowMore={abrirShowMore}
         components={{
-          toolbar: CustomToolbar,
+          toolbar: CustomToolbar
         }}
       />
 
@@ -295,28 +283,47 @@ export function Calendario(dat) {
           }
         }}
       >
-        <Form onSubmit={onSubmit} className='login'>
+        <Form onSubmit={onSubmit} className="login">
           <h2>Nuevo Vencimiento</h2>
           <Form.Group as={Row} className="mb-4" controlId="formPlaintextnombre">
             <Col sm="15">
-              <Form.Control size='lg' type='text' placeholder="Nombre del Vencimiento" {...register("nombre", { required: true })} />
+              <Form.Control
+                size="lg"
+                type="text"
+                placeholder="Nombre del Vencimiento"
+                {...register('nombre', { required: true })}
+              />
             </Col>
             {errorForm.nombre && <span>{errorForm.nombre[0]}</span>}
           </Form.Group>
 
           <Form.Group as={Row} className="mb-4" controlId="formPlaintextfecha">
             <Col sm="15">
-              <Form.Control size='lg' type='date' placeholder="fecha" {...register("fecha", { required: true })} />
+              <Form.Control
+                size="lg"
+                type="date"
+                placeholder="fecha"
+                {...register('fecha', { required: true })}
+              />
             </Col>
             {errorForm.fecha && <span>{errorForm.fecha[0]}</span>}
           </Form.Group>
 
-          <Form.Check type="switch" id="custom-switch" label="¿Alarma activada?" {...register("alarma")} />
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            label="¿Alarma activada?"
+            {...register('alarma')}
+          />
 
           {errorForm && <span>{errorForm[0]}</span>}
-          <Col sm="15" className='d-flex justify-content-between mt-5'>
-            <Button variant="success" type='submit'>Guardar</Button>
-            <Button variant="secondary" onClick={cerrarModal}>Cancelar</Button>
+          <Col sm="15" className="d-flex justify-content-between mt-5">
+            <Button variant="success" type="submit">
+              Guardar
+            </Button>
+            <Button variant="secondary" onClick={cerrarModal}>
+              Cancelar
+            </Button>
           </Col>
         </Form>
       </Modal>
@@ -336,29 +343,50 @@ export function Calendario(dat) {
           }
         }}
       >
-        <Form onSubmit={onSubmitMod} className='login'>
+        <Form onSubmit={onSubmitMod} className="login">
           <h2>Modificar</h2>
           <Form.Group as={Row} className="mb-4" controlId="formPlaintextnombre">
             <Col sm="15">
-              <Form.Control size='lg' type='text' placeholder="Nombre del Vencimiento" {...register("nombre", { required: true })} />
+              <Form.Control
+                size="lg"
+                type="text"
+                placeholder="Nombre del Vencimiento"
+                {...register('nombre', { required: true })}
+              />
             </Col>
             {errorForm.nombre && <span>{errorForm.nombre[0]}</span>}
           </Form.Group>
 
           <Form.Group as={Row} className="mb-4" controlId="formPlaintextfecha">
             <Col sm="15">
-              <Form.Control size='lg' type='date' placeholder="fecha" {...register("fecha", { required: true })} />
+              <Form.Control
+                size="lg"
+                type="date"
+                placeholder="fecha"
+                {...register('fecha', { required: true })}
+              />
             </Col>
             {errorForm.fecha && <span>{errorForm.fecha[0]}</span>}
           </Form.Group>
 
-          <Form.Check type="switch" id="custom-switch" label="¿Alarma activada?" {...register("alarma")} />
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            label="¿Alarma activada?"
+            {...register('alarma')}
+          />
 
           {errorForm && <span>{errorForm[0]}</span>}
-          <Col sm="15" className='d-flex justify-content-between mt-5'>
-            <Button variant="success" type='submit'>Guardar</Button>
-            <Button variant="secondary" onClick={cerrarModalMod}>Cancelar</Button>
-            <Button variant="danger" onClick={abrirConfirm}>Eliminar</Button>
+          <Col sm="15" className="d-flex justify-content-between mt-5">
+            <Button variant="success" type="submit">
+              Guardar
+            </Button>
+            <Button variant="secondary" onClick={cerrarModalMod}>
+              Cancelar
+            </Button>
+            <Button variant="danger" onClick={abrirConfirm}>
+              Eliminar
+            </Button>
           </Col>
         </Form>
       </Modal>
@@ -378,10 +406,24 @@ export function Calendario(dat) {
           }
         }}
       >
-        <p>¿Estás seguro que deseas borrar el vencimiento {vencimientoSelected !== null && (vencimientoSelected.title)} de la fecha {vencimientoSelected !== null && (vencimientoSelected.start.format('DD-MM-YYYY'))} ?</p>
-        <div className='d-flex justify-content-between'>
-          <Button variant="danger" onClick={() => handleDeleteVen(vencimientoSelected.id)}>Eliminar</Button>
-          <Button variant="secondary" onClick={cerrarConfirm}>Cancelar</Button>
+        <p>
+          ¿Estás seguro que deseas borrar el vencimiento{' '}
+          {vencimientoSelected !== null && vencimientoSelected.title} de la
+          fecha{' '}
+          {vencimientoSelected !== null &&
+            vencimientoSelected.start.format('DD-MM-YYYY')}{' '}
+          ?
+        </p>
+        <div className="d-flex justify-content-between">
+          <Button
+            variant="danger"
+            onClick={() => handleDeleteVen(vencimientoSelected.id)}
+          >
+            Eliminar
+          </Button>
+          <Button variant="secondary" onClick={cerrarConfirm}>
+            Cancelar
+          </Button>
         </div>
       </Modal>
 
@@ -403,11 +445,17 @@ export function Calendario(dat) {
         {eventsForDay !== null && (
           <>
             <h2>{eventsForDay[0].start.format('DD-MM-YYYY')}</h2>
-            <div className='showMoreList'>
-
+            <div className="showMoreList">
               <ListGroup>
-                {eventsForDay.map((ven) => (
-                  <ListGroup.Item action variant={ven.alarma ? ("danger") : ("info")} key={ven.id} onClick={group === '1' ? () => onSelectEventShow(ven) : undefined}>
+                {eventsForDay.map(ven => (
+                  <ListGroup.Item
+                    action
+                    variant={ven.alarma ? 'danger' : 'info'}
+                    key={ven.id}
+                    onClick={
+                      group == 1 ? () => onSelectEventShow(ven) : undefined
+                    }
+                  >
                     {ven.title}
                   </ListGroup.Item>
                 ))}
@@ -415,7 +463,9 @@ export function Calendario(dat) {
             </div>
           </>
         )}
-        <Button className='mt-5' variant="secondary" onClick={cerrarShowMore}>Cerrar</Button>
+        <Button className="mt-5" variant="secondary" onClick={cerrarShowMore}>
+          Cerrar
+        </Button>
       </Modal>
     </div>
   );

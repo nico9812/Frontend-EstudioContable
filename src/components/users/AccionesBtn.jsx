@@ -39,7 +39,7 @@ export const AccionesBtn = ({ sentId, location = null }) => {
     }
   ];
   return (
-    <Flex justifyContent="evenly">
+    <Flex justifyContent="evenly" className="gap-3 gap-lg-0">
       {acciones.map(({ icon, title, ruta, variant, state }, i) => (
         <BtnAccion
           key={i}

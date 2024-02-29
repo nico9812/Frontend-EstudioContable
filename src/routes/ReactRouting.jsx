@@ -18,6 +18,7 @@ import DashboardLayout from '@/layouts/DashboardLayout';
 import ErrorLayout from '@/layouts/ErrorLayout';
 import { ModalUsable } from '@/components/common/ModalUsable';
 import ModalFormUser from '@/components/users/ModalFormUser';
+import { ListarVencimientosconta } from '@/pages/vencimientos/Vencimientos';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -79,6 +80,10 @@ function ReactRouting() {
               element={<ContadorLayout grupo={currentGroup} />}
             >
               <Route index element={<Clientes />} />
+              <Route
+                path="vencimientos/:id"
+                element={<ListarVencimientosconta />}
+              />
             </Route>
             {/* Cliente */}
             <Route

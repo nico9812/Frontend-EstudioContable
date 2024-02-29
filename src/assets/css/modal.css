@@ -12,18 +12,6 @@
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
 }
 
-/* .mi-overlay {
-    background-color: rgb(105, 0, 0);
-} */
-.body {
-  height: auto;
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .mi-modalForm {
   position: absolute;
   top: 50%;
