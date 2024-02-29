@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -8,9 +10,11 @@ import { useParams } from 'react-router-dom';
 import { LoadingIndicator } from '../common/LoadingIndicator';
 import {
   useAddNewVencimientoMutation,
+  useGetVencimientosQuery,
   useUpdateVencimientoMutation
 } from '@/redux/api/vencimientosApiSlice';
 import { toast } from 'react-toastify';
+import Flex from '../common/Flex';
 
 const addOrEditPasswordSchema = yup.object().shape({
   nombre: yup
@@ -24,10 +28,22 @@ const addOrEditPasswordSchema = yup.object().shape({
   alarma: yup.bool().required('Este campo es requerido.')
 });
 
-const ModalFormVencimiento = ({ location, navigateBack }) => {
-  const { userId } = useParams();
-  const isLoading = false;
+const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
+  const { userId, vencimientoId } = useParams();
   const isEditPage = location.pathname.includes('edit');
+
+  const { vencimientos: vencimiento, isLoading } = useGetVencimientosQuery(
+    userId,
+    {
+      selectFromResult: ({ data, isLoading, isSuccess }) => {
+        return {
+          vencimientos: data?.entities[vencimientoId],
+          isLoading,
+          isSuccess
+        };
+      }
+    }
+  );
 
   const [addNewVencimiento] = useAddNewVencimientoMutation();
   const [updateVencimiento] = useUpdateVencimientoMutation();
@@ -42,20 +58,31 @@ const ModalFormVencimiento = ({ location, navigateBack }) => {
     resolver: yupResolver(addOrEditPasswordSchema)
   });
 
-  // useEffect(() => {
-  //   if (isEditPage && user) {
-  //     setValue('email', user.email);
-  //     setValue('username', user.username);
-  //     setValue('password', user.password);
-  //   }
-  // }, [isEditPage, user, setValue]);
+  useEffect(() => {
+    if (isEditPage && vencimiento) {
+      setValue('nombre', vencimiento.nombre);
+      setValue('fecha', vencimiento.fecha);
+      setValue('alarma', vencimiento.alarma);
+    }
+  }, [isEditPage, vencimiento, setValue]);
 
   const titulo = isEditPage
     ? 'Edición de Vencimiento'
     : 'Registrar Vencimiento';
 
+  const onBorrarClick = () => {
+    return navigate(
+      `/dashboard/contador/vencimientos/${userId}/borrar/${vencimientoId}`,
+      {
+        state: {
+          backgroundLocation:
+            location.state.backgroundLocation
+        }
+      }
+    );
+  };
+
   const onSubmit = async data => {
-    console.log(data);
     if (!isEditPage) {
       try {
         await addNewVencimiento({ ...data, propietario: userId }).unwrap();
@@ -69,7 +96,7 @@ const ModalFormVencimiento = ({ location, navigateBack }) => {
       try {
         await updateVencimiento({
           data: { ...data, propietario: userId },
-          userId
+          vencimientoId
         }).unwrap();
         reset();
         navigateBack();
@@ -136,25 +163,25 @@ const ModalFormVencimiento = ({ location, navigateBack }) => {
           </Form.Group>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="justify-content-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-
-        {isEditPage && (
-          <Button variant="danger" onClick={navigateBack}>
-            Borrar
+        <Flex className="gap-4">
+          {isEditPage && (
+            <Button variant="danger" onClick={onBorrarClick}>
+              Borrar
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            disabled={!isDirty}
+          >
+            Guardar
           </Button>
-        )}
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-          className="me-2 mb-1"
-          disabled={!isDirty}
-        >
-          Guardar
-        </Button>
+        </Flex>
       </Modal.Footer>
     </>
   );
@@ -162,6 +189,7 @@ const ModalFormVencimiento = ({ location, navigateBack }) => {
 
 ModalFormVencimiento.propTypes = {
   location: PropTypes.object,
+  navigate: PropTypes.any,
   navigateBack: PropTypes.func
 };
 

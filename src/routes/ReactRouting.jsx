@@ -21,6 +21,7 @@ import ModalFormUser from '@/components/users/ModalFormUser';
 import { Vencimientos } from '@/pages/vencimientos/Vencimientos';
 import ModalFormVencimiento from '@/components/vencimientos/ModalFormVencimiento';
 import VerMasVencimientos from '@/components/vencimientos/VerMasVencimientos';
+import ModalBorradoVencimiento from '@/components/vencimientos/ModalBorradoVencimiento';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -41,6 +42,8 @@ import {
 function ReactRouting() {
   const location = useLocation();
   const background = location.state && location.state.backgroundLocation;
+
+  console.log(location);
 
   const currentGroup = useSelector(selectCurrentGroup);
 
@@ -170,6 +173,22 @@ function ReactRouting() {
             element={
               <ModalUsable>
                 <ModalFormVencimiento />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/vencimientos/:userId/editar/:vencimientoId"
+            element={
+              <ModalUsable>
+                <ModalFormVencimiento />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/vencimientos/:userId/borrar/:vencimientoId"
+            element={
+              <ModalUsable>
+                <ModalBorradoVencimiento />
               </ModalUsable>
             }
           />

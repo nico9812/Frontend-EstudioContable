@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import classNames from 'classnames';
 import { Collapse, NavItem, NavLink } from 'reactstrap';
@@ -34,6 +35,14 @@ const SubMenu = ({ icon, title, items }) => {
       </Collapse>
     </div>
   );
+};
+
+SubMenu.propTypes = {
+  icon: PropTypes.any,
+  items: PropTypes.shape({
+    map: PropTypes.func
+  }),
+  title: PropTypes.any
 };
 
 export default SubMenu;

@@ -14,7 +14,8 @@ export const ModalUsable = ({ children }) => {
   const childrenWithProps = Children.map(children, child =>
     cloneElement(child, {
       location: location,
-      navigateBack: navigateBack
+      navigateBack: navigateBack,
+      navigate: navigate
     })
   );
 

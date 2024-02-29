@@ -81,11 +81,23 @@ export const Calendario = ({ vencimientos }) => {
   };
 
   const onShowMore = () => {
-    navigate(`/dashboard/contador/vencimientos/${userId}/mostrar-mas`, {
+    return navigate(`/dashboard/contador/vencimientos/${userId}/mostrar-mas`, {
       state: {
         backgroundLocation: location
       }
     });
+  };
+
+  const onSelectEvent = events => {
+    const vencimientoId = events.id;
+    return navigate(
+      `/dashboard/contador/vencimientos/${userId}/editar/${vencimientoId}`,
+      {
+        state: {
+          backgroundLocation: location
+        }
+      }
+    );
   };
 
   return (
@@ -95,7 +107,7 @@ export const Calendario = ({ vencimientos }) => {
         views={['month']}
         messages={messages}
         events={eventos}
-        // onSelectEvent={group == 1 ? onSelectEvent : undefined}
+        {...(group === 1 && { onSelectEvent })}
         eventPropGetter={eventStyleGetter}
         onShowMore={onShowMore}
         components={{
