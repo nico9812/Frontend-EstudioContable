@@ -1,11 +1,12 @@
-import { useNavigate } from 'react-router-dom';
+export const extractRawData = data => {
+  const { entities, ids } = data;
+  const extractedData = [];
 
-export const extractRawData = entities => {
-  return Object.values(entities).map(entity => ({
-    id: entity.id,
-    username: entity.username,
-    email: entity.email,
-    first_name: entity.first_name,
-    last_name: entity.last_name
-  }));
+  for (const id of ids) {
+    if (Object.prototype.hasOwnProperty.call(entities, id.toString())) {
+      extractedData.push(entities[id.toString()]);
+    }
+  }
+
+  return extractedData;
 };

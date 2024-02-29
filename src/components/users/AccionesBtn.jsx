@@ -1,5 +1,5 @@
 import Flex from '@/components/common/Flex';
-import BtnAccion from '@/components/common/BtnAction';
+import IconAction from '@/components/common/IconAction';
 import {
   faCalendarAlt,
   faEdit,
@@ -14,7 +14,7 @@ export const AccionesBtn = ({ sentId, location = null }) => {
       icon: faEdit,
       title: 'Editar',
       ruta: `clientes/editar/${sentId}`,
-      variant: 'primary',
+      className: 'text-primary',
       state: {
         backgroundLocation: location
       }
@@ -23,27 +23,27 @@ export const AccionesBtn = ({ sentId, location = null }) => {
       icon: faCalendarAlt,
       title: 'Ver Vencimientos',
       ruta: `vencimientos/${sentId}`,
-      variant: 'primary'
+      className: 'text-primary'
     },
     {
       icon: faFilePdf,
       title: 'Ver Documentos',
       ruta: `documentos/${sentId}`,
-      variant: 'primary'
+      className: 'text-primary'
     },
     {
       icon: faClipboardList,
       title: 'Ver Programas',
       ruta: `programas/${sentId}`,
-      variant: 'primary'
+      className: 'text-primary'
     }
   ];
   return (
     <Flex justifyContent="evenly" className="gap-3 gap-lg-0">
-      {acciones.map(({ icon, title, ruta, variant, state }, i) => (
-        <BtnAccion
+      {acciones.map(({ icon, title, ruta, className, state }, i) => (
+        <IconAction
           key={i}
-          variant={variant}
+          className={className}
           title={title}
           ruta={ruta}
           icon={icon}

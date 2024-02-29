@@ -1,14 +1,8 @@
-import '@/assets/css/modal.css';
-import { Calendario } from '@/components/vencimientos/Calendario';
-import { useParams } from 'react-router-dom';
-import { UsVen } from '@/hooks/listarVencimiento';
+import ContentCalendario from '@/components/vencimientos/ContentVencimientos';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export function ListarVencimientosconta() {
-  const { id } = useParams();
-  const datos = UsVen(id);
-
+export function Vencimientos() {
   return (
     <Card>
       <Card.Header className="text-center">
@@ -18,20 +12,8 @@ export function ListarVencimientosconta() {
         <Button as={Link} to="../" variant="secondary">
           Volver
         </Button>
-        <Calendario datos={datos} />
+        <ContentCalendario />
       </Card.Body>
     </Card>
-  );
-}
-
-export function ListarVencimientosclien() {
-  const datos = UsVen();
-
-  return (
-    <div className="body">
-      <div className="calclien">
-        <Calendario datos={datos} />
-      </div>
-    </div>
   );
 }

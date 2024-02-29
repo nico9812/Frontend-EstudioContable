@@ -16,16 +16,7 @@ export function UsVen(iduser) {
     };
 
     fetchData();
-  }, [iduser]);
+  }, [setVencimientos]);
 
-  const actualizarVencimientos = async () => {
-    try {
-      const response = await ListarVen(iduser);
-      setVencimientos(response.data);
-    } catch (error) {
-      setError(error.response.data);
-    }
-  };
-
-  return { vencimientos, actualizarVencimientos, iduser };
+  return { vencimientos, iduser };
 }

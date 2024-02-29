@@ -1,6 +1,6 @@
 import { Input } from 'reactstrap';
 import Flex from '../common/Flex';
-import BtnAccion from '../common/BtnAction';
+import IconAction from '../common/IconAction';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 
@@ -34,8 +34,8 @@ export const TableHeader = ({ columnFilters, setColumnFilters, location }) => {
         value={taksName}
         onChange={e => onFilterChange('username', e.target.value)}
       />
-      <BtnAccion
-        variant="primary h3 m-0"
+      <IconAction
+        className="text-primary h3 m-0"
         title="Agregar"
         ruta="add"
         state={{

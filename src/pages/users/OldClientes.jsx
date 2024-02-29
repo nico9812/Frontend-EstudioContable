@@ -268,7 +268,7 @@ export function Clientes() {
           </Form.Group>
           {errorForm && <span>{errorForm[0]}</span>}
           <Col sm="15" className="d-flex justify-content-between mr-5 ml-5">
-            <Button variant="primary" type="submit">
+            <Button variant="text-primary" type="submit">
               Guardar
             </Button>
             <Button variant="secondary" onClick={cerrarModal}>
@@ -356,7 +356,7 @@ export function Clientes() {
           </Form.Group>
           {errorForm && <span>{errorForm[0]}</span>}
           <Col sm="15" className="d-flex justify-content-between mr-5 ml-5">
-            <Button variant="primary" type="submit">
+            <Button variant="text-primary" type="submit">
               Guardar
             </Button>
             <Button variant="danger" onClick={abrirConfirm}>

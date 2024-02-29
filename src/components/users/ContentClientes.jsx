@@ -54,7 +54,7 @@ const ContentClientes = () => {
   } else if (isError) {
     content = <p>{error}</p>;
   } else if (isSuccess) {
-    const renderedUsers = extractRawData(users.entities);
+    const renderedUsers = extractRawData(users);
 
     content = (
       <TableClientes
