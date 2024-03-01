@@ -37,7 +37,7 @@ export const TableHeader = ({ columnFilters, setColumnFilters, location }) => {
       <IconAction
         className="text-primary h3 m-0"
         title="Agregar"
-        ruta="add"
+        ruta="agregar"
         state={{
           backgroundLocation: location
         }}

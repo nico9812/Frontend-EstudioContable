@@ -75,8 +75,7 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
       `/dashboard/contador/vencimientos/${userId}/borrar/${vencimientoId}`,
       {
         state: {
-          backgroundLocation:
-            location.state.backgroundLocation
+          backgroundLocation: location.state.backgroundLocation
         }
       }
     );

@@ -43,8 +43,6 @@ function ReactRouting() {
   const location = useLocation();
   const background = location.state && location.state.backgroundLocation;
 
-  console.log(location);
-
   const currentGroup = useSelector(selectCurrentGroup);
 
   function Redireccion() {
@@ -58,7 +56,7 @@ function ReactRouting() {
   return (
     <>
       <Routes location={background || location}>
-        <Route path="/*" element={<Navigate to="/404" replace />} />
+        {/* <Route path="/*" element={<Navigate to="/404" replace />} /> */}
         {/* Rutas de Errores */}
         <Route element={<ErrorLayout />}>
           <Route path="/404/" element={<Error404 />} />
@@ -153,7 +151,7 @@ function ReactRouting() {
       {background && (
         <Routes>
           <Route
-            path="/dashboard/contador/add"
+            path="/dashboard/contador/agregar"
             element={
               <ModalUsable>
                 <ModalFormUser />
@@ -169,7 +167,7 @@ function ReactRouting() {
             }
           />
           <Route
-            path="/dashboard/contador/vencimientos/:userId/add"
+            path="/dashboard/contador/vencimientos/:userId/agregar"
             element={
               <ModalUsable>
                 <ModalFormVencimiento />

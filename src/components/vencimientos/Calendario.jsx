@@ -70,7 +70,7 @@ export const Calendario = ({ vencimientos }) => {
           {group == 1 && (
             <IconAction
               title="Nuevo Vencimiento"
-              ruta={`/dashboard/contador/vencimientos/${userId}/add`}
+              ruta={`/dashboard/contador/vencimientos/${userId}/agregar`}
               state={{ backgroundLocation: location }}
             />
           )}
@@ -80,10 +80,12 @@ export const Calendario = ({ vencimientos }) => {
     );
   };
 
-  const onShowMore = () => {
+  const onShowMore = date => {
+    const newDate = date.at(0).start.$d.toISOString().split('T')[0];
     return navigate(`/dashboard/contador/vencimientos/${userId}/mostrar-mas`, {
       state: {
-        backgroundLocation: location
+        backgroundLocation: location,
+        day: newDate
       }
     });
   };
