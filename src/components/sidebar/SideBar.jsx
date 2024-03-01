@@ -28,9 +28,13 @@ export const SideBar = ({ toggleSidebar, sidebarIsOpen }) => (
     <div className="side-menu">
       <Nav vertical className="list-unstyled pb-3">
         <NavItem>
-          <NavLink tag={Link} to={'/clientes'}>
+          <NavLink tag={Link} to={'/dashboard/contador'}>
             <FontAwesomeIcon icon={faUser} className="mx-2" />
             Clientes
+          </NavLink>
+          <NavLink tag={Link} to={'/dashboard/contador/categorias'}>
+            <FontAwesomeIcon icon={faUser} className="mx-2" />
+            Categorias
           </NavLink>
         </NavItem>
       </Nav>

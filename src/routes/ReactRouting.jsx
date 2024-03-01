@@ -25,6 +25,7 @@ import ModalBorradoVencimiento from '@/components/vencimientos/ModalBorradoVenci
 import { Documentos } from '@/pages/documentos/Documentos';
 import ModalFormDocumentos from '@/components/documentos/ModalFormDocumentos';
 import ModalBorradoDocumentos from '@/components/documentos/ModalBorradoDocumentos';
+import { Categorias } from '@/pages/categorias/Categorias';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -86,8 +87,10 @@ function ReactRouting() {
               element={<ContadorLayout grupo={currentGroup} />}
             >
               <Route index element={<Clientes />} />
+              <Route path="clientes" element={<Clientes />} />
               <Route path="vencimientos/:userId" element={<Vencimientos />} />
               <Route path="documentos/:userId" element={<Documentos />} />
+              <Route path="categorias" element={<Categorias />} />
             </Route>
             {/* Cliente */}
             <Route
