@@ -1,30 +1,36 @@
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/redux/store.js';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 
-import '@/styles/globals.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import '@/styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import App from '@/App';
+import { VITE_ENV_MODE } from '@/constants';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  // <React.StrictMode>
-  <PersistGate loading={null} persistor={persistor}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-        <ToastContainer icon={true} position="bottom-right" />
-      </BrowserRouter>
-    </Provider>
-  </PersistGate>
-  // </React.StrictMode>
-);
+
+if (VITE_ENV_MODE === 'produccion' || VITE_ENV_MODE === 'testing') {
+  root.render(
+    <StrictMode>
+      <PersistGate loading={null} persistor={persistor}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </PersistGate>
+    </StrictMode>
+  );
+} else if (VITE_ENV_MODE === 'desarrollo' || VITE_ENV_MODE === undefined) {
+  root.render(
+    <PersistGate loading={null} persistor={persistor}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </PersistGate>
+  );
+}

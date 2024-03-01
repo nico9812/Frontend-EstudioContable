@@ -19,7 +19,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 403 || result?.error?.status === 401) {
     api.dispatch(logOut());
-    toast.error(`Error Choto`);
+    toast.error(`Tu sesión ha expirado.`);
   }
   return result;
 };

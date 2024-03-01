@@ -1,47 +1,21 @@
-
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ListarCat } from '../Api/DocumentosApi';
-import Cookies from 'js-cookie';
 
 export function UsCat() {
-    const [categorias, setCategorias] = useState([]);
-    const [error, setError] = useState(null);
-    const token = Cookies.get('token');
+  const [categorias, setCategorias] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await ListarCat();
-                setCategorias(response.data);
-            } catch (error) {
-                Cookies.remove('token');
-                setError(error.response.data);
-            }
-        };
-
-        if (token) {
-            fetchData();
-        }
-    }, [token]);
-
-    const actualizarCategorias = async () => {
-        try {
-            const response = await ListarCat();
-            setCategorias(response.data);
-        } catch (error) {
-            Cookies.remove('token');
-            setError(error.response.data);
-        }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await ListarCat();
+        setCategorias(response.data);
+      } catch (error) {
+        console.log('error');
+      }
     };
 
-    if (!token) {
-        return { categorias: [], actualizarCategorias: () => { } };
-    }
+    fetchData();
+  }, []);
 
-    if (error) {
-        return { categorias: [], actualizarCategorias: () => { } };
-    }
-
-    return { categorias, actualizarCategorias };
+  return { categorias };
 }
-

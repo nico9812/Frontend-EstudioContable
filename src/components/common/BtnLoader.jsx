@@ -1,9 +1,8 @@
-import React from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export const BtnLoader = (props) => {
+export const BtnLoader = props => {
   const {
     type,
     title,
@@ -12,7 +11,7 @@ export const BtnLoader = (props) => {
     disabled,
     className,
     accionar = null,
-    linkTo = null,
+    linkTo = null
   } = props;
 
   const handleButtonClick = () => {
@@ -75,5 +74,5 @@ BtnLoader.propTypes = {
   disabled: PropTypes.bool,
   className: PropTypes.string,
   accionar: PropTypes.func,
-  linkTo: PropTypes.object,
+  linkTo: PropTypes.object
 };

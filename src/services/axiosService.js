@@ -1,20 +1,21 @@
 import { VITE_APP_API_URL } from '@/constants';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { store } from '@/redux/store';
 
 const axiosInstance = axios.create({
-  baseURL: VITE_APP_API_URL,
+  baseURL: VITE_APP_API_URL
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
-    if (Cookies.get('token') !== undefined) {
-      config.headers['Authorization'] = 'Token ' + Cookies.get('token');
+  config => {
+    const token = store.getState().auth.token;
+    if (token) {
+      config.headers.Authorization = `Token ${token}`;
     }
 
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error.data.error.message);
   }
 );

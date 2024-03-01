@@ -1,0 +1,30 @@
+.tablaus {
+  margin-left: 10vw;
+  margin-right: 10vw;
+  margin-top: 30px;
+}
+
+.cab {
+  /* Establece un layout de tipo flex */
+  display: flex;
+  /* Alinea los elementos en la misma línea */
+  align-items: center;
+}
+
+h2 {
+  /* Establece un margen a la derecha */
+  margin-right: auto;
+}
+
+.botonAgregar {
+  /* Mueve el botón al extremo derecho */
+  margin-left: auto;
+}
+.body {
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

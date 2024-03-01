@@ -171,7 +171,7 @@ export function ListarProgramasConta(){
       <div className='body'>
         <div className='contentbot d-flex justify-content-between'>
           <span className='nuevodoc'>
-            <Button variant="primary" onClick={abrirModal} >Nuevo Programa</Button>
+            <Button variant="text-primary" onClick={abrirModal} >Nuevo Programa</Button>
           </span>
           <Form.Control
             placeholder="Buscar"
@@ -276,7 +276,7 @@ export function ListarProgramasConta(){
             </Col>
           </Row>
           <div className='d-flex justify-content-between mt-5'>
-          <Button variant="primary" type="submit" className='ml-5'>
+          <Button variant="text-primary" type="submit" className='ml-5'>
             Guardar
           </Button>
           <Button variant="secondary" onClick={cerrarModal} className='mr-5'>
@@ -373,7 +373,7 @@ export function ListarProgramasConta(){
             </Col>
           </Row>
           <div className='d-flex justify-content-between mt-5'>
-          <Button variant="primary" type="submit" className='ml-5'>
+          <Button variant="text-primary" type="submit" className='ml-5'>
             Guardar
           </Button>
           <Button variant="secondary" onClick={cerrarModalMod} className='mr-5'>
