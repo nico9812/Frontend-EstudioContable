@@ -1,19 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useGetUsersQuery } from '@/redux/api/usersApiSlice';
 import { TableClientes } from '@/components/users/TableClientes';
-import { extractRawData } from '@/helpers';
 import { AccionesBtn } from '@/components/users/AccionesBtn';
 import { useLocation } from 'react-router-dom';
+import { QueryHooks } from '@/hooks/QueryHooks';
 
 const ContentClientes = () => {
   const location = useLocation();
-
-  const {
-    data: users,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useGetUsersQuery('getUsers');
 
   const columns = [
     {
@@ -47,24 +40,20 @@ const ContentClientes = () => {
     }
   ];
 
-  let content;
-
-  if (isLoading) {
-    content = <p>Loading...</p>;
-  } else if (isError) {
-    content = <p>{error}</p>;
-  } else if (isSuccess) {
-    const renderedUsers = extractRawData(users);
-
-    content = (
-      <TableClientes
-        data={renderedUsers}
-        columns={columns}
-        location={location}
-      />
-    );
-  }
-  return content;
+  return (
+    <QueryHooks
+      useQuery={useGetUsersQuery()}
+      childrenObjects={renderArray => ({
+        data: renderArray,
+        columns: columns,
+        location: location
+      })}
+    >
+      {({ data, columns, location }) => (
+        <TableClientes data={data} columns={columns} location={location} />
+      )}
+    </QueryHooks>
+  );
 };
 
 export default ContentClientes;

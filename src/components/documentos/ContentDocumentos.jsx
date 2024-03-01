@@ -1,18 +1,18 @@
 import '@/components/documentos/documentos.scss';
 
-import { useParams } from 'react-router-dom';
-import { UsDoc } from '../../hooks/listarDocumentos';
-import { CardDoc } from './cardDoc';
-import { UsCat } from '../../hooks/listarCategorias';
-import { Card, Col, FormSelect, Row } from 'react-bootstrap';
+import { useLocation, useParams } from 'react-router-dom';
+import { CardDoc } from './CardDoc';
+import { Col, FormSelect, Row } from 'react-bootstrap';
 import Flex from '../common/Flex';
 import IconAction from '../common/IconAction';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { QueryHooks } from '@/hooks/QueryHooks';
+import { useGetCategoriasQuery } from '@/redux/api/categoriasApiSlice';
+import { useGetDocumentosQuery } from '@/redux/api/documentosApiSlice';
 
 export function ContentDocumentos() {
-  const { id } = useParams();
-  const documentos = UsDoc(id);
-  const categorias = UsCat();
+  const { userId } = useParams();
+  const location = useLocation();
 
   return (
     <div className="mt-3">
@@ -23,14 +23,24 @@ export function ContentDocumentos() {
           justifyContent="between"
           className="gap-3"
         >
-          <FormSelect className="w-lg-25" size="sm" style={{ height: '30px' }}>
-            <option value="todas">Todos</option>
-            {categorias.categorias.map(cat => (
-              <option key={cat.id} value={cat.id}>
-                {cat.nombre}
-              </option>
-            ))}
-          </FormSelect>
+          <QueryHooks
+            useQuery={useGetCategoriasQuery()}
+            childrenObjects={renderArray => ({
+              categorias: renderArray
+            })}
+          >
+            {({ categorias }) => (
+              <FormSelect className="w-lg-25" size="sm">
+                <option value="todas">Todos</option>
+                {categorias.length > 0 &&
+                  categorias?.map(cat => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.nombre}
+                    </option>
+                  ))}
+              </FormSelect>
+            )}
+          </QueryHooks>
           <IconAction
             className="text-primary h3 m-0"
             title="Agregar Documento"
@@ -42,17 +52,26 @@ export function ContentDocumentos() {
           />
         </Flex>
         <div className="contenedor px-4 py-3">
-          <Row className="row-cols-3 gap-4">
-            {documentos.documentos.length > 0 ? (
-              documentos.documentos.map(doc => (
-                <Col as={Card} className="p-4" key={doc.id}>
-                  <CardDoc key={doc.id} documento={doc} />
-                </Col>
-              ))
-            ) : (
-              <div>No hay documentos</div>
+          <QueryHooks
+            useQuery={useGetDocumentosQuery(userId)}
+            childrenObjects={renderArray => ({
+              documentos: renderArray
+            })}
+          >
+            {({ documentos }) => (
+              <Row className="m-0 row-cols-2 row-cols-md-3 h-100 overflow-scroll">
+                {documentos.length > 0 ? (
+                  documentos.map(doc => (
+                    <Col className="p-1 cursor-pointer" key={doc.id}>
+                      <CardDoc key={doc.id} documento={doc} />
+                    </Col>
+                  ))
+                ) : (
+                  <div>No hay documentos</div>
+                )}
+              </Row>
             )}
-          </Row>
+          </QueryHooks>
         </div>
       </Flex>
     </div>

@@ -6,7 +6,7 @@ const vencimientosAdapter = createEntityAdapter();
 
 const initialState = vencimientosAdapter.getInitialState();
 
-export const vencimientosApISlice = apiSlice.injectEndpoints({
+export const vencimientosApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getVencimientos: builder.query({
       query: userId => `/vencimiento/${userId}/`,
@@ -63,4 +63,4 @@ export const {
   useAddNewVencimientoMutation,
   useUpdateVencimientoMutation,
   useDeleteVencimientoMutation
-} = vencimientosApISlice;
+} = vencimientosApiSlice;

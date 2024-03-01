@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { UsDoc } from '../../hooks/listarDocumentos';
-import { CardDoc, CardDocCli } from './cardDoc';
+import { CardDoc, CardDocCli } from './CardDoc';
 import Modal from 'react-modal';
 import React, { useState } from 'react';
 import { DeleteDoc, GuardarDocumento } from '../../Api/DocumentosApi';

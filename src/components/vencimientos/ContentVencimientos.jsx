@@ -4,30 +4,22 @@ import { useGetVencimientosQuery } from '@/redux/api/vencimientosApiSlice';
 
 import { Calendario } from '@/components/vencimientos/Calendario';
 import { extractRawData } from '@/helpers';
+import { QueryHooks } from '@/hooks/QueryHooks';
 
 const ContentCalendario = () => {
-  const { id: userId } = useParams();
+  const { userId } = useParams();
 
-  const {
-    data: vencimientos,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useGetVencimientosQuery(userId);
-
-  let content;
-
-  if (isLoading) {
-    content = <p>Loading...</p>;
-  } else if (isError) {
-    content = <p>{error}</p>;
-  } else if (isSuccess) {
-    const renderedVencimientos = extractRawData(vencimientos);
-
-    content = <Calendario vencimientos={renderedVencimientos} />;
-  }
-  return content;
+  return (
+    <QueryHooks
+      useQuery={useGetVencimientosQuery(userId)}
+      childrenObjects={renderArray => ({
+        vencimientos: renderArray,
+        location: location
+      })}
+    >
+      {({ vencimientos }) => <Calendario vencimientos={vencimientos} />}
+    </QueryHooks>
+  );
 };
 
 export default ContentCalendario;

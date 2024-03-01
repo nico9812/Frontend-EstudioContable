@@ -23,6 +23,8 @@ import ModalFormVencimiento from '@/components/vencimientos/ModalFormVencimiento
 import VerMasVencimientos from '@/components/vencimientos/VerMasVencimientos';
 import ModalBorradoVencimiento from '@/components/vencimientos/ModalBorradoVencimiento';
 import { Documentos } from '@/pages/documentos/Documentos';
+import ModalFormDocumentos from '@/components/documentos/ModalFormDocumentos';
+import ModalBorradoDocumentos from '@/components/documentos/ModalBorradoDocumentos';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -84,8 +86,8 @@ function ReactRouting() {
               element={<ContadorLayout grupo={currentGroup} />}
             >
               <Route index element={<Clientes />} />
-              <Route path="vencimientos/:id" element={<Vencimientos />} />
-              <Route path="documentos/:id" element={<Documentos />} />
+              <Route path="vencimientos/:userId" element={<Vencimientos />} />
+              <Route path="documentos/:userId" element={<Documentos />} />
             </Route>
             {/* Cliente */}
             <Route
@@ -197,6 +199,22 @@ function ReactRouting() {
             element={
               <ModalUsable>
                 <VerMasVencimientos />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/documentos/:userId/agregar"
+            element={
+              <ModalUsable>
+                <ModalFormDocumentos />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/documentos/:userId/borrar/:documentoId"
+            element={
+              <ModalUsable>
+                <ModalBorradoDocumentos />
               </ModalUsable>
             }
           />

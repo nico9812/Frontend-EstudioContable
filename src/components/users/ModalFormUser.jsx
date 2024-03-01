@@ -95,7 +95,8 @@ const ModalFormUser = ({ location, navigateBack }) => {
         navigateBack();
         toast.success('El cliente fue creado exitosamente.');
       } catch (err) {
-        console.error('Failed to save the post', err);
+        navigateBack();
+        toast.error('Hubo un error a la hora crear el Usuario.');
       }
     } else {
       try {
@@ -107,7 +108,8 @@ const ModalFormUser = ({ location, navigateBack }) => {
         navigateBack();
         toast.success('El cliente fue editado exitosamente.');
       } catch (err) {
-        console.error('Failed to save the post', err);
+        navigateBack();
+        toast.error('Hubo un error a la hora editar el Usuario.');
       }
     }
   };
@@ -136,6 +138,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
           )}
 
           <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
             <Form.Control
               autoComplete="off"
               type="email"
@@ -149,6 +152,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
             )}
           </Form.Group>
           <Form.Group controlId="username">
+            <Form.Label>Usuario</Form.Label>
             <Form.Control
               autoComplete="off"
               type="text"
@@ -165,6 +169,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
           {(!isEditPage || passwordChange) && (
             <>
               <Form.Group controlId="password">
+                <Form.Label>Contraseña</Form.Label>
                 <Form.Control
                   autoComplete="new-password"
                   type="password"
@@ -179,6 +184,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
               </Form.Group>
 
               <Form.Group controlId="passwordConfirm">
+                <Form.Label>Confirmar Contraseña</Form.Label>
                 <Form.Control
                   autoComplete="new-password"
                   type="password"

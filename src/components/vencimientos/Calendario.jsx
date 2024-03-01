@@ -29,7 +29,7 @@ const messages = {
 };
 
 export const Calendario = ({ vencimientos }) => {
-  const { id: userId } = useParams();
+  const { userId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const localizer = dayjsLocalizer(dayjs);
