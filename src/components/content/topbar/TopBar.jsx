@@ -23,54 +23,52 @@ export const TopBar = ({ toggleSidebar }) => {
   const username = useSelector(selectCurrentUserName);
 
   return (
-    <header>
-      <Navbar
-        color="light"
-        light
-        expand="xs"
-        className="navbar shadow-sm p-3 mb-5 bg-white rounded"
-      >
-        <Row className="g-0 w-100 align-items-center">
-          <Col className="d-flex justify-content-xs-start">
-            <Button color="info" onClick={toggleSidebar}>
-              <FontAwesomeIcon icon={faAlignLeft} />
-            </Button>
-          </Col>
+    <Navbar
+      color="light"
+      light
+      expand="xs"
+      className="navbar shadow-sm p-3 mb-2 bg-white rounded"
+    >
+      <Row className="g-0 w-100 align-items-center">
+        <Col className="d-flex justify-content-xs-start">
+          <Button color="info" onClick={toggleSidebar}>
+            <FontAwesomeIcon icon={faAlignLeft} />
+          </Button>
+        </Col>
 
-          <Col className="d-none d-lg-flex justify-content-end">
-            <Nav className="mrx-auto" navbar>
-              <UncontrolledDropdown
-                className="d-flex align-items-center"
-                nav
-                inNavbar
-              >
-                <DropdownToggle className="font-weight-bold" nav>
-                  <Flex alignItems="center" className="gap-2">
-                    <h3>
-                      <BsPersonCircle />
-                    </h3>
-                  </Flex>
-                </DropdownToggle>
-                <DropdownMenu end flip>
-                  <DropdownItem
-                    className="font-weight-bold text-secondary text-uppercase"
-                    header
-                    disabled
-                  >
-                    Usuario: {username}
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Ajustes</DropdownItem>
-                  <DropdownItem>
-                    <Link to="/logout">Cerrar Sesión</Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-          </Col>
-        </Row>
-      </Navbar>
-    </header>
+        <Col className="d-flex justify-content-end">
+          <Nav className="mrx-auto" navbar>
+            <UncontrolledDropdown
+              className="d-flex align-items-center"
+              nav
+              inNavbar
+            >
+              <DropdownToggle className="font-weight-bold" nav>
+                <Flex alignItems="center" className="gap-2">
+                  <h3>
+                    <BsPersonCircle />
+                  </h3>
+                </Flex>
+              </DropdownToggle>
+              <DropdownMenu end flip>
+                <DropdownItem
+                  className="font-weight-bold text-secondary text-uppercase"
+                  header
+                  disabled
+                >
+                  Usuario: {username}
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Ajustes</DropdownItem>
+                <DropdownItem>
+                  <Link to="/logout">Cerrar Sesión</Link>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
+        </Col>
+      </Row>
+    </Navbar>
   );
 };
 
