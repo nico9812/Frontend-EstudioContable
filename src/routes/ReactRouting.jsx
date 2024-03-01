@@ -9,7 +9,7 @@ import LoginLayout from '@/layouts/LoginLayout';
 import ContadorLayout from '@/layouts/ContadorLayout';
 import ClienteLayout from '@/layouts/ClienteLayout';
 
-import Error404 from '@/pages/Errors/404';
+import Error404 from '@/pages/errors/404';
 
 import { Login } from '@/pages/auth/Login';
 import { Logout } from '@/pages/auth/Logout';
@@ -22,6 +22,7 @@ import { Vencimientos } from '@/pages/vencimientos/Vencimientos';
 import ModalFormVencimiento from '@/components/vencimientos/ModalFormVencimiento';
 import VerMasVencimientos from '@/components/vencimientos/VerMasVencimientos';
 import ModalBorradoVencimiento from '@/components/vencimientos/ModalBorradoVencimiento';
+import { Documentos } from '@/pages/documentos/Documentos';
 /* import { ListarCategorias } from '@/pages/documentos/categorias'; */
 
 /* import {
@@ -84,6 +85,7 @@ function ReactRouting() {
             >
               <Route index element={<Clientes />} />
               <Route path="vencimientos/:id" element={<Vencimientos />} />
+              <Route path="documentos/:id" element={<Documentos />} />
             </Route>
             {/* Cliente */}
             <Route

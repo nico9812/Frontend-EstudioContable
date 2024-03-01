@@ -1,21 +1,19 @@
-
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { UsDoc } from '../../hooks/listarDocumentos';
-import { CardDoc, CardDocCli } from '../../components/cardDoc';
+import { CardDoc, CardDocCli } from './cardDoc';
 import Modal from 'react-modal';
 import React, { useState } from 'react';
 import { DeleteDoc, GuardarDocumento } from '../../Api/DocumentosApi';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { UsCat } from '../../hooks/listarCategorias';
 import FormData from 'form-data';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useRef } from 'react';
-import { GuardarCat } from '../../Api/DocumentosApi';
 
-export function ListarDocumentosconta() {
+export function ListarDocumentosConta() {
   const { id } = useParams();
   const [confirmarEliminarMod, setConfirmarEliminarMod] = useState(false);
   const [documentoAEliminar, setDocumentoAEliminar] = useState(null);
@@ -50,7 +48,7 @@ export function ListarDocumentosconta() {
         cerrarConfirm();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.response.data.errors) {
         setErrorForm(error.response.data.errors || {});
       }
@@ -75,17 +73,16 @@ export function ListarDocumentosconta() {
         documentos.actualizarDocumentos();
         cerrarModal();
         reset();
-        selectRef.current.value = "todas";
+        selectRef.current.value = 'todas';
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.response) {
         setErrorForm(error.response.data.errors || {});
         // Aquí puedes manejar los errores, mostrar mensajes, etc.
       }
     }
-  })
-
+  });
 
   const abrirModal = () => {
     setModalAbierto(true);
@@ -97,9 +94,9 @@ export function ListarDocumentosconta() {
     reset();
   };
 
-  // filtro categoria 
+  // filtro categoria
 
-  const handleFiltro = async (data) => {
+  const handleFiltro = async data => {
     let categoria = data.target.value;
     if (categoria != '') {
       setErrorForm({});
@@ -111,36 +108,39 @@ export function ListarDocumentosconta() {
           // Aquí puedes manejar los errores, mostrar mensajes, etc.
         }
       }
-    }
-    else {
+    } else {
       users.actualizarUsuarios();
     }
   };
 
-
   return (
-    <div className='conten'>
-      <div className='contentbot d-flex justify-content-between'>
-        <span className='nuevodoc'>
-          <Button variant="primary" onClick={abrirModal}>Nuevo Documento</Button>
-          <Button as={Link} to="categorias/" variant="primary" >Agregar Categoria</Button>
-        </span>
-        <Form.Select ref={selectRef} className="selectFiltro" onChange={handleFiltro}>
-          <option value="todas">Todos</option>
-          {categorias.categorias.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-          ))}
-        </Form.Select>
-        <span className='volver'>
-          <Button as={Link} to="../" variant="secondary">
-            Volver
+    <div className="conten">
+      <div className="contentbot d-flex justify-content-between">
+        <span className="nuevodoc">
+          <Button variant="primary" onClick={abrirModal}>
+            Nuevo Documento
+          </Button>
+          <Button as={Link} to="categorias/" variant="primary">
+            Agregar Categoria
           </Button>
         </span>
+        <Form.Select
+          ref={selectRef}
+          className="selectFiltro"
+          onChange={handleFiltro}
+        >
+          <option value="todas">Todos</option>
+          {categorias.categorias.map(cat => (
+            <option key={cat.id} value={cat.id}>
+              {cat.nombre}
+            </option>
+          ))}
+        </Form.Select>
       </div>
-      <div className='contenedor'>
+      <div className="contenedor">
         {documentos.documentos.length > 0 ? (
-          documentos.documentos.map((doc) => (
-            <div key={doc.id} onContextMenu={(event) => abrirConfirm(event, doc)}>
+          documentos.documentos.map(doc => (
+            <div key={doc.id} onContextMenu={event => abrirConfirm(event, doc)}>
               <CardDoc key={doc.id} documento={doc} />
             </div>
           ))
@@ -162,7 +162,10 @@ export function ListarDocumentosconta() {
             }
           }}
         >
-          <p>¿Estás seguro que deseas borrar el archivo {documentoAEliminar !== null && (documentoAEliminar.nombre)}?</p>
+          <p>
+            ¿Estás seguro que deseas borrar el archivo{' '}
+            {documentoAEliminar !== null && documentoAEliminar.nombre}?
+          </p>
           <button onClick={() => handleRightClick()}>Aceptar</button>
           <button onClick={cerrarConfirm}>Cancelar</button>
         </Modal>
@@ -184,10 +187,20 @@ export function ListarDocumentosconta() {
         >
           <form onSubmit={onSubmit} className="form login">
             <h2>Nuevo</h2>
-            <input type="file" name='archivo' {...register("archivo", { required: true })} />
-            <select name="categoria" id="" {...register("categoria", { required: true })}>
-              {categorias.categorias.map((cat) => (
-                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+            <input
+              type="file"
+              name="archivo"
+              {...register('archivo', { required: true })}
+            />
+            <select
+              name="categoria"
+              id=""
+              {...register('categoria', { required: true })}
+            >
+              {categorias.categorias.map(cat => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.nombre}
+                </option>
               ))}
             </select>
             <input type="submit" value="Guardar" />
@@ -199,16 +212,13 @@ export function ListarDocumentosconta() {
   );
 }
 
-
-
-
 export function ListarDocumentosclien() {
   const id = Cookies.get('id');
   const documentos = UsDoc(id);
   const categorias = UsCat();
   const [errorForm, setErrorForm] = useState({});
 
-  const handleFiltro = async (event) => {
+  const handleFiltro = async event => {
     let categoria = event.target.value;
     if (categoria != '') {
       setErrorForm({});
@@ -220,34 +230,33 @@ export function ListarDocumentosclien() {
           // Aquí puedes manejar los errores, mostrar mensajes, etc.
         }
       }
-    }
-    else {
+    } else {
       users.actualizarUsuarios();
     }
   };
 
   return (
-    <div className='conten'>
-      <div className='d-flex justify-content-center mt-5'>
+    <div className="conten">
+      <div className="d-flex justify-content-center mt-5">
         <Form.Select className="selectFiltro" onChange={handleFiltro}>
           <option value="todas">Todos</option>
-          {categorias.categorias.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+          {categorias.categorias.map(cat => (
+            <option key={cat.id} value={cat.id}>
+              {cat.nombre}
+            </option>
           ))}
         </Form.Select>
       </div>
 
-
-      <div className='contenedor'>
+      <div className="contenedor">
         {documentos.documentos.length > 0 ? (
-          documentos.documentos.map((doc) => (
+          documentos.documentos.map(doc => (
             <CardDocCli key={doc.id} documento={doc} />
           ))
         ) : (
           <div>No hay documentos</div>
         )}
       </div>
-
     </div>
   );
 }

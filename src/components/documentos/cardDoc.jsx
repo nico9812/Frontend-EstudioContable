@@ -1,14 +1,11 @@
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
-import { AbrirDocumento } from '../Api/DocumentosApi';
+import { AbrirDocumento } from '../../Api/DocumentosApi';
 import Cookies from 'js-cookie';
 
-// contador 
+// contador
 export function CardDoc(documento) {
-
-  const handleAbrirDoc = async (id) => {
-
+  const handleAbrirDoc = async id => {
     if (id) {
       try {
         const response = await AbrirDocumento(id);
@@ -19,16 +16,18 @@ export function CardDoc(documento) {
         const blob = new Blob([pdfData], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         window.open(url, '_blank');
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    };
+    }
   };
 
   return (
     <div className="document-card">
-      <div onClick={() => handleAbrirDoc(documento.documento.id)} className='pdfpointer'>
+      <div
+        onClick={() => handleAbrirDoc(documento.documento.id)}
+        className="pdfpointer"
+      >
         <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />
         {documento.documento.nombre}
       </div>
@@ -36,13 +35,10 @@ export function CardDoc(documento) {
   );
 }
 
-
-// Cliente 
+// Cliente
 
 export function CardDocCli(documento) {
-
-  const handleAbrirDoc = async (id) => {
-
+  const handleAbrirDoc = async id => {
     if (id) {
       try {
         const response = await AbrirDocumento(id);
@@ -50,25 +46,25 @@ export function CardDocCli(documento) {
           Cookies.remove('token');
         }
         const pdfData = response.data;
-        console.log(pdfData)
+        console.log(pdfData);
         const blob = new Blob([pdfData], { type: 'application/pdf' });
-        console.log(blob)
+        console.log(blob);
         const url = URL.createObjectURL(blob);
         window.open(url, '_blank');
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    };
+    }
   };
 
   return (
     <div className="document-card">
-      <div onClick={() => handleAbrirDoc(documento.documento.id)} className='pdfpointer'>
+      <div
+        onClick={() => handleAbrirDoc(documento.documento.id)}
+        className="pdfpointer"
+      >
         <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />
-        <div className='nombre'>
-          {documento.documento.nombre}
-        </div>
+        <div className="nombre">{documento.documento.nombre}</div>
       </div>
     </div>
   );

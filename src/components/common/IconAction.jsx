@@ -17,7 +17,12 @@ const IconAction = ({
   state
 }) => {
   return (
-    <OverlayTrigger placement={placement} overlay={<Tooltip>{title}</Tooltip>}>
+    <OverlayTrigger
+      show={true}
+      trigger="focus"
+      delay={{ show: 250, hide: 400 }}
+      overlay={<Tooltip>{title}</Tooltip>}
+    >
       {accion ? (
         <div className="cursor-pointer" onClick={accion}>
           <FontAwesomeIcon icon={icon} className={className} size="lg" />
