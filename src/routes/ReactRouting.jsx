@@ -26,22 +26,11 @@ import { Documentos } from '@/pages/documentos/Documentos';
 import ModalFormDocumentos from '@/components/documentos/ModalFormDocumentos';
 import ModalBorradoDocumentos from '@/components/documentos/ModalBorradoDocumentos';
 import { Categorias } from '@/pages/categorias/Categorias';
-/* import { ListarCategorias } from '@/pages/documentos/categorias'; */
-
-/* import {
-  ListarVencimientosclien,
-  ListarVencimientosconta
-} from '@/pages/vencimientos/listarvencimientos';
-
-import {
-  ListarDocumentosclien,
-  ListarDocumentosconta
-} from '@/pages/documentos/documentosconta';
-
-import {
-  ListarProgramasClien,
-  ListarProgramasConta
-} from '@/pages/programas/programas'; */
+import ModalFormCategorias from '@/components/categorias/ModalFormCategorias';
+import ModalBorradoCategorias from '@/components/categorias/ModalBorradoCategorias';
+import { Programas } from '@/pages/programas/Programas';
+import ModalFormProgramas from '@/components/programas/ModalFormProgramas';
+import ModalBorradoProgramas from '@/components/programas/ModalBorradoProgramas';
 
 function ReactRouting() {
   const location = useLocation();
@@ -88,8 +77,9 @@ function ReactRouting() {
             >
               <Route index element={<Clientes />} />
               <Route path="clientes" element={<Clientes />} />
-              <Route path="vencimientos/:userId" element={<Vencimientos />} />
               <Route path="documentos/:userId" element={<Documentos />} />
+              <Route path="vencimientos/:userId" element={<Vencimientos />} />
+              <Route path="programas/:userId" element={<Programas />} />
               <Route path="categorias" element={<Categorias />} />
             </Route>
             {/* Cliente */}
@@ -99,59 +89,6 @@ function ReactRouting() {
             >
               <Route index element={<>Hola</>} />
             </Route>
-            {/* <Route path="main" element={<RequireAuth />}>
-            <Route path="contador/clientes" element={<ContadorLayout />}>
-              <Route index element={<Clientes />} />
-              <Route
-                path="clientes/vencimientos/:id"
-                element={<ListarVencimientosconta />}
-              />
-              <Route
-                path="clientes/documentos/:id"
-                element={<ListarDocumentosconta />}
-              />
-              <Route
-                path="clientes/documentos/:id/categorias/"
-                element={<ListarCategorias />}
-              />
-              <Route
-                path="clientes/programas/:id"
-                element={<ListarProgramasConta />}
-              />
-            </Route>
-            <Route
-              path="/vencimientos/"
-              element={
-                <PrivateRouteClient>
-                  <ListarVencimientosclien />
-                </PrivateRouteClient>
-              }
-            />
-            <Route
-              path="/documentos/"
-              element={
-                <PrivateRouteClient>
-                  <ListarDocumentosclien />
-                </PrivateRouteClient>
-              }
-            />
-            <Route
-              path="/programas/"
-              element={
-                <PrivateRouteClient>
-                  <ListarProgramasClien />
-                </PrivateRouteClient>
-              }
-            />
-            <Route
-              path="logout/"
-              element={
-                <PrivateRoute>
-                  <Logout />
-                </PrivateRoute>
-              }
-            />
-                    </Route> */}
           </Route>
         </Route>
       </Routes>
@@ -218,6 +155,54 @@ function ReactRouting() {
             element={
               <ModalUsable>
                 <ModalBorradoDocumentos />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/categorias/agregar"
+            element={
+              <ModalUsable>
+                <ModalFormCategorias />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/categorias/:categoriaId/editar"
+            element={
+              <ModalUsable>
+                <ModalFormCategorias />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/categorias/:categoriaId/borrar"
+            element={
+              <ModalUsable>
+                <ModalBorradoCategorias />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/programas/:userId/agregar"
+            element={
+              <ModalUsable>
+                <ModalFormProgramas />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/programas/:userId/editar/:programaId"
+            element={
+              <ModalUsable>
+                <ModalFormProgramas />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/programas/:userId/borrar/:programaId"
+            element={
+              <ModalUsable>
+                <ModalBorradoProgramas />
               </ModalUsable>
             }
           />

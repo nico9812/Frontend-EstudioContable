@@ -1,14 +1,14 @@
-import ContentCategorias from '@/components/categorias/ContentCategorias';
+import ContentProgramas from '@/components/programas/ContentProgramas';
 import { Card } from 'react-bootstrap';
 
-export function Categorias() {
+export function Programas() {
   return (
     <Card>
       <Card.Header className="text-center">
-        <Card.Title> Categorias </Card.Title>
+        <Card.Title> Programas </Card.Title>
       </Card.Header>
       <Card.Body>
-        <ContentCategorias />
+        <ContentProgramas />
       </Card.Body>
     </Card>
   );

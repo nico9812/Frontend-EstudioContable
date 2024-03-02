@@ -7,13 +7,10 @@ import { toast } from 'react-toastify';
 
 const ModalBorradoVencimiento = ({ location, navigateBack, navigate }) => {
   const { vencimientoId } = useParams();
-  const isEditPage = location.pathname.includes('edit');
 
   const [deleteVencimiento] = useDeleteVencimientoMutation();
 
-  const titulo = isEditPage
-    ? 'Edición de Vencimiento'
-    : 'Registrar Vencimiento';
+  const titulo = 'Borrado de Vencimiento';
 
   const onBorrarClick = async () => {
     try {
