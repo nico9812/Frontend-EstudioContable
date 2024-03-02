@@ -33,5 +33,5 @@ export default authSlice.reducer;
 export const selectCurrentUser = state => state.auth;
 export const selectCurrentUserName = state => state.auth.username;
 export const selectCurrentToken = state => state.auth.token;
-export const selectCurrentGroup = state => state.auth.group;
+export const selectCurrentGroup = state => parseInt(state.auth.group);
 export const selectCurrentUserId = state => state.auth.id;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import '@/components/documentos/documentos.scss';
 
 import { QueryHooks } from '@/hooks/QueryHooks';
@@ -14,8 +15,13 @@ import Flex from '../common/Flex';
 import IconAction from '../common/IconAction';
 import { CardDoc } from './CardDoc';
 
-export function ContentDocumentos() {
-  const { userId } = useParams();
+export function ContentDocumentos({ userId, group }) {
+  let { userId: idParams } = useParams();
+
+  if (userId === undefined) {
+    userId = idParams;
+  }
+
   const location = useLocation();
 
   const [selected, setSelected] = useState('');
@@ -51,15 +57,17 @@ export function ContentDocumentos() {
               </FormSelect>
             )}
           </QueryHooks>
-          <IconAction
-            className="text-primary h3 m-0"
-            title="Agregar Documento"
-            ruta="agregar"
-            state={{
-              backgroundLocation: location
-            }}
-            icon={faPlusCircle}
-          />
+          {group === 1 && (
+            <IconAction
+              className="text-primary h3 m-0"
+              title="Agregar Documento"
+              ruta="agregar"
+              state={{
+                backgroundLocation: location
+              }}
+              icon={faPlusCircle}
+            />
+          )}
         </Flex>
         <div className="contenedor px-4 py-3">
           {selected !== '' && selected !== '0' ? (
@@ -115,3 +123,8 @@ export function ContentDocumentos() {
     </div>
   );
 }
+
+ContentDocumentos.propTypes = {
+  group: PropTypes.any,
+  userId: PropTypes.any
+};

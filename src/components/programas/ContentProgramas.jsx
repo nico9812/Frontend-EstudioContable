@@ -5,8 +5,13 @@ import { useLocation, useParams } from 'react-router-dom';
 import { QueryHooks } from '@/hooks/QueryHooks';
 import { useGetProgramasQuery } from '@/redux/api/programasApiSlice';
 
-const ContentProgramas = () => {
-  const { userId } = useParams();
+const ContentProgramas = ({ userId, group }) => {
+  let { userId: idParams } = useParams();
+
+  if (userId === undefined) {
+    userId = idParams;
+  }
+
   const location = useLocation();
 
   const columns = [
@@ -61,8 +66,11 @@ const ContentProgramas = () => {
       accessorKey: 'estado',
       header: 'Estado',
       cell: props => <>{props.getValue()}</>
-    },
-    {
+    }
+  ];
+
+  if (group === 1) {
+    const accionBtn = {
       accessorKey: 'actions',
       header: 'Acciones',
       cell: props => {
@@ -70,8 +78,9 @@ const ContentProgramas = () => {
           <AccionesBtn sentId={props.row?.original?.id} location={location} />
         );
       }
-    }
-  ];
+    };
+    columns.push(accionBtn);
+  }
 
   return (
     <QueryHooks
@@ -83,7 +92,12 @@ const ContentProgramas = () => {
       })}
     >
       {({ data, columns, location }) => (
-        <TableProgramas data={data} columns={columns} location={location} />
+        <TableProgramas
+          data={data}
+          columns={columns}
+          location={location}
+          group={group}
+        />
       )}
     </QueryHooks>
   );

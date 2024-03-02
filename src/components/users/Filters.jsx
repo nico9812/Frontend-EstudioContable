@@ -4,19 +4,7 @@ import IconAction from '../common/IconAction';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 
-export const TableHeader = ({ columnFilters, setColumnFilters, location }) => {
-  const taksName = columnFilters.find(f => f.id === 'username')?.value || '';
-
-  const onFilterChange = (id, value) => {
-    setColumnFilters(prev =>
-      prev
-        .filter(f => f.id !== id)
-        .concat({
-          id,
-          value
-        })
-    );
-  };
+export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
   return (
     <Flex
       direction="row"
@@ -31,8 +19,8 @@ export const TableHeader = ({ columnFilters, setColumnFilters, location }) => {
         aria-label="Buscador"
         aria-describedby="basic-addon2"
         required
-        value={taksName}
-        onChange={e => onFilterChange('username', e.target.value)}
+        value={globalFilters}
+        onChange={e => setGlobalFilters(e.target.value)}
       />
       <IconAction
         className="text-primary h3 m-0"
@@ -48,7 +36,7 @@ export const TableHeader = ({ columnFilters, setColumnFilters, location }) => {
 };
 
 TableHeader.propTypes = {
-  columnFilters: PropTypes.array,
-  setColumnFilters: PropTypes.func,
+  globalFilters: PropTypes.string,
+  setGlobalFilters: PropTypes.func,
   location: PropTypes.object
 };

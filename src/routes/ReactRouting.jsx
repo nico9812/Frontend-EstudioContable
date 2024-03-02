@@ -87,7 +87,10 @@ function ReactRouting() {
               path="cliente"
               element={<ClienteLayout grupo={currentGroup} />}
             >
-              <Route index element={<>Hola</>} />
+              <Route index element={<Vencimientos />} />
+              <Route path="vencimientos" element={<Vencimientos />} />
+              <Route path="documentos" element={<Documentos />} />
+              <Route path="programas" element={<Programas />} />
             </Route>
           </Route>
         </Route>

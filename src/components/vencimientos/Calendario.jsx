@@ -28,13 +28,11 @@ const messages = {
   showMore: total => `Ver más (${total})`
 };
 
-export const Calendario = ({ vencimientos }) => {
+export const Calendario = ({ vencimientos, group }) => {
   const { userId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const localizer = dayjsLocalizer(dayjs);
-
-  const group = useSelector(selectCurrentGroup);
 
   const { eventos } = VencimientoHooks(vencimientos);
 
@@ -121,5 +119,6 @@ export const Calendario = ({ vencimientos }) => {
 };
 
 Calendario.propTypes = {
+  group: PropTypes.number,
   vencimientos: PropTypes.array
 };

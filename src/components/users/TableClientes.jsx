@@ -11,13 +11,13 @@ import { TableHeader } from './Filters';
 import { useState } from 'react';
 
 export const TableClientes = ({ data, columns, location }) => {
-  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilters, setGlobalFilters] = useState('');
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      columnFilters
+      globalFilter: globalFilters
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
@@ -26,8 +26,8 @@ export const TableClientes = ({ data, columns, location }) => {
   return (
     <Flex direction="column" className="gap-3">
       <TableHeader
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
+        globalFilters={globalFilters}
+        setGlobalFilters={setGlobalFilters}
         location={location}
       />
       <Table striped bordered hover responsive size="sm">

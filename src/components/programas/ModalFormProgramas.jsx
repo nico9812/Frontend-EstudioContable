@@ -37,7 +37,7 @@ const yupSchema = yup.object().shape({
 const ModalFormProgramas = ({ location, navigateBack }) => {
   const isEditPage = location.pathname.includes('edit');
 
-  const { userId } = useParams();
+  const { userId, programaId } = useParams();
 
   const {
     register,
@@ -63,6 +63,13 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
   useEffect(() => {
     if (isEditPage && programa) {
       setValue('nombre', programa.nombre);
+      setValue('resolucion', programa.resolucion);
+      setValue('localidad', programa.localidad);
+      setValue('fecha_inicio', programa.fecha_inicio);
+      setValue('fecha_final', programa.fecha_final);
+      setValue('dias', programa.dias);
+      setValue('profesional', programa.profesional);
+      setValue('estado', programa.estado);
     }
   }, [isEditPage, programa, setValue]);
 
@@ -83,7 +90,7 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
       try {
         await updatePrograma({
           data,
-          userId
+          programaId
         }).unwrap();
         reset();
         navigateBack();

@@ -20,7 +20,6 @@ export const programasApiSlice = apiSlice.injectEndpoints({
     }),
     addNewPrograma: builder.mutation({
       query: initialPrograma => {
-        console.log(initialPrograma);
         initialPrograma = {
           ...initialPrograma,
           fecha_inicio: initialPrograma.fecha_inicio
@@ -42,11 +41,14 @@ export const programasApiSlice = apiSlice.injectEndpoints({
     }),
     updatePrograma: builder.mutation({
       query: dataReceived => {
+        const { data, programaId } = dataReceived;
         return {
-          url: `/programas/${dataReceived.programaId}/`,
+          url: `/programas/${programaId}/`,
           method: 'PATCH',
           body: {
-            ...dataReceived.data
+            ...data,
+            fecha_inicio: data.fecha_inicio.toISOString().split('T')[0],
+            fecha_final: data.fecha_final.toISOString().split('T')[0]
           }
         };
       },
