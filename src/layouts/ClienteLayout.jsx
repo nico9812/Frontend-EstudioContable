@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const ClienteLayout = ({ grupo }) => {
   if (grupo !== 2) {
     toast.error('No tienes permiso para ingresar a esta ruta.');
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   } else {
     return <Outlet />;
   }

@@ -1,25 +1,25 @@
 import { CloseButton, Button, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
-import { useDeleteDocumentoMutation } from "@/redux/api/documentosApiSlice";
+import { useDeleteProgramaMutation } from '@/redux/api/programasApiSlice';
 import Flex from '../common/Flex';
 import { toast } from 'react-toastify';
 
-const ModalBorradoDocumentos = ({ location, navigateBack, navigate }) => {
-  const { documentoId } = useParams();
+const ModalBorradoProgramas = ({ location, navigateBack, navigate }) => {
+  const { programaId } = useParams();
 
-  const titulo = '¿Estas seguro de querer borrar este Documento?';
+  const titulo = 'Borrar Programa';
 
-  const [deleteDocumento] = useDeleteDocumentoMutation();
+  const [deletePrograma] = useDeleteProgramaMutation();
 
   const onBorrarClick = async () => {
     try {
-      await deleteDocumento(documentoId).unwrap();
+      await deletePrograma(programaId).unwrap();
       navigate(location.state.backgroundLocation.pathname);
-      toast.success('El Documento fue borrado exitosamente.');
+      toast.success('La programa fue borrada exitosamente.');
     } catch (err) {
       navigate(location.state.backgroundLocation.pathname);
-      toast.error('Hubo un error a la hora de borrar el Documento.');
+      toast.success('Hubo un error a la hora de borrar la programa.');
     }
   };
 
@@ -34,7 +34,7 @@ const ModalBorradoDocumentos = ({ location, navigateBack, navigate }) => {
       </Modal.Header>
       <Modal.Body>
         <span>
-          Estas apunto de borrar este Documento. ¿Estas seguro de querer
+          Estas apunto de borrar esta Programa. ¿Estas seguro de querer
           borrarlo?
         </span>
       </Modal.Body>
@@ -52,10 +52,10 @@ const ModalBorradoDocumentos = ({ location, navigateBack, navigate }) => {
   );
 };
 
-ModalBorradoDocumentos.propTypes = {
+ModalBorradoProgramas.propTypes = {
   location: PropTypes.object,
   navigate: PropTypes.any,
   navigateBack: PropTypes.func
 };
 
-export default ModalBorradoDocumentos;
+export default ModalBorradoProgramas;

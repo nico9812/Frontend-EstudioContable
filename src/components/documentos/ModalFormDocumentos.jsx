@@ -62,7 +62,11 @@ const ModalFormDocumentos = ({ navigateBack }) => {
         />
       </Modal.Header>
       <Modal.Body>
-        <Form autoComplete="off" className="d-flex flex-column gap-3 my-3 mx-4">
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
+          className="d-flex flex-column gap-3 my-3 mx-4"
+        >
           <Form.Group controlId="archivo">
             <Form.Label>Archivo</Form.Label>
             <Form.Control
