@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const ContadorLayout = ({ grupo }) => {
   if (grupo !== 1) {
     toast.error('No tienes permiso para ingresar a esta ruta.');
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" replace />;
   } else {
     return <Outlet />;
   }

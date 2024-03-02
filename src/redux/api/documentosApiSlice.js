@@ -18,6 +18,21 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
         ...result.ids.map(id => ({ type: 'Documento', id }))
       ]
     }),
+    getDocumentosFiltrados: builder.query({
+      query: ({ strCat, userId }) => {
+        if (strCat === '0') {
+          strCat === 'todas';
+        }
+        return `/documentosFiltrar/${strCat}/${userId}/`;
+      },
+      transformResponse: responseData => {
+        return documentosAdapter.setAll(initialState, responseData);
+      },
+      providesTags: (result, error, arg) => [
+        { type: 'Documento', id: 'LIST' },
+        ...result.ids.map(id => ({ type: 'Documento', id }))
+      ]
+    }),
     addNewDocumento: builder.mutation({
       query: initialDocumento => {
         const formData = new FormData();
@@ -40,10 +55,9 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     openDocumento: builder.mutation({
-      queryFn: async (setupId, api, extraOptions, baseQuery) => {
-        console.log(setupId);
+      queryFn: async (documentoID, api, extraOptions, baseQuery) => {
         const result = await baseQuery({
-          url: `/media/${setupId}/`,
+          url: `/media/${documentoID}/`,
           responseHandler: response => response.blob()
         });
         var hiddenElement = document.createElement('a');
@@ -85,6 +99,7 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetDocumentosQuery,
+  useGetDocumentosFiltradosQuery,
   useAddNewDocumentoMutation,
   useDeleteDocumentoMutation,
   useOpenDocumentoMutation

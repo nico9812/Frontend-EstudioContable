@@ -73,8 +73,8 @@ export function Login() {
         </h4>
       </Flex>
       <Form
-        className="d-flex flex-column gap-3"
         onSubmit={handleSubmit(onSubmit)}
+        className="d-flex flex-column gap-3"
       >
         <Form.Group controlId="username">
           <Form.Label>Usuario</Form.Label>

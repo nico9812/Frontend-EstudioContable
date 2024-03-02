@@ -118,7 +118,11 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
         />
       </Modal.Header>
       <Modal.Body>
-        <Form autoComplete="off" className="d-flex flex-column gap-3 my-3 mx-4">
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
+          className="d-flex flex-column gap-3 my-3 mx-4"
+        >
           <Form.Group controlId="nombre">
             <Form.Label>Nombre del Vencimiento</Form.Label>
             <Form.Control

@@ -4,7 +4,12 @@ import IconAction from '../common/IconAction';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 
-export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
+export const TableHeader = ({
+  globalFilter,
+  setGlobalFilter,
+  location,
+  group
+}) => {
   return (
     <Flex
       direction="row"
@@ -19,24 +24,27 @@ export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
         aria-label="Buscador"
         aria-describedby="basic-addon2"
         required
-        value={globalFilters}
-        onChange={e => setGlobalFilters(e.target.value)}
+        value={globalFilter}
+        onChange={e => setGlobalFilter(e.target.value)}
       />
-      <IconAction
-        className="text-primary h3 m-0"
-        title="Agregar"
-        ruta="agregar"
-        state={{
-          backgroundLocation: location
-        }}
-        icon={faPlusCircle}
-      />
+      {group === 1 && (
+        <IconAction
+          className="text-primary h3 m-0"
+          title="Agregar"
+          ruta="agregar"
+          state={{
+            backgroundLocation: location
+          }}
+          icon={faPlusCircle}
+        />
+      )}
     </Flex>
   );
 };
 
 TableHeader.propTypes = {
-  globalFilters: PropTypes.string,
-  setGlobalFilters: PropTypes.func,
-  location: PropTypes.object
+  globalFilter: PropTypes.string,
+  group: PropTypes.any,
+  location: PropTypes.object,
+  setGlobalFilter: PropTypes.func
 };

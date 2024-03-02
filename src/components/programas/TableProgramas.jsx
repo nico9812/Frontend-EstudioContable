@@ -4,20 +4,20 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table';
-import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Table } from 'react-bootstrap';
 import Flex from '../common/Flex';
 import { TableHeader } from './Filters';
-import { useState } from 'react';
 
-export const TableClientes = ({ data, columns, location }) => {
-  const [globalFilters, setGlobalFilters] = useState('');
+export const TableProgramas = ({ data, columns, location, group }) => {
+  const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      globalFilter: globalFilters
+      globalFilter: globalFilter
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
@@ -26,9 +26,10 @@ export const TableClientes = ({ data, columns, location }) => {
   return (
     <Flex direction="column" className="gap-3">
       <TableHeader
-        globalFilters={globalFilters}
-        setGlobalFilters={setGlobalFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
         location={location}
+        group={group}
       />
       <Table striped bordered hover responsive size="sm">
         <thead>
@@ -63,8 +64,9 @@ export const TableClientes = ({ data, columns, location }) => {
   );
 };
 
-TableClientes.propTypes = {
-  data: PropTypes.array,
+TableProgramas.propTypes = {
   columns: PropTypes.array,
+  data: PropTypes.array,
+  group: PropTypes.any,
   location: PropTypes.object
 };

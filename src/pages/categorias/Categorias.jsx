@@ -1,6 +1,5 @@
 import ContentCategorias from '@/components/categorias/ContentCategorias';
-import { Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Card } from 'react-bootstrap';
 
 export function Categorias() {
   return (
@@ -9,9 +8,6 @@ export function Categorias() {
         <Card.Title> Categorias </Card.Title>
       </Card.Header>
       <Card.Body>
-        <Button as={Link} to="../" variant="secondary">
-          Volver
-        </Button>
         <ContentCategorias />
       </Card.Body>
     </Card>

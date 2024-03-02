@@ -126,7 +126,11 @@ const ModalFormUser = ({ location, navigateBack }) => {
         />
       </Modal.Header>
       <Modal.Body>
-        <Form autoComplete="off" className="d-flex flex-column gap-3 my-3 mx-4">
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
+          className="d-flex flex-column gap-3 my-3 mx-4"
+        >
           {isEditPage && (
             <Form.Group>
               <Form.Check
