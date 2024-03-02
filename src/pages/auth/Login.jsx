@@ -49,11 +49,8 @@ export function Login() {
       navigate('/dashboard');
     } catch (error) {
       console.log(error);
-      if (error.status === 'FETCH_ERROR') {
-        toast.error('Hubo un error a la hora de conectarse con el servidor.');
-      }
-      if (error.response.data.errors.errors) {
-        toast.error(error.response.data.errors.errors);
+      if (error.status === 400) {
+        toast.error(error.data.errors[0]);
       }
     }
   };
