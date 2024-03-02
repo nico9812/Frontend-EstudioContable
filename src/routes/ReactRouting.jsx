@@ -49,7 +49,7 @@ function ReactRouting() {
   return (
     <>
       <Routes location={background || location}>
-        {/* <Route path="/*" element={<Navigate to="/404" replace />} /> */}
+        <Route path="/*" element={<Navigate to="/404" replace />} />
         {/* Rutas de Errores */}
         <Route element={<ErrorLayout />}>
           <Route path="/404/" element={<Error404 />} />
