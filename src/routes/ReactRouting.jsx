@@ -31,6 +31,7 @@ import ModalBorradoCategorias from '@/components/categorias/ModalBorradoCategori
 import { Programas } from '@/pages/programas/Programas';
 import ModalFormProgramas from '@/components/programas/ModalFormProgramas';
 import ModalBorradoProgramas from '@/components/programas/ModalBorradoProgramas';
+import ModalBorradoUser from "@/components/users/ModalBorradoCategorias";
 
 function ReactRouting() {
   const location = useLocation();
@@ -110,6 +111,14 @@ function ReactRouting() {
             element={
               <ModalUsable>
                 <ModalFormUser />
+              </ModalUsable>
+            }
+          />
+          <Route
+            path="/dashboard/contador/clientes/borrar/:userId"
+            element={
+              <ModalUsable>
+                <ModalBorradoUser />
               </ModalUsable>
             }
           />
