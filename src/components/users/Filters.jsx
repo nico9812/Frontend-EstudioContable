@@ -1,6 +1,6 @@
 import { Input } from 'reactstrap';
 import Flex from '../common/Flex';
-import IconAction from '../common/IconAction';
+import ButtonAction from '../common/ButtonAction';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 
@@ -22,7 +22,7 @@ export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
         value={globalFilters}
         onChange={e => setGlobalFilters(e.target.value)}
       />
-      <IconAction
+      <ButtonAction
         className="text-primary h3 m-0"
         title="Agregar"
         ruta="agregar"

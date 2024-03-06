@@ -1,5 +1,5 @@
 import Flex from '@/components/common/Flex';
-import IconAction from '@/components/common/IconAction';
+import ButtonAction from '@/components/common/ButtonAction';
 import { faEdit, faRemove } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 

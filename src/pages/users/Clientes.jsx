@@ -1,15 +1,15 @@
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import ContentClientes from '@/components/users/ContentClientes';
-import { Card } from 'react-bootstrap';
 
 export const Clientes = () => {
   return (
-    <Card className="text-center">
-      <Card.Header>
-        <Card.Title>Lista de Clientes</Card.Title>
-      </Card.Header>
-      <Card.Body>
+    <Card>
+      <CardHeader>
+        <h1 className="text-lg font-semibold">Lista de Clientes</h1>
+      </CardHeader>
+      <CardContent>
         <ContentClientes />
-      </Card.Body>
+      </CardContent>
     </Card>
   );
 };

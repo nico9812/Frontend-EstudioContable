@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { Col, FormSelect, Row } from 'react-bootstrap';
 import { useLocation, useParams } from 'react-router-dom';
 import Flex from '../common/Flex';
-import IconAction from '../common/IconAction';
+import ButtonAction from '../common/ButtonAction';
 import { CardDoc } from './CardDoc';
 
 export function ContentDocumentos({ userId, group }) {
@@ -58,7 +58,7 @@ export function ContentDocumentos({ userId, group }) {
             )}
           </QueryHooks>
           {group === 1 && (
-            <IconAction
+            <ButtonAction
               className="text-primary h3 m-0"
               title="Agregar Documento"
               ruta="agregar"

@@ -1,41 +1,31 @@
+'use client';
+
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table';
-import { Table } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  TableHeader
-} from '../ui/table';
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 
-export const TableClientes = ({ data, columns, location }) => {
-  const [globalFilters, setGlobalFilters] = useState('');
-
+export function DataTable({ columns, data }) {
   const table = useReactTable({
     data,
     columns,
-    state: {
-      globalFilter: globalFilters
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel()
+    getCoreRowModel: getCoreRowModel()
   });
 
   return (
-    <div className="w-full rounded-md border overflow-auto">
-      {/* <TableHeader
-        globalFilters={globalFilters}
-        setGlobalFilters={setGlobalFilters}
-        location={location}
-      /> */}
-      <Table className="w-full">
+    <div className="rounded-md border">
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
@@ -54,7 +44,7 @@ export const TableClientes = ({ data, columns, location }) => {
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="text-left">
+        <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map(row => (
               <TableRow
@@ -79,10 +69,4 @@ export const TableClientes = ({ data, columns, location }) => {
       </Table>
     </div>
   );
-};
-
-TableClientes.propTypes = {
-  data: PropTypes.array,
-  columns: PropTypes.array,
-  location: PropTypes.object
-};
+}
