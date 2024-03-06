@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LoadingIndicator } from '../common/LoadingIndicator';
+import Flex from '../common/Flex';
 
 const addOrEditPasswordSchema = yup.object().shape({
   email: yup
@@ -44,7 +45,7 @@ const editSchema = yup.object().shape({
     .required('Este campo es requerido.')
 });
 
-const ModalFormUser = ({ location, navigateBack }) => {
+const ModalFormUser = ({ location, navigateBack, navigate }) => {
   const [passwordChange, setPasswordChange] = useState(false);
   const isEditPage = location.pathname.includes('edit');
   const { userId } = useParams();
@@ -85,6 +86,14 @@ const ModalFormUser = ({ location, navigateBack }) => {
 
   const handleCheckboxChange = e => {
     setPasswordChange(e.target.checked);
+  };
+
+  const onBorrarClick = () => {
+    return navigate(`/dashboard/contador/clientes/borrar/${userId}`, {
+      state: {
+        backgroundLocation: location.state.backgroundLocation
+      }
+    });
   };
 
   const onSubmit = async data => {
@@ -205,19 +214,25 @@ const ModalFormUser = ({ location, navigateBack }) => {
           )}
         </Form>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="justify-content-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-          className="me-2 mb-1"
-          disabled={!isDirty}
-        >
-          Confirmar
-        </Button>
+        <Flex className="gap-4">
+          {isEditPage && (
+            <Button variant="danger" onClick={onBorrarClick}>
+              Borrar
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            disabled={!isDirty}
+          >
+            Guardar
+          </Button>
+        </Flex>
       </Modal.Footer>
     </>
   );
@@ -225,6 +240,7 @@ const ModalFormUser = ({ location, navigateBack }) => {
 
 ModalFormUser.propTypes = {
   location: PropTypes.object,
+  navigate: PropTypes.func,
   navigateBack: PropTypes.func
 };
 
