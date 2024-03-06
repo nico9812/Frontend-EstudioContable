@@ -44,7 +44,6 @@ const ContentClientes = () => {
       cell: ({ row }) => (
         <DropDownActionsMenu sentId={row?.original?.id} location={location} />
       )
-      // return <AccionesBtn sentId={row?.original?.id} location={location} />;
     }
   ];
 

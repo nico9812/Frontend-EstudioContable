@@ -15,6 +15,8 @@ import {
   TableHeader
 } from '../ui/table';
 
+import { TableHeader as Filters } from "./Filters";
+
 export const TableClientes = ({ data, columns, location }) => {
   const [globalFilters, setGlobalFilters] = useState('');
 
@@ -29,13 +31,13 @@ export const TableClientes = ({ data, columns, location }) => {
   });
 
   return (
-    <div className="w-full rounded-md border overflow-auto">
-      {/* <TableHeader
+    <div className="flex flex-col gap-3 p-3">
+      <Filters
         globalFilters={globalFilters}
         setGlobalFilters={setGlobalFilters}
         location={location}
-      /> */}
-      <Table className="w-full">
+      />
+      <Table className="w-full rounded-md border overflow-auto">
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
@@ -71,7 +73,7 @@ export const TableClientes = ({ data, columns, location }) => {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No hay clientes cargados.
               </TableCell>
             </TableRow>
           )}

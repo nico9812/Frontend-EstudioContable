@@ -1,15 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/redux/reducer/authReducerSlice';
 import { useLoginMutation } from '@/redux/api/authApiSlice';
+import { setCredentials } from '@/redux/reducer/authReducerSlice';
+import { useDispatch } from 'react-redux';
 
-import { BtnLoader } from '@/components/common/BtnLoader';
-import { toast } from 'react-toastify';
+import ButtonAction from '@/components/common/ButtonAction';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
@@ -20,6 +19,7 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from 'react-toastify';
 
 const loginSchema = yup.object().shape({
   username: yup
@@ -100,14 +100,11 @@ export function Login() {
               )}
             />
             <div className="flex w-100 justify-center">
-              <BtnLoader
+              <ButtonAction
                 className="w-full"
-                type="submit"
                 title="Iniciar"
                 loading={isLoading}
-              >
-                Ingresar
-              </BtnLoader>
+              />
             </div>
           </form>
         </Form>

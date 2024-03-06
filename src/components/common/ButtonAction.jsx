@@ -3,34 +3,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
+import { FaSpinner } from 'react-icons/fa';
 
 const ButtonAction = ({
   // Apariencia
   className,
   icon,
   title,
+  variant,
   // Acciones
   accion,
   ruta,
-  state
+  state,
+  // Estados
+  loading
 }) => {
   return (
     <Button
-      variant="ghost"
       className={className}
-      asChild
-      {...(accion && { onClick: accion })}
+      disabled={loading}
+      variant={variant}
+      {...(accion && { onClick: accion, asChild: true })}
     >
       {ruta ? (
-        <Link to={ruta} state={state}>
+        <Link className="flex gap-2 items-center" to={ruta} state={state}>
           {icon && icon}
           {title}
         </Link>
       ) : (
-        <>
+        <div className="flex gap-2 items-center">
+          {loading && <FaSpinner className="animate-spin" />}
           {icon && icon}
           {title}
-        </>
+        </div>
       )}
     </Button>
   );

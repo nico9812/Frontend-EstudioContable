@@ -13,8 +13,8 @@ import {
   FaClipboardList
 } from 'react-icons/fa';
 import ButtonAction from '../common/ButtonAction';
-import { Button } from '../ui/button';
 import { BsThreeDots } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 export const DropDownActionsMenu = ({ sentId, location = null }) => {
   const acciones = [
@@ -51,15 +51,16 @@ export const DropDownActionsMenu = ({ sentId, location = null }) => {
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {acciones.map(({ icon, title, ruta, className, state }, i) => (
-          <DropdownMenuItem key={i}>
-            <ButtonAction
-              className="gap-2"
-              title={title}
-              ruta={ruta}
-              icon={icon}
-              {...(state && { state })}
-            />
-          </DropdownMenuItem>
+          <Link to={ruta} state={state} key={i}>
+            <DropdownMenuItem>
+              <ButtonAction
+                className={className + ' block w-full gap-2 justify-start'}
+                title={title}
+                icon={icon}
+                variant="ghost"
+              />
+            </DropdownMenuItem>
+          </Link>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
