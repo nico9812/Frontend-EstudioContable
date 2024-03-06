@@ -35,7 +35,6 @@ export const Calendario = ({ vencimientos, group }) => {
   const { eventos } = VencimientoHooks(vencimientos);
 
   const CustomToolbar = toolbar => {
-    console.log('toolbar', toolbar);
     return (
       <div className="rbc-toolbar d-flex justify-content-between mb-3">
         <span className="rbc-btn-group">

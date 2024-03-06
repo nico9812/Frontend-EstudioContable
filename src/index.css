@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@media only screen and (min-width: 768px) {
+  body {
+    zoom: 130%;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

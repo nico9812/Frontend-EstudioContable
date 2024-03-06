@@ -5,10 +5,10 @@ import { Input } from '../ui/input';
 
 export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
   return (
-    <div className="flex flex-row items-center justify-end gap-3">
+    <div className="flex items-center py-4 gap-2">
       <Input
         type="text"
-        className="w-lg-25"
+        className="w-full max-w-sm"
         placeholder="Buscar"
         aria-label="Buscador"
         required
@@ -16,7 +16,7 @@ export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
         onChange={e => setGlobalFilters(e.target.value)}
       />
       <ButtonAction
-        className="h3 m-0"
+        className="ml-auto"
         title="Agregar"
         ruta="agregar"
         state={{
