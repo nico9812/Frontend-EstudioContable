@@ -13,8 +13,6 @@ const ButtonAction = ({
   variant,
   // Acciones
   accion,
-  ruta,
-  state,
   // Estados
   loading
 }) => {
@@ -25,18 +23,11 @@ const ButtonAction = ({
       variant={variant}
       {...(accion && { onClick: accion, asChild: true })}
     >
-      {ruta ? (
-        <Link className="flex gap-2 items-center" to={ruta} state={state}>
-          {icon && icon}
-          {title}
-        </Link>
-      ) : (
-        <div className="flex gap-2 items-center">
-          {loading && <FaSpinner className="animate-spin" />}
-          {icon && icon}
-          {title}
-        </div>
-      )}
+      <div className="flex gap-2 items-center">
+        {loading && <FaSpinner className="animate-spin" />}
+        {icon && icon}
+        {title}
+      </div>
     </Button>
   );
 };
