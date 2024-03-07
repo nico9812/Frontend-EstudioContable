@@ -1,20 +1,42 @@
 import { useEffect } from 'react';
 
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import { Form, CloseButton, Button, Modal } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
-import { LoadingIndicator } from '../common/LoadingIndicator';
 import {
   useAddNewVencimientoMutation,
   useGetVencimientosQuery,
   useUpdateVencimientoMutation
 } from '@/redux/api/vencimientosApiSlice';
+import { format } from 'date-fns';
+import parse from 'date-fns/parse';
+import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Flex from '../common/Flex';
+import { LoadingIndicator } from '../common/LoadingIndicator';
+import { Button } from '../ui/button';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form';
+import { Input } from '../ui/input';
+import { es } from 'date-fns/locale';
+import { cn } from '@/lib/utils';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Switch } from '../ui/switch';
 
 const addOrEditPasswordSchema = yup.object().shape({
   nombre: yup
@@ -22,10 +44,23 @@ const addOrEditPasswordSchema = yup.object().shape({
     .max(30, 'Debe tener una longitud de 30 caracteres')
     .required('Este campo es requerido.'),
   fecha: yup
-    .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
-    .required('Este campo es requerido.'),
-  alarma: yup.bool().required('Este campo es requerido.')
+    .date()
+    .transform(function (value, originalValue) {
+      if (this.isType(value)) {
+        return value;
+      }
+      const result = parse(originalValue, 'dd.MM.yyyy', new Date());
+      return result;
+    })
+    .typeError('Porfavor, ingrese una Fecha Valida')
+    .required()
+    .min('1969-11-13', 'La fecha es muy temprana'),
+  alarma: yup.bool().transform((value, originalValue) => {
+    if (value === '') {
+      return false;
+    }
+    return originalValue;
+  })
 });
 
 const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
@@ -48,23 +83,22 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
   const [addNewVencimiento] = useAddNewVencimientoMutation();
   const [updateVencimiento] = useUpdateVencimientoMutation();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-    setValue,
-    reset
-  } = useForm({
-    resolver: yupResolver(addOrEditPasswordSchema)
+  const form = useForm({
+    resolver: yupResolver(addOrEditPasswordSchema),
+    defaultValues: {
+      nombre: '',
+      fecha: '',
+      alarma: ''
+    }
   });
 
   useEffect(() => {
     if (isEditPage && vencimiento) {
-      setValue('nombre', vencimiento.nombre);
-      setValue('fecha', vencimiento.fecha);
-      setValue('alarma', vencimiento.alarma);
+      form.setValue('nombre', vencimiento.nombre);
+      form.setValue('fecha', vencimiento.fecha);
+      form.setValue('alarma', vencimiento.alarma);
     }
-  }, [isEditPage, vencimiento, setValue]);
+  }, [isEditPage, vencimiento, form]);
 
   const titulo = isEditPage
     ? 'Edición de Vencimiento'
@@ -85,11 +119,11 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
     if (!isEditPage) {
       try {
         await addNewVencimiento({ ...data, propietario: userId }).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El Vencimiento fue creado exitosamente.');
       } catch (err) {
-        console.error('Failed to save the post', err);
+        toast.error('Hubo un error a la hora crear el Vencimiento.');
       }
     } else {
       try {
@@ -97,11 +131,11 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
           data: { ...data, propietario: userId },
           vencimientoId
         }).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El cliente fue editado exitosamente.');
       } catch (err) {
-        console.error('Failed to save the post', err);
+        toast.error('Hubo un error a la hora editar el Vencimiento.');
       }
     }
   };
@@ -109,84 +143,99 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
   return isLoading ? (
     <LoadingIndicator />
   ) : (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle id="contained-modal-title-vcenter">{titulo}</DialogTitle>
+      </DialogHeader>
+      <Form {...form}>
+        <FormField
+          control={form.control}
+          name="nombre"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nombre de Vencimiento</FormLabel>
+              <FormControl>
+                <Input placeholder="Nombre de Vencimiento" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </Modal.Header>
-      <Modal.Body>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-          className="d-flex flex-column gap-3 my-3 mx-4"
-        >
-          <Form.Group controlId="nombre">
-            <Form.Label>Nombre del Vencimiento</Form.Label>
-            <Form.Control
-              autoComplete="off"
-              type="text"
-              placeholder="Ingresa el Nombre del Vencimiento"
-              {...register('nombre')}
-            />
-            {errors.nombre && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.nombre.message}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
 
-          <Form.Group controlId="fecha">
-            <Form.Label>Fecha</Form.Label>
-            <Form.Control
-              autoComplete="off"
-              type="date"
-              {...register('fecha')}
-            />
-            {errors.fecha && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.fecha.message}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          <Form.Group controlId="alarma">
-            <Form.Check
-              autoComplete="off"
-              type="switch"
-              label="¿Alarma activada?"
-              {...register('alarma')}
-            />
-            {errors.alarma && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.alarma.message}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="justify-content-between">
+        <FormField
+          control={form.control}
+          name="fecha"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Fecha de Vencimiento</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={'outline'}
+                      className={cn(
+                        'w-full pl-3 text-left font-normal',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, 'PPP', {
+                          locale: es
+                        })
+                      ) : (
+                        <span>Selecciona una Fecha</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    locale={es}
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={date => date < new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="alarma"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <FormLabel>¿Alarma Activada?</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </Form>
+      <DialogFooter className="flex-row sm:justify-between justify-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Flex className="gap-4">
+        <div className="flex flex-row gap-4">
           {isEditPage && (
-            <Button variant="danger" onClick={onBorrarClick}>
+            <Button variant="destructive" onClick={onBorrarClick}>
               Borrar
             </Button>
           )}
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={handleSubmit(onSubmit)}
-            disabled={!isDirty}
-          >
-            Guardar
-          </Button>
-        </Flex>
-      </Modal.Footer>
-    </>
+          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+        </div>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 

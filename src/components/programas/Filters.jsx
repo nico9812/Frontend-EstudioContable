@@ -1,10 +1,10 @@
 import { Input } from 'reactstrap';
 import Flex from '../common/Flex';
-import IconAction from '../common/IconAction';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import ButtonAction from '../common/ButtonAction';
 import PropTypes from 'prop-types';
+import { FaPlusCircle } from "react-icons/fa";
 
-export const TableHeader = ({
+export const Filters = ({
   globalFilter,
   setGlobalFilter,
   location,
@@ -28,21 +28,21 @@ export const TableHeader = ({
         onChange={e => setGlobalFilter(e.target.value)}
       />
       {group === 1 && (
-        <IconAction
+        <ButtonAction
           className="text-primary h3 m-0"
           title="Agregar"
           ruta="agregar"
           state={{
             backgroundLocation: location
           }}
-          icon={faPlusCircle}
+          icon={FaPlusCircle}
         />
       )}
     </Flex>
   );
 };
 
-TableHeader.propTypes = {
+Filters.propTypes = {
   globalFilter: PropTypes.string,
   group: PropTypes.any,
   location: PropTypes.object,

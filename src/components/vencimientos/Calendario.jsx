@@ -1,16 +1,12 @@
-import '@/components/vencimientos/calendario.scss';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { useSelector } from 'react-redux';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
-import { selectCurrentGroup } from '@/redux/reducer/authReducerSlice';
 import dayjs from 'dayjs';
 import { VencimientoHooks } from '@/hooks/VencimientoHooks';
-import { Button } from 'react-bootstrap';
-import IconAction from '@/components/common/IconAction';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
+import { Button } from '../ui/button';
 
 dayjs.locale('es');
 
@@ -36,41 +32,22 @@ export const Calendario = ({ vencimientos, group }) => {
 
   const { eventos } = VencimientoHooks(vencimientos);
 
-  // eslint-disable-next-line no-unused-vars
-  const eventStyleGetter = event => {
-    let backgroundColor = event.alarma ? 'red' : 'green';
-    const style = {
-      backgroundColor: backgroundColor,
-      borderRadius: '0px',
-      opacity: 0.8,
-      color: 'white',
-      border: '0px',
-      display: 'block'
-    };
-    return {
-      style: style
-    };
-  };
-
   const CustomToolbar = toolbar => {
     return (
-      <div className="rbc-toolbar d-flex justify-content-between mb-3">
-        <span className="rbc-btn-group">
-          <Button type="button" onClick={() => toolbar.onNavigate('TODAY')}>
-            Hoy
-          </Button>
-          <Button type="button" onClick={() => toolbar.onNavigate('PREV')}>
-            Anterior
-          </Button>
-          <Button type="button" onClick={() => toolbar.onNavigate('NEXT')}>
-            Siguiente
-          </Button>
+      <div className="rbc-toolbar flex justify-between mb-3">
+        <span className="rbc-btn-group grid grid-cols-2 lg:grid-cols-4">
+          <Button onClick={() => toolbar.onNavigate('TODAY')}>Hoy</Button>
+          <Button onClick={() => toolbar.onNavigate('PREV')}>Anterior</Button>
+          <Button onClick={() => toolbar.onNavigate('NEXT')}>Siguiente</Button>
           {group == 1 && (
-            <IconAction
-              title="Nuevo Vencimiento"
-              ruta={`/dashboard/contador/vencimientos/${userId}/agregar`}
-              state={{ backgroundLocation: location }}
-            />
+            <Button>
+              <Link
+                to={`/dashboard/contador/vencimientos/${userId}/agregar`}
+                state={{ backgroundLocation: location }}
+              >
+                Agregar
+              </Link>
+            </Button>
           )}
         </span>
         <span>{toolbar.label}</span>
@@ -101,14 +78,13 @@ export const Calendario = ({ vencimientos, group }) => {
   };
 
   return (
-    <div className="calendario w-100 p-4 text-dark">
+    <div className="w-full p-4 text-dark h-[600px]">
       <Calendar
         localizer={localizer}
-        views={['month']}
+        views={['month', 'agenda']}
         messages={messages}
         events={eventos}
         {...(group === 1 && { onSelectEvent })}
-        eventPropGetter={eventStyleGetter}
         onShowMore={onShowMore}
         components={{
           toolbar: CustomToolbar

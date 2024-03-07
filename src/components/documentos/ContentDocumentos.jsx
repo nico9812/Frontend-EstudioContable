@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '@/components/documentos/documentos.scss';
 
 import { QueryHooks } from '@/hooks/QueryHooks';
 import { useGetCategoriasQuery } from '@/redux/api/categoriasApiSlice';
@@ -7,13 +6,18 @@ import {
   useGetDocumentosFiltradosQuery,
   useGetDocumentosQuery
 } from '@/redux/api/documentosApiSlice';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { Col, FormSelect, Row } from 'react-bootstrap';
-import { useLocation, useParams } from 'react-router-dom';
-import Flex from '../common/Flex';
-import IconAction from '../common/IconAction';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import ButtonAction from '../common/ButtonAction';
 import { CardDoc } from './CardDoc';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../ui/select';
+import { FaPlusCircle } from 'react-icons/fa';
 
 export function ContentDocumentos({ userId, group }) {
   let { userId: idParams } = useParams();
@@ -28,13 +32,8 @@ export function ContentDocumentos({ userId, group }) {
 
   return (
     <div className="mt-3">
-      <Flex direction="column" className="gap-3">
-        <Flex
-          direction="row"
-          alignItems="center"
-          justifyContent="between"
-          className="gap-3"
-        >
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-3">
           <QueryHooks
             useQuery={useGetCategoriasQuery()}
             childrenObjects={renderArray => ({
@@ -42,34 +41,45 @@ export function ContentDocumentos({ userId, group }) {
             })}
           >
             {({ categorias }) => (
-              <FormSelect
-                onChange={e => setSelected(e.target.value)}
+              <Select
+                onValueChange={value => {
+                  setSelected(value);
+                }}
+                defaultValue={selected}
                 className="w-lg-25"
                 size="sm"
               >
-                <option value="0">Todos</option>
-                {categorias.length > 0 &&
-                  categorias?.map(cat => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.nombre}
-                    </option>
-                  ))}
-              </FormSelect>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filtrar por Categoria" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0">Todas</SelectItem>
+                  {categorias.length > 0 &&
+                    categorias?.map(cat => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.nombre}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
             )}
           </QueryHooks>
           {group === 1 && (
-            <IconAction
-              className="text-primary h3 m-0"
-              title="Agregar Documento"
-              ruta="agregar"
+            <Link
+              to="agregar"
               state={{
                 backgroundLocation: location
               }}
-              icon={faPlusCircle}
-            />
+            >
+              <ButtonAction
+                className="ml-auto"
+                title="Agregar"
+                icon={<FaPlusCircle />}
+              />
+            </Link>
           )}
-        </Flex>
-        <div className="contenedor px-4 py-3">
+        </div>
+        <div className="flex border rounded-sm px-4 py-3">
           {selected !== '' && selected !== '0' ? (
             <QueryHooks
               // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -82,17 +92,17 @@ export function ContentDocumentos({ userId, group }) {
               })}
             >
               {({ documentos }) => (
-                <Row className="m-0 row-cols-2 row-cols-md-3 h-100 overflow-scroll">
+                <div className="grid grid-rows-2 grid-flow-col">
                   {documentos.length > 0 ? (
                     documentos.map(doc => (
-                      <Col className="p-1 cursor-pointer" key={doc.id}>
+                      <div className="p-1 cursor-pointer" key={doc.id}>
                         <CardDoc key={doc.id} documento={doc} />
-                      </Col>
+                      </div>
                     ))
                   ) : (
                     <div>No hay documentos</div>
                   )}
-                </Row>
+                </div>
               )}
             </QueryHooks>
           ) : (
@@ -104,22 +114,22 @@ export function ContentDocumentos({ userId, group }) {
               })}
             >
               {({ documentos }) => (
-                <Row className="m-0 row-cols-2 row-cols-md-3 h-100 overflow-scroll">
+                <div className="grid grid-rows-2 grid-flow-col">
                   {documentos.length > 0 ? (
                     documentos.map(doc => (
-                      <Col className="p-1 cursor-pointer" key={doc.id}>
+                      <div className="p-1 cursor-pointer" key={doc.id}>
                         <CardDoc key={doc.id} documento={doc} />
-                      </Col>
+                      </div>
                     ))
                   ) : (
                     <div>No hay documentos</div>
                   )}
-                </Row>
+                </div>
               )}
             </QueryHooks>
           )}
         </div>
-      </Flex>
+      </div>
     </div>
   );
 }

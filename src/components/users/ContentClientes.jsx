@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useGetUsersQuery } from '@/redux/api/usersApiSlice';
 import { TableClientes } from '@/components/users/TableClientes';
-import { AccionesBtn } from '@/components/users/AccionesBtn';
+// import { AccionesBtn } from '@/components/users/AccionesBtn';
 import { useLocation } from 'react-router-dom';
 import { QueryHooks } from '@/hooks/QueryHooks';
+import { DropDownActionsMenu } from '@/components/users/DropDownActionsMenu';
 
 const ContentClientes = () => {
   const location = useLocation();
@@ -12,31 +13,37 @@ const ContentClientes = () => {
     {
       accessorKey: 'username',
       header: 'Usuario',
-      cell: props => <>{props.getValue()}</>
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('username')}</div>
+      )
     },
     {
       accessorKey: 'last_name',
       header: 'Apellido',
-      cell: props => <>{props.getValue()}</>
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('last_name')}</div>
+      )
     },
     {
       accessorKey: 'first_name',
       header: 'Nombre',
-      cell: props => <>{props.getValue()}</>
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('first_name')}</div>
+      )
     },
     {
       accessorKey: 'email',
       header: 'Correo',
-      cell: props => <>{props.getValue()}</>
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue('email')}</div>
+      )
     },
     {
       accessorKey: 'actions',
       header: 'Acciones',
-      cell: props => {
-        return (
-          <AccionesBtn sentId={props.row?.original?.id} location={location} />
-        );
-      }
+      cell: ({ row }) => (
+        <DropDownActionsMenu sentId={row?.original?.id} location={location} />
+      )
     }
   ];
 

@@ -31,21 +31,14 @@ import ModalBorradoCategorias from '@/components/categorias/ModalBorradoCategori
 import { Programas } from '@/pages/programas/Programas';
 import ModalFormProgramas from '@/components/programas/ModalFormProgramas';
 import ModalBorradoProgramas from '@/components/programas/ModalBorradoProgramas';
-import ModalBorradoUser from "@/components/users/ModalBorradoCategorias";
+import ModalBorradoUser from '@/components/users/ModalBorradoCategorias';
+import Home from '@/pages/home/Home';
 
 function ReactRouting() {
   const location = useLocation();
   const background = location.state && location.state.backgroundLocation;
 
   const currentGroup = useSelector(selectCurrentGroup);
-
-  function Redireccion() {
-    if (currentGroup === 1) {
-      return <Navigate to="contador" replace />;
-    } else if (currentGroup === 2) {
-      return <Navigate to="cliente" replace />;
-    }
-  }
 
   return (
     <>
@@ -70,7 +63,7 @@ function ReactRouting() {
         <Route path="dashboard" element={<RequireAuth />}>
           <Route element={<DashboardLayout />}>
             {/* Redirección para usuarios */}
-            <Route index element={<Redireccion />} />
+            <Route index element={<Home />} />
             {/* Contador */}
             <Route
               path="contador"

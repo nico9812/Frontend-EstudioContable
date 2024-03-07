@@ -1,7 +1,25 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Form, CloseButton, Button, Modal } from 'react-bootstrap';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form';
+
+import { Input } from '../ui/input';
+import { Checkbox } from '../ui/checkbox';
+import { Button } from '../ui/button';
+
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
