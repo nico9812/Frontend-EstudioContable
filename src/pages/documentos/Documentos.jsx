@@ -1,6 +1,8 @@
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import ContentCalendario from '@/components/vencimientos/ContentVencimientos';
 import { ContentDocumentos } from '@/components/documentos/ContentDocumentos';
 import { selectCurrentUser } from '@/redux/reducer/authReducerSlice';
-import { Button, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -9,17 +11,17 @@ export function Documentos() {
 
   return (
     <Card>
-      <Card.Header className="text-center">
-        <Card.Title> Documentos </Card.Title>
-      </Card.Header>
-      <Card.Body>
+      <CardHeader className="text-center">
+        <h1 className="text-lg font-semibold">Vencimientos</h1>
+      </CardHeader>
+      <CardContent>
         {group === 1 && (
-          <Button as={Link} to="../" variant="secondary">
-            Volver
+          <Button asChild>
+            <Link to="../">Volver</Link>
           </Button>
         )}
         <ContentDocumentos group={group} {...(group === 2 && { userId })} />
-      </Card.Body>
+      </CardContent>
     </Card>
   );
 }
