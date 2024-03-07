@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Form, CloseButton, Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
@@ -13,6 +12,22 @@ import {
   useGetProgramasQuery,
   useUpdateProgramaMutation
 } from '@/redux/api/programasApiSlice';
+import { Button } from '../ui/button';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form';
+import { Input } from '../ui/input';
 
 const yupSchema = yup.object().shape({
   nombre: yup.string().required('Este campo es requerido.'),
@@ -39,14 +54,18 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
 
   const { userId, programaId } = useParams();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-    setValue,
-    reset
-  } = useForm({
-    resolver: yupResolver(yupSchema)
+  const form = useForm({
+    resolver: yupResolver(yupSchema),
+    defaultValues: {
+      nombre: '',
+      resolucion: '',
+      localidad: '',
+      fecha_inicio: '',
+      fecha_final: '',
+      dias: '',
+      profesional: '',
+      estado: ''
+    }
   });
 
   const { programa, isLoading } = useGetProgramasQuery(userId, {
@@ -62,16 +81,16 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
 
   useEffect(() => {
     if (isEditPage && programa) {
-      setValue('nombre', programa.nombre);
-      setValue('resolucion', programa.resolucion);
-      setValue('localidad', programa.localidad);
-      setValue('fecha_inicio', programa.fecha_inicio);
-      setValue('fecha_final', programa.fecha_final);
-      setValue('dias', programa.dias);
-      setValue('profesional', programa.profesional);
-      setValue('estado', programa.estado);
+      form.setValue('nombre', programa.nombre);
+      form.setValue('resolucion', programa.resolucion);
+      form.setValue('localidad', programa.localidad);
+      form.setValue('fecha_inicio', programa.fecha_inicio);
+      form.setValue('fecha_final', programa.fecha_final);
+      form.setValue('dias', programa.dias);
+      form.setValue('profesional', programa.profesional);
+      form.setValue('estado', programa.estado);
     }
-  }, [isEditPage, programa, setValue]);
+  }, [isEditPage, programa, form]);
 
   const titulo = isEditPage ? 'Edición de Categoria' : 'Registrar Categoria';
 
@@ -79,8 +98,8 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
     if (!isEditPage) {
       try {
         await addNewPrograma({ ...data, usuario: userId }).unwrap();
-        // reset();
-        // navigateBack();
+        form.reset();
+        navigateBack();
         toast.success('El cliente fue creado exitosamente.');
       } catch (err) {
         navigateBack();
@@ -92,7 +111,7 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
           data,
           programaId
         }).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El cliente fue editado exitosamente.');
       } catch (err) {
@@ -105,34 +124,25 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
   return isLoading ? (
     <LoadingIndicator />
   ) : (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-          className="d-flex flex-column gap-3 my-3 mx-4"
-        >
-          <Form.Group controlId="nombre">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              type="text"
-              autoComplete="off"
-              placeholder="Ingrese el nombre del Programa"
-              {...register('nombre')}
-            />
-            {errors.nombre && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.nombre.message}
-              </Form.Control.Feedback>
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle>{titulo}</DialogTitle>
+      </DialogHeader>
+      <Form {...form}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="nombre"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input placeholder="Nombre" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </Form.Group>
+          />
           <Form.Group controlId="resolucion">
             <Form.Label>Resolucion</Form.Label>
             <Form.Control
@@ -229,23 +239,17 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
+        </form>
+      </Form>
+      <DialogFooter className="sm:justify-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-          className="me-2 mb-1"
-          disabled={!isDirty}
-        >
-          Confirmar
-        </Button>
-      </Modal.Footer>
-    </>
+        <div className="flex flex-row gap-4">
+          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+        </div>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 
