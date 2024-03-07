@@ -1,10 +1,10 @@
 import { Input } from 'reactstrap';
 import Flex from '../common/Flex';
 import ButtonAction from '../common/ButtonAction';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import { FaPlusCircle } from "react-icons/fa";
 
-export const TableHeader = ({
+export const Filters = ({
   globalFilter,
   setGlobalFilter,
   location,
@@ -35,14 +35,14 @@ export const TableHeader = ({
           state={{
             backgroundLocation: location
           }}
-          icon={faPlusCircle}
+          icon={FaPlusCircle}
         />
       )}
     </Flex>
   );
 };
 
-TableHeader.propTypes = {
+Filters.propTypes = {
   globalFilter: PropTypes.string,
   group: PropTypes.any,
   location: PropTypes.object,

@@ -6,9 +6,15 @@ import {
 } from '@tanstack/react-table';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Table } from 'react-bootstrap';
-import Flex from '../common/Flex';
-import { TableHeader } from './Filters';
+import { Filters } from './Filters';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '../ui/table';
 
 export const TableProgramas = ({ data, columns, location, group }) => {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -24,43 +30,64 @@ export const TableProgramas = ({ data, columns, location, group }) => {
   });
 
   return (
-    <Flex direction="column" className="gap-3">
-      <TableHeader
+    <div className="flex flex-col gap-4 md:p-3">
+      <Filters
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
         location={location}
         group={group}
       />
-      <Table striped bordered hover responsive size="sm">
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+      <div className="flex flex-col flex-wrap relative overflow-auto">
+        <Table className="w-full rounded-md border overflow-auto">
+          <TableHeader>
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="text-left">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </Flex>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No hay clientes cargados.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 };
 
