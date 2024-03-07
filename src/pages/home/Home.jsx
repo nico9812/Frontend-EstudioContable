@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { FileIcon, UsersIcon } from 'lucide-react';
 import { BsThreeDots } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const group = useSelector(selectCurrentGroup);
@@ -25,8 +26,8 @@ const Home = () => {
                 <CardTitle>Clientes</CardTitle>
                 <CardDescription>Ver clientes cargados</CardDescription>
               </div>
-              <Button className="ml-auto" size="sm" variant="outline">
-                Ver
+              <Button className="ml-auto" size="sm" variant="outline" asChild>
+                <Link to="contador">Ver</Link>
               </Button>
             </CardContent>
           </Card>
@@ -37,8 +38,8 @@ const Home = () => {
                 <CardTitle>Categorias</CardTitle>
                 <CardDescription>Ver categorias disponibles</CardDescription>
               </div>
-              <Button className="ml-auto" size="sm" variant="outline">
-                Ver
+              <Button className="ml-auto" size="sm" variant="outline" asChild>
+                <Link to="contador/categorias">Ver</Link>
               </Button>
             </CardContent>
           </Card>
