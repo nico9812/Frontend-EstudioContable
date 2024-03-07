@@ -19,19 +19,32 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     addNewVencimiento: builder.mutation({
-      query: initialVencimiento => ({
-        url: '/vencimientos/',
-        method: 'POST',
-        body: {
-          ...initialVencimiento
-        }
-      }),
+      query: initialVencimiento => {
+        initialVencimiento = {
+          ...initialVencimiento,
+          fecha: initialVencimiento.fecha.toISOString().split('T')[0]
+        };
+        return {
+          url: '/vencimientos/',
+          method: 'POST',
+          body: {
+            ...initialVencimiento
+          }
+        };
+      },
       invalidatesTags: (result, error, arg) => [
         { type: 'Vencimiento', id: arg.id }
       ]
     }),
     updateVencimiento: builder.mutation({
       query: dataReceived => {
+        dataReceived = {
+          ...dataReceived,
+          data: {
+            ...dataReceived.data,
+            fecha: new Date(dataReceived.data.fecha).toISOString().split('T')[0]
+          }
+        };
         return {
           url: `/vencimientos/${dataReceived.vencimientoId}/`,
           method: 'PATCH',

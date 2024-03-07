@@ -2,8 +2,12 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useDeleteUserMutation } from '@/redux/api/usersApiSlice';
 import { toast } from 'react-toastify';
-import { DialogContent, DialogFooter, DialogTitle } from '../ui/dialog';
-import { AlertDialogHeader } from '../ui/alert-dialog';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
 import { Button } from '../ui/button';
 
 const ModalBorradoUser = ({ location, navigateBack, navigate }) => {
@@ -26,9 +30,9 @@ const ModalBorradoUser = ({ location, navigateBack, navigate }) => {
 
   return (
     <DialogContent closeAction={navigateBack}>
-      <AlertDialogHeader>
+      <DialogHeader>
         <DialogTitle id="contained-modal-title-vcenter">{titulo}</DialogTitle>
-      </AlertDialogHeader>
+      </DialogHeader>
       <span>
         Estas apunto de borrar este Usuario. ¿Estas seguro de querer borrarlo?
       </span>

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import 'simplebar-react/dist/simplebar.min.css';
 import { useSelector } from 'react-redux';
 import { selectCurrentGroup } from '@/redux/reducer/authReducerSlice';
+import { X } from 'lucide-react';
 
 export const SideBar = ({
   mobileToggleIsCollapsed,
@@ -77,19 +78,16 @@ export const SideBar = ({
         hidden: isCollapsed
       })}
     >
-      <div className="flex items-center h-16 justify-around border-b">
+      <div className="flex items-center p-4 h-16 md:justify-around justify-between border-b">
         <Link to="/">
           <h3 className="font-semibold">Sistema de Documentos</h3>
         </Link>
-        <span
-          className="flex md:hidden"
-          color="info"
+        <X
           onClick={() => {
             toggleIsCollapsed();
           }}
-        >
-          &times;
-        </span>
+          className="block md:hidden h-6 w-6 cursor-pointer"
+        />
       </div>
       <div className="flex flex-col flex-1 overflow-y-auto">
         <nav className="flex-1 px-2 py-4">
