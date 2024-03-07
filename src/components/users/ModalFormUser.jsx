@@ -1,9 +1,7 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Form, CloseButton, Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import PropTypes from 'prop-types';
 import {
   useGetUsersQuery,
   useAddNewUserMutation,
@@ -13,7 +11,23 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LoadingIndicator } from '../common/LoadingIndicator';
-import Flex from '../common/Flex';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form';
+import { Input } from '../ui/input';
+import { Checkbox } from '../ui/checkbox';
+import { Button } from '../ui/button';
 
 const addOrEditPasswordSchema = yup.object().shape({
   email: yup
@@ -53,15 +67,30 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
   const yupSchema =
     !passwordChange && isEditPage ? editSchema : addOrEditPasswordSchema;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-    setValue,
-    reset
-  } = useForm({
-    resolver: yupResolver(yupSchema)
+  const form = useForm({
+    resolver: yupResolver(yupSchema),
+    defaultValues: !isEditPage
+      ? {
+          email: '',
+          username: ''
+        }
+      : {
+          email: '',
+          username: '',
+          password: '',
+          confirmPassword: ''
+        }
   });
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors, isDirty },
+  //   setValue,
+  //   reset
+  // } = useForm({
+  //   resolver: yupResolver(yupSchema)
+  // });
 
   const { user, isLoading } = useGetUsersQuery('getUsers', {
     selectFromResult: ({ data, isLoading, isSuccess }) => ({
@@ -76,17 +105,13 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
 
   useEffect(() => {
     if (isEditPage && user) {
-      setValue('email', user.email);
-      setValue('username', user.username);
-      setValue('password', user.password);
+      form.setValue('email', user.email);
+      form.setValue('username', user.username);
+      form.setValue('password', user.password);
     }
-  }, [isEditPage, user, setValue]);
+  }, [isEditPage, user, form]);
 
   const titulo = isEditPage ? 'Edición de Cliente' : 'Registrar Cliente';
-
-  const handleCheckboxChange = e => {
-    setPasswordChange(e.target.checked);
-  };
 
   const onBorrarClick = () => {
     return navigate(`/dashboard/contador/clientes/borrar/${userId}`, {
@@ -100,11 +125,10 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
     if (!isEditPage) {
       try {
         await addNewUser(data).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El cliente fue creado exitosamente.');
       } catch (err) {
-        navigateBack();
         toast.error('Hubo un error a la hora crear el Usuario.');
       }
     } else {
@@ -113,11 +137,10 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
           data,
           userId
         }).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El cliente fue editado exitosamente.');
       } catch (err) {
-        navigateBack();
         toast.error('Hubo un error a la hora editar el Usuario.');
       }
     }
@@ -126,122 +149,108 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
   return isLoading ? (
     <LoadingIndicator />
   ) : (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-          className="d-flex flex-column gap-3 my-3 mx-4"
-        >
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle>{titulo}</DialogTitle>
+      </DialogHeader>
+      <Form {...form}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           {isEditPage && (
-            <Form.Group>
-              <Form.Check
-                label="Habilitar cambio de Contraseña"
-                onChange={handleCheckboxChange}
+            <div className="flex items-center gap-2">
+              <Checkbox
                 checked={passwordChange}
-              ></Form.Check>
-            </Form.Group>
+                onCheckedChange={setPasswordChange}
+                id="passwordChange"
+              />
+              <FormLabel htmlFor="passwordChange">
+                Habilitar cambio de contraseña.
+              </FormLabel>
+            </div>
           )}
 
-          <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              autoComplete="off"
-              type="email"
-              placeholder="Ingrese el Correo"
-              {...register('email')}
-            />
-            {errors.email && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.email.message}
-              </Form.Control.Feedback>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </Form.Group>
-          <Form.Group controlId="username">
-            <Form.Label>Usuario</Form.Label>
-            <Form.Control
-              autoComplete="off"
-              type="text"
-              placeholder="Ingrese el Usuario"
-              {...register('username')}
-            />
-            {errors.username && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.username.message}
-              </Form.Control.Feedback>
+          />
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Usuario</FormLabel>
+                <FormControl>
+                  <Input placeholder="Usuario" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </Form.Group>
+          />
 
           {(!isEditPage || passwordChange) && (
             <>
-              <Form.Group controlId="password">
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control
-                  autoComplete="new-password"
-                  type="password"
-                  placeholder="Ingrese la Contraseña"
-                  {...register('password')}
-                />
-                {errors.password && (
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {errors.password.message}
-                  </Form.Control.Feedback>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contraseña</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Contraseña"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Form.Group>
+              />
 
-              <Form.Group controlId="passwordConfirm">
-                <Form.Label>Confirmar Contraseña</Form.Label>
-                <Form.Control
-                  autoComplete="new-password"
-                  type="password"
-                  placeholder="Confirma la Contraseña"
-                  {...register('passwordConfirm')}
-                />
-                {errors.passwordConfirm && (
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {errors.passwordConfirm.message}
-                  </Form.Control.Feedback>
+              <FormField
+                control={form.control}
+                name="passwordConfirm"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirmar Contraseña</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Contraseña"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Form.Group>
+              />
             </>
           )}
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="justify-content-between">
+        </form>
+      </Form>
+      <DialogFooter className="sm:justify-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Flex className="gap-4">
+        <div className="flex flex-row gap-4">
           {isEditPage && (
-            <Button variant="danger" onClick={onBorrarClick}>
+            <Button variant="destructive" onClick={onBorrarClick}>
               Borrar
             </Button>
           )}
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={handleSubmit(onSubmit)}
-            disabled={!isDirty}
-          >
-            Guardar
-          </Button>
-        </Flex>
-      </Modal.Footer>
-    </>
+          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+        </div>
+      </DialogFooter>
+    </DialogContent>
   );
-};
-
-ModalFormUser.propTypes = {
-  location: PropTypes.object,
-  navigate: PropTypes.func,
-  navigateBack: PropTypes.func
 };
 
 export default ModalFormUser;

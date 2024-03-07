@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Children, cloneElement } from 'react';
+import { Dialog } from "../ui/dialog";
 
 export const ModalUsable = ({ children }) => {
   const navigate = useNavigate();
@@ -20,14 +20,16 @@ export const ModalUsable = ({ children }) => {
   );
 
   return (
-    <Modal
-      show={true}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      {childrenWithProps}
-    </Modal>
+    <Dialog open>{childrenWithProps}</Dialog>
+
+    // <Modal
+    //   show={true}
+    //   size="lg"
+    //   aria-labelledby="contained-modal-title-vcenter"
+    //   centered
+    // >
+    //   {childrenWithProps}
+    // </Modal>
   );
 };
 

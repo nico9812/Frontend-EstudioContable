@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
-import { Card } from 'react-bootstrap';
 import { useOpenDocumentoMutation } from '@/redux/api/documentosApiSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Card } from '../ui/card';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger
+} from '../ui/context-menu';
+import { FaFilePdf, FaTrash } from 'react-icons/fa';
 
 // contador
 export function CardDoc({ documento }) {
@@ -33,21 +40,38 @@ export function CardDoc({ documento }) {
   };
 
   return (
-    <Card
-      className="p-2 h-100 flex-center"
-      onClick={() => handleAbrirDoc()}
-      onContextMenu={event => handleBorrarDoc(event)}
-    >
-      <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />
-      <strong>{documento.nombre}</strong>
-      <span>
-        {new Date(documento.fecha_creacion).toLocaleDateString('es-AR', {
-          timeZone: 'UTC',
-          hour: '2-digit',
-          minute: '2-digit'
-        })}
-      </span>
-    </Card>
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <Card
+          className="flex flex-col  items-center justify-center p-4"
+          onClick={() => handleAbrirDoc()}
+        >
+          <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />
+          <strong>{documento.nombre}</strong>
+          <span>
+            {new Date(documento.fecha_creacion).toLocaleDateString('es-AR', {
+              timeZone: 'UTC',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </span>
+        </Card>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem
+          onClick={() => handleAbrirDoc()}
+          className="flex flex-row gap-2"
+        >
+          <FaFilePdf /> Ver Documento
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => handleBorrarDoc()}
+          className="flex flex-row gap-2"
+        >
+          <FaTrash /> Eliminar Documento
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
 

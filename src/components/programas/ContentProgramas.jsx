@@ -18,54 +18,54 @@ const ContentProgramas = ({ userId, group }) => {
     {
       accessorKey: 'nombre',
       header: 'Nombre',
-      cell: props => <>{props.getValue()}</>
+      cell: props => <div className="capitalize">{props.getValue()}</div>
     },
     {
       accessorKey: 'resolucion',
       header: 'Resolucion',
-      cell: props => <>{props.getValue()}</>
+      cell: props => <div className="capitalize">{props.getValue()}</div>
     },
     {
       accessorKey: 'localidad',
       header: 'Localidad',
-      cell: props => <>{props.getValue()}</>
+      cell: props => <div className="capitalize">{props.getValue()}</div>
     },
     {
       accessorKey: 'fecha_inicio',
       header: 'Fecha Inicio',
       cell: props => (
-        <>
+        <div className="capitalize">
           {new Date(props.getValue()).toLocaleDateString('es-AR', {
             timeZone: 'UTC'
           })}
-        </>
+        </div>
       )
     },
     {
       accessorKey: 'fecha_final',
       header: 'Fecha Final',
       cell: props => (
-        <>
+        <div className="capitalize">
           {new Date(props.getValue()).toLocaleDateString('es-AR', {
             timeZone: 'UTC'
           })}
-        </>
+        </div>
       )
     },
     {
       accessorKey: 'dias',
       header: 'Dias',
-      cell: props => <>{props.getValue()}</>
+      cell: props => <div className="capitalize">{props.getValue()}</div>
     },
     {
       accessorKey: 'profesional',
       header: 'Profesional',
-      cell: props => <>{props.getValue()}</>
+      cell: props => <div className="capitalize">{props.getValue()}</div>
     },
     {
       accessorKey: 'estado',
       header: 'Estado',
-      cell: props => <>{props.getValue()}</>
+      cell: props => <div className="capitalize">{props.getValue()}</div>
     }
   ];
 

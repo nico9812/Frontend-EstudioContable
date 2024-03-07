@@ -1,14 +1,18 @@
-import '@/components/vencimientos/vermas.scss';
-
 import { useGetVencimientosQuery } from '@/redux/api/vencimientosApiSlice';
 import PropTypes from 'prop-types';
-import { Button, Modal, CloseButton } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { LoadingIndicator } from '../common/LoadingIndicator';
-import { ListGroup, ListGroupItem } from 'reactstrap';
-import Flex from '../common/Flex';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import { Button } from '../ui/button';
+import { ScrollArea } from '../ui/scroll-area';
+import { Separator } from '../ui/separator';
 
-const VerMasVencimientos = ({ location, navigateBack, navigate }) => {
+const VerMasVencimientos = ({ location, navigateBack }) => {
   const { userId } = useParams();
 
   const diaLocation = location?.state?.day;
@@ -40,52 +44,44 @@ const VerMasVencimientos = ({ location, navigateBack, navigate }) => {
     }
   });
 
-  const onClickEvent = event => {
-    return navigate(
-      `/dashboard/contador/vencimientos/${userId}/editar/${event.target.id}`,
-      {
-        state: {
-          backgroundLocation: location.state.backgroundLocation
-        }
-      }
-    );
-  };
-
   return (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
-        />
-      </Modal.Header>
-      <Modal.Body as={Flex} justifyContent="center">
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle id="contained-modal-title-vcenter">{titulo}</DialogTitle>
+      </DialogHeader>
+      <div className="flex w-full justify-center">
         {isLoading ? (
           <LoadingIndicator />
         ) : (
-          <ListGroup className="w-50">
-            {vencimientos !== undefined &&
-              vencimientos?.map(ven => (
-                <ListGroupItem
-                  key={ven.id}
-                  id={ven.id}
-                  className="text-center"
-                  action
-                  onClick={onClickEvent}
-                >
-                  {ven.nombre}
-                </ListGroupItem>
-              ))}
-          </ListGroup>
+          <ScrollArea className="w-4/5 h-full text-center rounded-md border">
+            <div className="p-4">
+              <h4 className="mb-4 text-sm font-medium leading-none">
+                Vencimientos
+              </h4>
+              {vencimientos !== undefined &&
+                vencimientos?.map(ven => (
+                  <div key={ven.id} className="hover:bg-gray-100 pt-1">
+                    <Link
+                      to={`/dashboard/contador/vencimientos/${userId}/editar/${ven.id}`}
+                      state={{
+                        backgroundLocation: location.state.backgroundLocation
+                      }}
+                    >
+                      {ven.nombre}
+                    </Link>
+                    <Separator className="my-2" />
+                  </div>
+                ))}
+            </div>
+          </ScrollArea>
         )}
-      </Modal.Body>
-      <Modal.Footer>
+      </div>
+      <DialogFooter className="flex-row sm:justify-between justify-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-      </Modal.Footer>
-    </>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 

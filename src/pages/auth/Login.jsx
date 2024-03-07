@@ -1,17 +1,24 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/redux/reducer/authReducerSlice';
 import { useLoginMutation } from '@/redux/api/authApiSlice';
+import { setCredentials } from '@/redux/reducer/authReducerSlice';
+import { useDispatch } from 'react-redux';
 
-import Form from 'react-bootstrap/Form';
-import Flex from '@/components/common/Flex';
-import { BsGearFill } from 'react-icons/bs';
-import { BtnLoader } from '@/components/common/BtnLoader';
+import ButtonAction from '@/components/common/ButtonAction';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { toast } from 'react-toastify';
 
 const loginSchema = yup.object().shape({
@@ -26,13 +33,12 @@ const loginSchema = yup.object().shape({
 });
 
 export function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-    reset
-  } = useForm({
-    resolver: yupResolver(loginSchema)
+  const form = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: ''
+    }
   });
 
   const dispatch = useDispatch();
@@ -44,7 +50,7 @@ export function Login() {
     try {
       const userData = await login(data).unwrap();
       dispatch(setCredentials({ ...userData }));
-      reset();
+      form.reset();
       toast.success('Iniciaste sesión exitosamente');
       navigate('/dashboard');
     } catch (error) {
@@ -56,63 +62,53 @@ export function Login() {
   };
 
   return (
-    <Flex direction="column" className="gap-2 p-2 px-2">
-      <Flex
-        alignItems="center"
-        direction="column"
-        className="text-center text-primary"
-      >
-        <h1>
-          <BsGearFill />
-        </h1>
-        <h4>
-          <strong>Sistema</strong>
-        </h4>
-      </Flex>
-      <Form
-        onSubmit={handleSubmit(onSubmit)}
-        className="d-flex flex-column gap-3"
-      >
-        <Form.Group controlId="username">
-          <Form.Label>Usuario</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Usuario"
-            {...register('username')}
-          />
-          {errors.username && (
-            <Form.Control.Feedback type="invalid" className="d-block">
-              {errors.username.message}
-            </Form.Control.Feedback>
-          )}
-        </Form.Group>
-
-        <Form.Group controlId="password">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Contraseña"
-            {...register('password', { required: true })}
-          />
-          {errors.password && (
-            <Form.Control.Feedback type="invalid" className="d-block">
-              {errors.password.message}
-            </Form.Control.Feedback>
-          )}
-        </Form.Group>
-        <Flex className="mt-3">
-          <BtnLoader
-            className="w-100"
-            variant="primary"
-            type="submit"
-            title="Iniciar"
-            disabled={!isDirty}
-            loading={isLoading}
-          >
-            Ingresar
-          </BtnLoader>
-        </Flex>
-      </Form>
-    </Flex>
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle className="text-center">Inicio de Sesión</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Usuario</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Usuario" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Contraseña"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex w-100 justify-center">
+              <ButtonAction
+                className="w-full"
+                title="Iniciar"
+                loading={isLoading}
+              />
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
