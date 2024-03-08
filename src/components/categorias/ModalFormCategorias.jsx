@@ -105,9 +105,9 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
             name="nombre"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Nombre de Categoria</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Nombre de Categoria" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
