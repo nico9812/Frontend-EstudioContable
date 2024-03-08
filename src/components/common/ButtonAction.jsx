@@ -16,13 +16,19 @@ const ButtonAction = ({
   // Estados
   loading
 }) => {
+  const buttonProps = {
+    className,
+    disabled: loading,
+    variant
+  };
+
+  if (accion && !loading) {
+    buttonProps.onClick = accion;
+    buttonProps.asChild = true;
+  }
+
   return (
-    <Button
-      className={className}
-      disabled={loading}
-      variant={variant}
-      {...(accion && { onClick: accion, asChild: true })}
-    >
+    <Button {...buttonProps}>
       <div className="flex gap-2 items-center">
         {loading && <FaSpinner className="animate-spin" />}
         {icon && icon}

@@ -10,7 +10,8 @@ import {
   FaCalendarAlt,
   FaEdit,
   FaFilePdf,
-  FaClipboardList
+  FaClipboardList,
+  FaTrash
 } from 'react-icons/fa';
 import ButtonAction from '../common/ButtonAction';
 import { BsThreeDots } from 'react-icons/bs';
@@ -22,6 +23,14 @@ export const DropDownActionsMenu = ({ sentId, location = null }) => {
       icon: <FaEdit />,
       title: 'Editar',
       ruta: `clientes/editar/${sentId}`,
+      state: {
+        backgroundLocation: location
+      }
+    },
+    {
+      icon: <FaTrash />,
+      title: 'Eliminar',
+      ruta: `clientes/borrar/${sentId}`,
       state: {
         backgroundLocation: location
       }

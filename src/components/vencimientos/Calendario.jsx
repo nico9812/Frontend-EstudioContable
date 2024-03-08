@@ -3,10 +3,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import dayjs from 'dayjs';
 import { VencimientoHooks } from '@/hooks/VencimientoHooks';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { Button } from '../ui/button';
+import { useWindowWidth } from '@react-hook/window-size';
 
 dayjs.locale('es');
 
@@ -30,26 +31,36 @@ export const Calendario = ({ vencimientos, group }) => {
   const navigate = useNavigate();
   const localizer = dayjsLocalizer(dayjs);
 
+  const onlyWidth = useWindowWidth();
+  const mobileWidth = onlyWidth < 768;
+
   const { eventos } = VencimientoHooks(vencimientos);
+  const view = mobileWidth ? 'agenda' : 'month';
 
   const CustomToolbar = toolbar => {
     return (
-      <div className="rbc-toolbar flex justify-between mb-3">
-        <span className="rbc-btn-group grid grid-cols-2 lg:grid-cols-4">
+      <div className="rbc-toolbar grid w-full grid-cols-1 sm:justify-items-end sm:grid-cols-2 gap-2">
+        <div className="w-full rbc-btn-group grid grid-cols-2 lg:grid-cols-4">
           <Button onClick={() => toolbar.onNavigate('TODAY')}>Hoy</Button>
           <Button onClick={() => toolbar.onNavigate('PREV')}>Anterior</Button>
           <Button onClick={() => toolbar.onNavigate('NEXT')}>Siguiente</Button>
           {group == 1 && (
-            <Button>
-              <Link
-                to={`/dashboard/contador/vencimientos/${userId}/agregar`}
-                state={{ backgroundLocation: location }}
-              >
-                Agregar
-              </Link>
+            <Button
+              onClick={() => {
+                return navigate(
+                  `/dashboard/contador/vencimientos/${userId}/agregar`,
+                  {
+                    state: {
+                      backgroundLocation: location
+                    }
+                  }
+                );
+              }}
+            >
+              Agregar
             </Button>
           )}
-        </span>
+        </div>
         <span>{toolbar.label}</span>
       </div>
     );
@@ -82,6 +93,7 @@ export const Calendario = ({ vencimientos, group }) => {
       <Calendar
         localizer={localizer}
         views={['month', 'agenda']}
+        view={view}
         messages={messages}
         events={eventos}
         {...(group === 1 && { onSelectEvent })}

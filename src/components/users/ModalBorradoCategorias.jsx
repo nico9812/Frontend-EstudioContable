@@ -9,13 +9,14 @@ import {
   DialogTitle
 } from '../ui/dialog';
 import { Button } from '../ui/button';
+import ButtonAction from '../common/ButtonAction';
 
 const ModalBorradoUser = ({ location, navigateBack, navigate }) => {
   const { userId } = useParams();
 
   const titulo = 'Borrar Usuario';
 
-  const [deleteUser] = useDeleteUserMutation();
+  const [deleteUser, { isLoading }] = useDeleteUserMutation();
 
   const onBorrarClick = async () => {
     try {
@@ -40,9 +41,11 @@ const ModalBorradoUser = ({ location, navigateBack, navigate }) => {
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Button variant="destructive" onClick={onBorrarClick}>
-          Borrar
-        </Button>
+        <ButtonAction
+          loading={isLoading}
+          accion={onBorrarClick}
+          title={'Guardar'}
+        />
       </DialogFooter>
     </DialogContent>
   );

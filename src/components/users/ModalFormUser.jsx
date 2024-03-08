@@ -10,7 +10,6 @@ import {
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { LoadingIndicator } from '../common/LoadingIndicator';
 import {
   DialogContent,
   DialogFooter,
@@ -28,6 +27,7 @@ import {
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
+import ButtonAction from '../common/ButtonAction';
 
 const addOrEditPasswordSchema = yup.object().shape({
   email: yup
@@ -82,26 +82,16 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
         }
   });
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors, isDirty },
-  //   setValue,
-  //   reset
-  // } = useForm({
-  //   resolver: yupResolver(yupSchema)
-  // });
-
-  const { user, isLoading } = useGetUsersQuery('getUsers', {
-    selectFromResult: ({ data, isLoading, isSuccess }) => ({
+  const { user } = useGetUsersQuery('getUsers', {
+    selectFromResult: ({ data, isSuccess }) => ({
       user: data?.entities[userId],
-      isLoading,
+
       isSuccess
     })
   });
 
-  const [addNewUser] = useAddNewUserMutation();
-  const [updateUser] = useUpdateUserMutation();
+  const [addNewUser, { isLoading: isLoadingNew }] = useAddNewUserMutation();
+  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
 
   useEffect(() => {
     if (isEditPage && user) {
@@ -146,9 +136,7 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
     }
   };
 
-  return isLoading ? (
-    <LoadingIndicator />
-  ) : (
+  return (
     <DialogContent closeAction={navigateBack}>
       <DialogHeader>
         <DialogTitle>{titulo}</DialogTitle>
@@ -246,7 +234,11 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
               Borrar
             </Button>
           )}
-          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+          <ButtonAction
+            loading={!isEditPage ? isLoadingNew : isLoadingUpdate}
+            accion={form.handleSubmit(onSubmit)}
+            title={'Guardar'}
+          />
         </div>
       </DialogFooter>
     </DialogContent>

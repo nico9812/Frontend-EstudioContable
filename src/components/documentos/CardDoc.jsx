@@ -55,6 +55,7 @@ export function CardDoc({ documento }) {
               minute: '2-digit'
             })}
           </span>
+          <small className="text-gray-600">{documento.categoria}</small>
         </Card>
       </ContextMenuTrigger>
       <ContextMenuContent>
