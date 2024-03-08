@@ -15,7 +15,7 @@ import {
   TableHeader
 } from '../ui/table';
 
-import { TableHeader as Filters } from './Filters';
+import { Filters } from './Filters';
 
 export const TableClientes = ({ data, columns, location }) => {
   const [globalFilters, setGlobalFilters] = useState('');

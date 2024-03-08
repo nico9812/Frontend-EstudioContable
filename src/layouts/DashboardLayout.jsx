@@ -31,9 +31,6 @@ const DashboardLayout = () => {
       className={classNames('flex min-h-screen grid-cols-[280px_1fr]', {
         'md:grid': !isCollapsed
       })}
-      style={{
-        zoom: '130%'
-      }}
     >
       <SideBar
         mobileToggleIsCollapsed={mobileToggleIsCollapsed}

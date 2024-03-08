@@ -17,13 +17,13 @@ import {
 } from '../ui/table';
 
 export const TableProgramas = ({ data, columns, location, group }) => {
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [globalFilters, setGlobalFilters] = useState('');
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      globalFilter: globalFilter
+      globalFilter: globalFilters
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
@@ -32,8 +32,8 @@ export const TableProgramas = ({ data, columns, location, group }) => {
   return (
     <div className="flex flex-col gap-4 md:p-3">
       <Filters
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
+        globalFilters={globalFilters}
+        setGlobalFilters={setGlobalFilters}
         location={location}
         group={group}
       />

@@ -11,6 +11,7 @@ import {
   ContextMenuTrigger
 } from '../ui/context-menu';
 import { FaFilePdf, FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 // contador
 export function CardDoc({ documento }) {
@@ -23,12 +24,11 @@ export function CardDoc({ documento }) {
     try {
       await openDocumento(documento.id);
     } catch (error) {
-      console.log(error);
+      toast.error('Ocurrio un error a la hora de abrir el documento');
     }
   };
 
-  const handleBorrarDoc = event => {
-    event.preventDefault();
+  const handleBorrarDoc = () => {
     return navigate(
       `/dashboard/contador/documentos/${documento.propietario}/borrar/${documento.id}`,
       {
@@ -43,7 +43,7 @@ export function CardDoc({ documento }) {
     <ContextMenu>
       <ContextMenuTrigger>
         <Card
-          className="flex flex-col  items-center justify-center p-4"
+          className="flex flex-col items-center justify-center p-4 cursor-pointer"
           onClick={() => handleAbrirDoc()}
         >
           <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />
@@ -55,6 +55,7 @@ export function CardDoc({ documento }) {
               minute: '2-digit'
             })}
           </span>
+          <small className="text-gray-600">{documento.categoria}</small>
         </Card>
       </ContextMenuTrigger>
       <ContextMenuContent>

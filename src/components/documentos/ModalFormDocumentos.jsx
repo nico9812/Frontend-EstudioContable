@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '../ui/dialog';
+
 import {
   Form,
   FormControl,
@@ -17,7 +18,6 @@ import {
 } from '../ui/form';
 
 import { Input } from '../ui/input';
-import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
 
 import { useForm } from 'react-hook-form';
@@ -27,12 +27,19 @@ import { useParams } from 'react-router-dom';
 import { useGetCategoriasQuery } from '@/redux/api/categoriasApiSlice';
 import { useAddNewDocumentoMutation } from '@/redux/api/documentosApiSlice';
 import { QueryHooks } from '@/hooks/QueryHooks';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../ui/select';
 
 const yupSchema = yup.object().shape({
   archivo: yup
     .mixed()
     .test('fileType', 'Solo se permiten archivos PDF', value => {
-      return value && value[0] && value[0].type === 'application/pdf';
+      return value.type === 'application/pdf';
     }),
   categoria: yup
     .string()
@@ -45,13 +52,12 @@ const ModalFormDocumentos = ({ navigateBack }) => {
   // const isEditPage = location.pathname.includes('edit');s
   // const titulo = isEditPage ? 'Edición de Cliente' : 'Registrar Documento';
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-    reset
-  } = useForm({
-    resolver: yupResolver(yupSchema)
+  const form = useForm({
+    resolver: yupResolver(yupSchema),
+    defaultValues: {
+      archivo: '',
+      categoria: ''
+    }
   });
 
   const [addNewDocumento] = useAddNewDocumentoMutation();
@@ -61,7 +67,7 @@ const ModalFormDocumentos = ({ navigateBack }) => {
   const onSubmit = async data => {
     try {
       await addNewDocumento({ ...data, propietario: userId }).unwrap();
-      reset();
+      form.reset();
       navigateBack();
       toast.success('El cliente fue creado exitosamente.');
     } catch (err) {
@@ -71,79 +77,86 @@ const ModalFormDocumentos = ({ navigateBack }) => {
   };
 
   return (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-          className="d-flex flex-column gap-3 my-3 mx-4"
-        >
-          <Form.Group controlId="archivo">
-            <Form.Label>Archivo</Form.Label>
-            <Form.Control
-              autoComplete="off"
-              type="file"
-              placeholder="Ingrese el Correo"
-              accept=".pdf"
-              {...register('archivo')}
-            />
-            {errors.archivo && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.archivo.message}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          <Form.Group controlId="categoria">
-            <Form.Label>Categoria</Form.Label>
-            <QueryHooks
-              useQuery={useGetCategoriasQuery()}
-              childrenObjects={renderArray => ({
-                categorias: renderArray
-              })}
-            >
-              {({ categorias }) => {
-                return (
-                  <Form.Select {...register('categoria')}>
-                    <option value="">Selecciona...</option>
-                    {categorias.map(cat => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.nombre}
-                      </option>
-                    ))}
-                  </Form.Select>
-                );
-              }}
-            </QueryHooks>
-            {errors.categoria && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.categoria.message}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle>{titulo}</DialogTitle>
+      </DialogHeader>
+      <Form {...form}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="archivo"
+            // eslint-disable-next-line no-unused-vars
+            render={({ field: { value, onChange, ...fieldProps } }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Archivo</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...fieldProps}
+                      placeholder="Selecione un archivo..."
+                      type="file"
+                      accept="application/pdf"
+                      onChange={event =>
+                        onChange(event.target.files && event.target.files[0])
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <QueryHooks
+            useQuery={useGetCategoriasQuery()}
+            childrenObjects={renderArray => ({
+              categorias: renderArray
+            })}
+          >
+            {({ categorias }) => {
+              return (
+                <FormField
+                  control={form.control}
+                  name="categoria"
+                  render={({ field: { onChange, value } }) => (
+                    <FormItem>
+                      <FormLabel>Categorias</FormLabel>
+                      <Select
+                        onValueChange={onChange}
+                        defaultValue={value}
+                        value={value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccione una Categoria" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categorias.map(cat => (
+                            <SelectItem key={cat.id} value={cat.id}>
+                              {cat.nombre}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              );
+            }}
+          </QueryHooks>
+        </form>
+      </Form>
+      <DialogFooter>
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-          className="me-2 mb-1"
-          disabled={!isDirty}
-        >
-          Confirmar
-        </Button>
-      </Modal.Footer>
-    </>
+        <div className="flex flex-row gap-4">
+          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+        </div>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 

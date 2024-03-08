@@ -10,12 +10,12 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import ButtonAction from '../common/ButtonAction';
 import { Link } from 'react-router-dom';
-import { FaEdit, FaRemoveFormat } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 export const AccionesBtn = ({ sentId, location = null }) => {
   const acciones = [
     {
-      icon: FaEdit,
+      icon: <FaEdit />,
       title: 'Editar',
       ruta: `editar/${sentId}`,
       state: {
@@ -23,7 +23,7 @@ export const AccionesBtn = ({ sentId, location = null }) => {
       }
     },
     {
-      icon: FaRemoveFormat,
+      icon: <FaTrash />,
       title: 'Remover',
       ruta: `borrar/${sentId}`,
       state: {

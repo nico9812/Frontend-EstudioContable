@@ -11,14 +11,14 @@ import {
   persistStore
 } from 'redux-persist';
 
-import storageSession from 'redux-persist/lib/storage/session';
+import storage from 'redux-persist/lib/storage';
 
 import { apiSlice } from '@/redux/apiSlice';
 import authReducerSlice from '@/redux/reducer/authReducerSlice';
 
 const persistConfig = {
   key: 'root',
-  storage: storageSession,
+  storage,
   whitelist: ['auth']
 };
 

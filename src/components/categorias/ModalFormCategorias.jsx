@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Form, CloseButton, Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
@@ -13,6 +12,22 @@ import {
   useGetCategoriasQuery,
   useUpdateCategoriaMutation
 } from '@/redux/api/categoriasApiSlice';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 
 const yupSchema = yup.object().shape({
   nombre: yup.string().required('Este campo es requerido.')
@@ -23,14 +38,11 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
 
   const { categoriaId } = useParams();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-    setValue,
-    reset
-  } = useForm({
-    resolver: yupResolver(yupSchema)
+  const form = useForm({
+    resolver: yupResolver(yupSchema),
+    defaultValues: {
+      nombre: ''
+    }
   });
 
   const { categoria, isLoading } = useGetCategoriasQuery('getUsers', {
@@ -46,9 +58,9 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
 
   useEffect(() => {
     if (isEditPage && categoria) {
-      setValue('nombre', categoria.nombre);
+      form.setValue('nombre', categoria.nombre);
     }
-  }, [isEditPage, categoria, setValue]);
+  }, [isEditPage, categoria, form]);
 
   const titulo = isEditPage ? 'Edición de Categoria' : 'Registrar Categoria';
 
@@ -56,7 +68,7 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
     if (!isEditPage) {
       try {
         await addNewCategoria(data).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El cliente fue creado exitosamente.');
       } catch (err) {
@@ -69,7 +81,7 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
           data,
           categoriaId
         }).unwrap();
-        reset();
+        form.reset();
         navigateBack();
         toast.success('El cliente fue editado exitosamente.');
       } catch (err) {
@@ -82,51 +94,41 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
   return isLoading ? (
     <LoadingIndicator />
   ) : (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-          className="d-flex flex-column gap-3 my-3 mx-4"
-        >
-          <Form.Group controlId="nombre">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              type="text"
-              autoComplete="off"
-              placeholder="Ingrese el nombre de Categoria"
-              {...register('nombre')}
-            />
-            {errors.nombre && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {errors.nombre.message}
-              </Form.Control.Feedback>
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle id="contained-modal-title-vcenter">{titulo}</DialogTitle>
+      </DialogHeader>
+      <Form {...form}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="nombre"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre de Categoria</FormLabel>
+                <FormControl>
+                  <Input placeholder="Nombre de Categoria" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
+          />
+        </form>
+      </Form>
+      <DialogFooter>
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-          className="me-2 mb-1"
-          disabled={!isDirty}
-        >
-          Confirmar
-        </Button>
-      </Modal.Footer>
-    </>
+        <div className="flex flex-row gap-4">
+          {/* {isEditPage && (
+            <Button variant="destructive" onClick={onBorrarClick}>
+              Borrar
+            </Button>
+          )} */}
+          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+        </div>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 
