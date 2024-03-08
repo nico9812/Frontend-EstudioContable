@@ -76,7 +76,7 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
 
   const { programa, isLoading } = useGetProgramasQuery(userId, {
     selectFromResult: ({ data, isLoading, isSuccess }) => ({
-      programa: data?.entities[userId],
+      programa: data?.entities[programaId],
       isLoading,
       isSuccess
     })

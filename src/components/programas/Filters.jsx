@@ -14,7 +14,9 @@ export const Filters = ({ globalFilters, setGlobalFilters, location }) => {
         aria-label="Buscador"
         required
         value={globalFilters}
-        onChange={e => setGlobalFilters(e.target.value)}
+        onChange={e => {
+          return setGlobalFilters(e.target.value);
+        }}
       />
       <Link
         to="agregar"

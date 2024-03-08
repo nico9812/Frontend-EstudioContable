@@ -23,7 +23,7 @@ export const TableProgramas = ({ data, columns, location, group }) => {
     data,
     columns,
     state: {
-      globalFilters: globalFilters
+      globalFilter: globalFilters
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()

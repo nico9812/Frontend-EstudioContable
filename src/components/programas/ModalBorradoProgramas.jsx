@@ -34,7 +34,7 @@ const ModalBorradoProgramas = ({ location, navigateBack, navigate }) => {
         <DialogTitle id="contained-modal-title-vcenter">{titulo}</DialogTitle>
       </DialogHeader>
       <span>
-        Estas apunto de borrar este Usuario. ¿Estas seguro de querer borrarlo?
+        Estas apunto de borrar este Programa. ¿Estas seguro de querer borrarlo?
       </span>
       <DialogFooter className="sm:justify-between">
         <Button variant="secondary" onClick={navigateBack}>
