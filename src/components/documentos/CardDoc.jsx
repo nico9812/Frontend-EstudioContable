@@ -27,8 +27,7 @@ export function CardDoc({ documento }) {
     }
   };
 
-  const handleBorrarDoc = event => {
-    event.preventDefault();
+  const handleBorrarDoc = () => {
     return navigate(
       `/dashboard/contador/documentos/${documento.propietario}/borrar/${documento.id}`,
       {
