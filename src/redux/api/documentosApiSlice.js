@@ -35,7 +35,6 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
     }),
     addNewDocumento: builder.mutation({
       query: initialDocumento => {
-        console.log(initialDocumento.archivo);
         const formData = new FormData();
         formData.append('nombre', initialDocumento.archivo.name);
         formData.append('archivo', initialDocumento.archivo);

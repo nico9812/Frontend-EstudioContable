@@ -121,7 +121,11 @@ const ModalFormDocumentos = ({ navigateBack }) => {
                   render={({ field: { onChange, value } }) => (
                     <FormItem>
                       <FormLabel>Categorias</FormLabel>
-                      <Select onValueChange={onChange} defaultValue={value}>
+                      <Select
+                        onValueChange={onChange}
+                        defaultValue={value}
+                        value={value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Seleccione una Categoria" />
@@ -129,11 +133,7 @@ const ModalFormDocumentos = ({ navigateBack }) => {
                         </FormControl>
                         <SelectContent>
                           {categorias.map(cat => (
-                            <SelectItem
-                              className="text-pink-900"
-                              key={cat.id}
-                              value={cat.id}
-                            >
+                            <SelectItem key={cat.id} value={cat.id}>
                               {cat.nombre}
                             </SelectItem>
                           ))}

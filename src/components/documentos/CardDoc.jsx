@@ -11,6 +11,7 @@ import {
   ContextMenuTrigger
 } from '../ui/context-menu';
 import { FaFilePdf, FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 // contador
 export function CardDoc({ documento }) {
@@ -23,7 +24,7 @@ export function CardDoc({ documento }) {
     try {
       await openDocumento(documento.id);
     } catch (error) {
-      console.log(error);
+      toast.error('Ocurrio un error a la hora de abrir el documento');
     }
   };
 
