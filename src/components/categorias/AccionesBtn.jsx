@@ -1,45 +1,60 @@
-import Flex from '@/components/common/Flex';
-import ButtonAction from '@/components/common/ButtonAction';
-import { faEdit, faRemove } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '../ui/dropdown-menu';
+import { BsThreeDots } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
+import ButtonAction from '../common/ButtonAction';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 export const AccionesBtn = ({ sentId, location = null }) => {
   const acciones = [
     {
-      icon: faEdit,
+      icon: <FaEdit />,
       title: 'Editar',
       ruta: `${sentId}/editar`,
-      className: 'text-primary',
       state: {
         backgroundLocation: location
       }
     },
     {
-      icon: faRemove,
+      icon: <FaTrash />,
       title: 'Remover',
       ruta: `${sentId}/borrar`,
-      className: 'text-danger',
       state: {
         backgroundLocation: location
       }
     }
   ];
   return (
-    <Flex justifyContent="evenly" className="gap-3 gap-lg-0">
-      {acciones.map(({ icon, title, ruta, className, state }, i) => (
-        <IconAction
-          key={i}
-          className={className}
-          title={title}
-          ruta={ruta}
-          icon={icon}
-          {...(state && { state })}
-        />
-      ))}
-    </Flex>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <BsThreeDots className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {acciones.map(({ icon, title, ruta, className, state }, i) => (
+          <Link to={ruta} state={state} key={i}>
+            <DropdownMenuItem>
+              <ButtonAction
+                className={className + ' block w-full gap-2 justify-start'}
+                title={title}
+                icon={icon}
+                variant="ghost"
+              />
+            </DropdownMenuItem>
+          </Link>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
-
 AccionesBtn.propTypes = {
   sentId: PropTypes.number,
   location: PropTypes.object

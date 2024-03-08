@@ -1,9 +1,14 @@
-import { CloseButton, Button, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useDeleteCategoriaMutation } from '@/redux/api/categoriasApiSlice';
-import Flex from '../common/Flex';
 import { toast } from 'react-toastify';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '../ui/dialog';
+import { Button } from '../ui/button';
 
 const ModalBorradoCategorias = ({ location, navigateBack, navigate }) => {
   const { categoriaId } = useParams();
@@ -24,31 +29,22 @@ const ModalBorradoCategorias = ({ location, navigateBack, navigate }) => {
   };
 
   return (
-    <>
-      <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">{titulo}</Modal.Title>
-        <CloseButton
-          className="btn btn-circle btn-sm transition-base p-0"
-          onClick={navigateBack}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <span>
-          Estas apunto de borrar esta Categoria. ¿Estas seguro de querer
-          borrarlo?
-        </span>
-      </Modal.Body>
-      <Modal.Footer className="justify-content-between">
+    <DialogContent closeAction={navigateBack}>
+      <DialogHeader>
+        <DialogTitle>{titulo}</DialogTitle>
+      </DialogHeader>
+      <span>
+        Estas apunto de borrar esta Categoria. ¿Estas seguro de querer borrarlo?
+      </span>
+      <DialogFooter className="sm:justify-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Flex className="gap-4">
-          <Button variant="danger" onClick={onBorrarClick}>
-            Borrar
-          </Button>
-        </Flex>
-      </Modal.Footer>
-    </>
+        <Button variant="destructive" onClick={onBorrarClick}>
+          Borrar
+        </Button>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 

@@ -1,50 +1,39 @@
-import { Input } from 'reactstrap';
-import Flex from '../common/Flex';
 import ButtonAction from '../common/ButtonAction';
 import PropTypes from 'prop-types';
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle } from 'react-icons/fa';
+import { Input } from '../ui/input';
+import { Link } from 'react-router-dom';
 
-export const Filters = ({
-  globalFilter,
-  setGlobalFilter,
-  location,
-  group
-}) => {
+export const Filters = ({ globalFilters, setGlobalFilters, location }) => {
   return (
-    <Flex
-      direction="row"
-      alignItems="center"
-      justifyContent="end"
-      className="gap-3"
-    >
+    <div className="flex items-center justify-end py-4 gap-2">
       <Input
         type="text"
-        className="w-lg-25"
+        className="w-full max-w-sm"
         placeholder="Buscar"
         aria-label="Buscador"
-        aria-describedby="basic-addon2"
         required
-        value={globalFilter}
-        onChange={e => setGlobalFilter(e.target.value)}
+        value={globalFilters}
+        onChange={e => setGlobalFilters(e.target.value)}
       />
-      {group === 1 && (
+      <Link
+        to="agregar"
+        state={{
+          backgroundLocation: location
+        }}
+      >
         <ButtonAction
-          className="text-primary h3 m-0"
+          className="ml-auto"
           title="Agregar"
-          ruta="agregar"
-          state={{
-            backgroundLocation: location
-          }}
-          icon={FaPlusCircle}
+          icon={<FaPlusCircle />}
         />
-      )}
-    </Flex>
+      </Link>
+    </div>
   );
 };
 
 Filters.propTypes = {
-  globalFilter: PropTypes.string,
-  group: PropTypes.any,
-  location: PropTypes.object,
-  setGlobalFilter: PropTypes.func
+  globalFilters: PropTypes.string,
+  setGlobalFilters: PropTypes.func,
+  location: PropTypes.object
 };

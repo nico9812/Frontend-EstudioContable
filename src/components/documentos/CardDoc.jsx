@@ -43,7 +43,7 @@ export function CardDoc({ documento }) {
     <ContextMenu>
       <ContextMenuTrigger>
         <Card
-          className="flex flex-col  items-center justify-center p-4"
+          className="flex flex-col items-center justify-center p-4 cursor-pointer"
           onClick={() => handleAbrirDoc()}
         >
           <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />

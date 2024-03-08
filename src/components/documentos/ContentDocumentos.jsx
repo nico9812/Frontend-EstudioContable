@@ -79,56 +79,31 @@ export function ContentDocumentos({ userId, group }) {
             </Link>
           )}
         </div>
-        <div className="flex border rounded-sm px-4 py-3">
-          {selected !== '' && selected !== '0' ? (
-            <QueryHooks
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              useQuery={useGetDocumentosFiltradosQuery({
-                strCat: selected,
-                userId: userId
-              })}
-              childrenObjects={renderArray => ({
-                documentos: renderArray
-              })}
-            >
-              {({ documentos }) => (
-                <div className="grid grid-rows-2 grid-flow-col">
-                  {documentos.length > 0 ? (
-                    documentos.map(doc => (
-                      <div className="p-1 cursor-pointer" key={doc.id}>
-                        <CardDoc key={doc.id} documento={doc} />
-                      </div>
-                    ))
-                  ) : (
-                    <div>No hay documentos</div>
-                  )}
-                </div>
+        <QueryHooks
+          useQuery={
+            selected !== '' && selected !== '0'
+              ? // eslint-disable-next-line react-hooks/rules-of-hooks
+                useGetDocumentosFiltradosQuery({
+                  strCat: selected,
+                  userId: userId
+                })
+              : // eslint-disable-next-line react-hooks/rules-of-hooks
+                useGetDocumentosQuery(userId)
+          }
+          childrenObjects={renderArray => ({
+            documentos: renderArray
+          })}
+        >
+          {({ documentos }) => (
+            <div className="border rounded-sm px-4 py-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
+              {documentos.length > 0 ? (
+                documentos.map(doc => <CardDoc key={doc.id} documento={doc} />)
+              ) : (
+                <div className="text-center">No hay documentos</div>
               )}
-            </QueryHooks>
-          ) : (
-            <QueryHooks
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              useQuery={useGetDocumentosQuery(userId)}
-              childrenObjects={renderArray => ({
-                documentos: renderArray
-              })}
-            >
-              {({ documentos }) => (
-                <div className="grid grid-rows-2 grid-flow-col">
-                  {documentos.length > 0 ? (
-                    documentos.map(doc => (
-                      <div className="p-1 cursor-pointer" key={doc.id}>
-                        <CardDoc key={doc.id} documento={doc} />
-                      </div>
-                    ))
-                  ) : (
-                    <div>No hay documentos</div>
-                  )}
-                </div>
-              )}
-            </QueryHooks>
+            </div>
           )}
-        </div>
+        </QueryHooks>
       </div>
     </div>
   );

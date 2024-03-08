@@ -1,31 +1,39 @@
-import Flex from '../common/Flex';
 import ButtonAction from '../common/ButtonAction';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import { FaPlusCircle } from 'react-icons/fa';
+import { Input } from '../ui/input';
+import { Link } from 'react-router-dom';
 
-export const TableHeader = ({ location }) => {
+export const Filters = ({ globalFilters, setGlobalFilters, location }) => {
   return (
-    <Flex
-      direction="row"
-      alignItems="center"
-      justifyContent="end"
-      className="gap-3"
-    >
-      <ButtonAction
-        className="text-primary h3 m-0"
-        title="Agregar"
-        ruta="agregar"
+    <div className="flex items-center justify-end py-4 gap-2">
+      <Input
+        type="text"
+        className="w-full max-w-sm"
+        placeholder="Buscar"
+        aria-label="Buscador"
+        required
+        value={globalFilters}
+        onChange={e => setGlobalFilters(e.target.value)}
+      />
+      <Link
+        to="agregar"
         state={{
           backgroundLocation: location
         }}
-        icon={faPlusCircle}
-      />
-    </Flex>
+      >
+        <ButtonAction
+          className="ml-auto"
+          title="Agregar"
+          icon={<FaPlusCircle />}
+        />
+      </Link>
+    </div>
   );
 };
 
-TableHeader.propTypes = {
-  columnFilters: PropTypes.array,
-  setColumnFilters: PropTypes.func,
+Filters.propTypes = {
+  globalFilters: PropTypes.string,
+  setGlobalFilters: PropTypes.func,
   location: PropTypes.object
 };

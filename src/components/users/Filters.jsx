@@ -4,7 +4,7 @@ import { FaPlusCircle } from 'react-icons/fa';
 import { Input } from '../ui/input';
 import { Link } from 'react-router-dom';
 
-export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
+export const Filters = ({ globalFilters, setGlobalFilters, location }) => {
   return (
     <div className="flex items-center justify-end py-4 gap-2">
       <Input
@@ -32,7 +32,7 @@ export const TableHeader = ({ globalFilters, setGlobalFilters, location }) => {
   );
 };
 
-TableHeader.propTypes = {
+Filters.propTypes = {
   globalFilters: PropTypes.string,
   setGlobalFilters: PropTypes.func,
   location: PropTypes.object
