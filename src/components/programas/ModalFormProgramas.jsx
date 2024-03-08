@@ -98,7 +98,7 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
     }
   }, [isEditPage, programa, form]);
 
-  const titulo = isEditPage ? 'Edición de Categoria' : 'Registrar Categoria';
+  const titulo = isEditPage ? 'Edición de Programa' : 'Registrar Programa';
 
   const onSubmit = async data => {
     if (!isEditPage) {
@@ -277,9 +277,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
             name="profesional"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Prosional</FormLabel>
+                <FormLabel>Profesional</FormLabel>
                 <FormControl>
-                  <Input placeholder="Prosional" {...field} />
+                  <Input placeholder="Profesional" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

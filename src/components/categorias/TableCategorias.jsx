@@ -17,13 +17,13 @@ import {
 import { Filters } from './Filters';
 
 export const TableCategorias = ({ data, columns, location }) => {
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [globalFilters, setGlobalFilters] = useState('');
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      globalFilter: globalFilter
+      globalFilters: globalFilters
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
@@ -32,8 +32,8 @@ export const TableCategorias = ({ data, columns, location }) => {
   return (
     <div className="flex flex-col gap-4 md:p-3">
       <Filters
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
+        globalFilters={globalFilters}
+        setGlobalFilters={setGlobalFilters}
         location={location}
       />
       <div className="flex flex-col flex-wrap relative overflow-auto">

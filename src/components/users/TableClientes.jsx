@@ -24,7 +24,7 @@ export const TableClientes = ({ data, columns, location }) => {
     data,
     columns,
     state: {
-      globalFilter: globalFilters
+      globalFilters: globalFilters
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
