@@ -21,10 +21,10 @@ const ModalBorradoProgramas = ({ location, navigateBack, navigate }) => {
     try {
       await deletePrograma(programaId).unwrap();
       navigate(location.state.backgroundLocation.pathname);
-      toast.success('La programa fue borrada exitosamente.');
+      toast.success('El programa fue borrada exitosamente.');
     } catch (err) {
       navigate(location.state.backgroundLocation.pathname);
-      toast.success('Hubo un error a la hora de borrar la programa.');
+      toast.success('Hubo un error a la hora de borrar el programa.');
     }
   };
 

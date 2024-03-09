@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useOutlet } from 'react-router-dom';
 import { SideBar } from '@/components/sidebar/SideBar';
@@ -9,10 +9,10 @@ import { useWindowWidth } from '@react-hook/window-size';
 import classNames from 'classnames';
 
 const DashboardLayout = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleIsCollapsed = () => {
     setIsCollapsed(!isCollapsed);
@@ -25,6 +25,12 @@ const DashboardLayout = () => {
   };
 
   const outlet = useOutlet();
+
+  useEffect(() => {
+    if (mobileWidth) {
+      setIsCollapsed(true);
+    }
+  }, [mobileWidth, setIsCollapsed]);
 
   return (
     <div

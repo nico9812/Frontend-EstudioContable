@@ -42,9 +42,10 @@ const ModalBorradoUser = ({ location, navigateBack, navigate }) => {
           Cerrar
         </Button>
         <ButtonAction
+          variant="destructive"
           loading={isLoading}
           accion={onBorrarClick}
-          title={'Guardar'}
+          title={'Borrar'}
         />
       </DialogFooter>
     </DialogContent>

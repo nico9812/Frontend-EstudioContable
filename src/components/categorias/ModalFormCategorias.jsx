@@ -28,6 +28,7 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import ButtonAction from "../common/ButtonAction";
 
 const yupSchema = yup.object().shape({
   nombre: yup.string().required('Este campo es requerido.')
@@ -53,8 +54,10 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
     })
   });
 
-  const [addNewCategoria] = useAddNewCategoriaMutation();
-  const [updateCategoria] = useUpdateCategoriaMutation();
+  const [addNewCategoria, { isLoading: isLoadingNew }] =
+    useAddNewCategoriaMutation();
+  const [updateCategoria, { isLoading: isLoadingUpdate }] =
+    useUpdateCategoriaMutation();
 
   useEffect(() => {
     if (isEditPage && categoria) {
@@ -119,14 +122,11 @@ const ModalFormCategorias = ({ location, navigateBack }) => {
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <div className="flex flex-row gap-4">
-          {/* {isEditPage && (
-            <Button variant="destructive" onClick={onBorrarClick}>
-              Borrar
-            </Button>
-          )} */}
-          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
-        </div>
+        <ButtonAction
+          loading={!isEditPage ? isLoadingNew : isLoadingUpdate}
+          accion={form.handleSubmit(onSubmit)}
+          title={'Guardar'}
+        />
       </DialogFooter>
     </DialogContent>
   );
