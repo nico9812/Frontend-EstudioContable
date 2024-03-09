@@ -4,7 +4,6 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table';
-import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import {
@@ -12,7 +11,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableHeader
+  TableHeader,
+  Table
 } from '../ui/table';
 
 import { Filters } from './Filters';

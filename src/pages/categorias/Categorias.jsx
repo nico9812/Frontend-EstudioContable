@@ -1,15 +1,15 @@
 import ContentCategorias from '@/components/categorias/ContentCategorias';
-import { Card } from 'react-bootstrap';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function Categorias() {
   return (
     <Card>
-      <Card.Header className="text-center">
-        <Card.Title> Categorias </Card.Title>
-      </Card.Header>
-      <Card.Body>
+      <CardHeader className="text-center">
+        <CardTitle> Categorias </CardTitle>
+      </CardHeader>
+      <CardContent>
         <ContentCategorias />
-      </Card.Body>
+      </CardContent>
     </Card>
   );
 }
