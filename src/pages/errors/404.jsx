@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardContent } from '@/components/ui/card';
+import { FaArrowCircleLeft } from "react-icons/fa";
 
 const Error404 = () => {
   return (
@@ -17,7 +16,7 @@ const Error404 = () => {
           movido.
         </p>
         <Link className="btn btn-primary btn-sm mt-3" to="/">
-          <FontAwesomeIcon icon={faArrowCircleLeft} className="me-2" />
+          <FaArrowCircleLeft className="me-2" />
           Volver Atras
         </Link>
       </CardContent>

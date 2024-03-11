@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSheetPlastic, faUser } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,6 +6,8 @@ import 'simplebar-react/dist/simplebar.min.css';
 import { useSelector } from 'react-redux';
 import { selectCurrentGroup } from '@/redux/reducer/authReducerSlice';
 import { X } from 'lucide-react';
+import { FaUser } from "react-icons/fa";
+import { FaSheetPlastic } from "react-icons/fa6";
 
 export const SideBar = ({
   mobileToggleIsCollapsed,
@@ -25,7 +25,7 @@ export const SideBar = ({
             to={'/dashboard/contador'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FontAwesomeIcon icon={faUser} className="h-6 w-6 mr-2" />
+            <FaUser className="h-6 w-6 mr-2" />
             Clientes
           </Link>
           <Link
@@ -33,7 +33,7 @@ export const SideBar = ({
             to={'/dashboard/contador/categorias'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FontAwesomeIcon icon={faSheetPlastic} className="h-6 w-6 mr-2" />
+            <FaSheetPlastic className="h-6 w-6 mr-2" />
             Categorias
           </Link>
         </>
@@ -48,7 +48,7 @@ export const SideBar = ({
             to={'/dashboard/cliente/vencimientos'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FontAwesomeIcon icon={faUser} className="h-6 w-6 mr-2" />
+            <FaUser className="h-6 w-6 mr-2" />
             Mis vencimientos
           </Link>
           <Link
@@ -56,7 +56,7 @@ export const SideBar = ({
             to={'/dashboard/cliente/programas'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FontAwesomeIcon icon={faUser} className="h-6 w-6 mr-2" />
+            <FaUser className="h-6 w-6 mr-2" />
             Mis Programas
           </Link>
           <Link
@@ -64,7 +64,7 @@ export const SideBar = ({
             to={'/dashboard/cliente/documentos'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FontAwesomeIcon icon={faUser} className="h-6 w-6 mr-2" />
+            <FaUser className="h-6 w-6 mr-2" />
             Mis Documentos
           </Link>
         </>

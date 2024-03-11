@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { useOpenDocumentoMutation } from '@/redux/api/documentosApiSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from '../ui/card';
@@ -46,7 +44,7 @@ export function CardDoc({ documento }) {
           className="flex flex-col items-center justify-center p-4 cursor-pointer"
           onClick={() => handleAbrirDoc()}
         >
-          <FontAwesomeIcon icon={faFilePdf} className="pdf-icon" />
+          <FaFilePdf />
           <strong>{documento.nombre}</strong>
           <span>
             {new Date(documento.fecha_creacion).toLocaleDateString('es-AR', {
