@@ -133,7 +133,7 @@ const ModalFormDocumentos = ({ navigateBack }) => {
                         </FormControl>
                         <SelectContent>
                           {categorias.map(cat => (
-                            <SelectItem key={cat.id} value={cat.id}>
+                            <SelectItem key={cat.id} value={cat.id.toString()}>
                               {cat.nombre}
                             </SelectItem>
                           ))}

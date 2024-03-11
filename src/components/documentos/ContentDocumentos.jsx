@@ -99,7 +99,7 @@ export function ContentDocumentos({ userId, group }) {
               {documentos.length > 0 ? (
                 documentos.map(doc => <CardDoc key={doc.id} documento={doc} />)
               ) : (
-                <div className="text-center">No hay documentos</div>
+                <div className="text-center col-span-3">No hay documentos</div>
               )}
             </div>
           )}

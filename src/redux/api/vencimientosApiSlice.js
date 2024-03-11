@@ -13,10 +13,17 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return vencimientosAdapter.setAll(initialState, responseData);
       },
-      providesTags: (result, error, arg) => [
-        { type: 'Vencimiento', id: 'LIST' },
-        ...result.ids.map(id => ({ type: 'Vencimiento', id }))
-      ]
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Vencimiento', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Vencimiento', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     }),
     addNewVencimiento: builder.mutation({
       query: initialVencimiento => {
@@ -32,9 +39,12 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
           }
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Vencimiento', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Vencimiento', id: arg.id }];
+        }
+        return [];
+      }
     }),
     updateVencimiento: builder.mutation({
       query: dataReceived => {
@@ -53,9 +63,12 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
           }
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Vencimiento', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Vencimiento', id: arg.id }];
+        }
+        return [];
+      }
     }),
     deleteVencimiento: builder.mutation({
       query: vencId => {
@@ -64,9 +77,12 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
           method: 'DELETE'
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Vencimiento', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Vencimiento', id: arg.id }];
+        }
+        return [];
+      }
     })
   })
 });

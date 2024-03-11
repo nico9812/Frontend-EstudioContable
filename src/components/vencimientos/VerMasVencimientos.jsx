@@ -10,7 +10,7 @@ import {
 } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
-import { Separator } from '../ui/separator';
+import classNames from 'classnames';
 
 const VerMasVencimientos = ({ location, navigateBack }) => {
   const { userId } = useParams();
@@ -53,25 +53,32 @@ const VerMasVencimientos = ({ location, navigateBack }) => {
         {isLoading ? (
           <LoadingIndicator />
         ) : (
-          <ScrollArea className="w-4/5 h-full text-center rounded-md border">
+          <ScrollArea className="w-4/5 h-full text-center">
             <div className="p-4">
-              <h4 className="mb-4 text-sm font-medium leading-none">
-                Vencimientos
-              </h4>
-              {vencimientos !== undefined &&
-                vencimientos?.map(ven => (
-                  <div key={ven.id} className="hover:bg-gray-100 pt-1">
+              <div className="flex flex-col gap-1">
+                {vencimientos !== undefined &&
+                  vencimientos?.map(ven => (
                     <Link
+                      key={ven.id}
                       to={`/dashboard/contador/vencimientos/${userId}/editar/${ven.id}`}
                       state={{
                         backgroundLocation: location.state.backgroundLocation
                       }}
                     >
-                      {ven.nombre}
+                      <div
+                        className={classNames(
+                          'text-gray-700  p-1 border  border-gray-300 rounded-md',
+                          {
+                            'bg-red-400 hover:bg-red-700': ven.alarma,
+                            'bg-blue-400 hover:bg-blue-700': !ven.alarma
+                          }
+                        )}
+                      >
+                        {ven.nombre}
+                      </div>
                     </Link>
-                    <Separator className="my-2" />
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
           </ScrollArea>
         )}

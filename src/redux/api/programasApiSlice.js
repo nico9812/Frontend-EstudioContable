@@ -13,10 +13,17 @@ export const programasApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return programasAdapter.setAll(initialState, responseData);
       },
-      providesTags: (result, error, arg) => [
-        { type: 'Programa', id: 'LIST' },
-        ...result.ids.map(id => ({ type: 'Programa', id }))
-      ]
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Programa', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Programa', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     }),
     addNewPrograma: builder.mutation({
       query: initialPrograma => {
@@ -35,9 +42,12 @@ export const programasApiSlice = apiSlice.injectEndpoints({
           }
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Programa', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Programa', id: arg.id }];
+        }
+        return [];
+      }
     }),
     updatePrograma: builder.mutation({
       query: dataReceived => {
@@ -52,9 +62,12 @@ export const programasApiSlice = apiSlice.injectEndpoints({
           }
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Programa', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Programa', id: arg.id }];
+        }
+        return [];
+      }
     }),
     deletePrograma: builder.mutation({
       query: programaId => {
@@ -63,9 +76,12 @@ export const programasApiSlice = apiSlice.injectEndpoints({
           method: 'DELETE'
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Programa', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Programa', id: arg.id }];
+        }
+        return [];
+      }
     })
   })
 });

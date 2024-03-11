@@ -204,6 +204,7 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="first_name"

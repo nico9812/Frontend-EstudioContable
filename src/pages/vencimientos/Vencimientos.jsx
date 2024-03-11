@@ -10,8 +10,8 @@ export function Vencimientos() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Vencimientos</CardTitle>
+      <CardHeader className="text-center">
+        <CardTitle> Vencimientos </CardTitle>
       </CardHeader>
       <CardContent>
         {group === 1 && (

@@ -13,10 +13,17 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return documentosAdapter.setAll(initialState, responseData);
       },
-      providesTags: (result, error, arg) => [
-        { type: 'Documento', id: 'LIST' },
-        ...result.ids.map(id => ({ type: 'Documento', id }))
-      ]
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Documento', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Documento', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     }),
     getDocumentosFiltrados: builder.query({
       query: ({ strCat, userId }) => {
@@ -28,10 +35,17 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return documentosAdapter.setAll(initialState, responseData);
       },
-      providesTags: (result, error, arg) => [
-        { type: 'Documento', id: 'LIST' },
-        ...result.ids.map(id => ({ type: 'Documento', id }))
-      ]
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Documento', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Documento', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     }),
     addNewDocumento: builder.mutation({
       query: initialDocumento => {
@@ -44,15 +58,14 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
           url: '/documentos/',
           method: 'POST',
           body: formData
-          // headers: {
-          //   'Content-Type': 'multipart/form-data'
-          // },
-          // formData: true
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Documento', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Documento', id: arg.id }];
+        }
+        return [];
+      }
     }),
     openDocumento: builder.mutation({
       queryFn: async (documentoID, api, extraOptions, baseQuery) => {
@@ -79,9 +92,12 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
     //       }
     //     };
     //   },
-    //   invalidatesTags: (result, error, arg) => [
-    //     { type: 'Documento', id: arg.id }
-    //   ]
+    //   invalidatesTags: (result, error, arg) => {
+    //     if (!error) {
+    //       return [{ type: 'Documento', id: arg.id }];
+    //     }
+    //     return [];
+    //   }
     // }),
     deleteDocumento: builder.mutation({
       query: docId => {
@@ -90,9 +106,12 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
           method: 'DELETE'
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Documento', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Documento', id: arg.id }];
+        }
+        return [];
+      }
     })
   })
 });
