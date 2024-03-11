@@ -72,11 +72,17 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
     defaultValues: !isEditPage
       ? {
           email: '',
-          username: ''
+          username: '',
+          empresa: '',
+          first_name: '',
+          last_name: ''
         }
       : {
           email: '',
           username: '',
+          empresa: '',
+          first_name: '',
+          last_name: '',
           password: '',
           confirmPassword: ''
         }
@@ -97,6 +103,9 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
     if (isEditPage && user) {
       form.setValue('email', user.email);
       form.setValue('username', user.username);
+      form.setValue('empresa', user.empresa);
+      form.setValue('first_name', user.first_name);
+      form.setValue('last_name', user.last_name);
       form.setValue('password', user.password);
     }
   }, [isEditPage, user, form]);
@@ -177,6 +186,45 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
                 <FormLabel>Usuario</FormLabel>
                 <FormControl>
                   <Input placeholder="Usuario" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="empresa"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Empresa</FormLabel>
+                <FormControl>
+                  <Input placeholder="Empresa" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="first_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input placeholder="Nombre" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Apellido</FormLabel>
+                <FormControl>
+                  <Input placeholder="Apellido" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

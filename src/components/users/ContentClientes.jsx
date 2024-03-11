@@ -18,6 +18,13 @@ const ContentClientes = () => {
       )
     },
     {
+      accessorKey: 'empresa',
+      header: 'Empresa',
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('empresa')}</div>
+      )
+    },
+    {
       accessorKey: 'last_name',
       header: 'Apellido',
       cell: ({ row }) => (
