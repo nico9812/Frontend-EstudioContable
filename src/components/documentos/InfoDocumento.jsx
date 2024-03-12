@@ -12,7 +12,7 @@ import { FaFilePdf, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 // contador
-export function CardDoc({ documento }) {
+export function InfoDocumento({ documento }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,7 +45,9 @@ export function CardDoc({ documento }) {
           onClick={() => handleAbrirDoc()}
         >
           <FaFilePdf />
-          <strong>{documento.nombre}</strong>
+          <strong className="max-w-full sm:max-w-52 md:max-w-24 lg:max-w-52 truncate">
+            {documento.nombre}
+          </strong>
           <span>
             {new Date(documento.fecha_creacion).toLocaleDateString('es-AR', {
               timeZone: 'UTC',
@@ -53,7 +55,9 @@ export function CardDoc({ documento }) {
               minute: '2-digit'
             })}
           </span>
-          <small className="text-gray-600">{documento.categoria}</small>
+          <small className="max-w-full sm:max-w-52 md:max-w-24 lg:max-w-52 truncate text-gray-600">
+            {documento.categoria}
+          </small>
         </Card>
       </ContextMenuTrigger>
       <ContextMenuContent>
@@ -74,7 +78,7 @@ export function CardDoc({ documento }) {
   );
 }
 
-CardDoc.propTypes = {
+InfoDocumento.propTypes = {
   documento: PropTypes.shape({
     id: PropTypes.any,
     nombre: PropTypes.any,

@@ -34,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select';
+import ButtonAction from '../common/ButtonAction';
 
 const yupSchema = yup.object().shape({
   archivo: yup
@@ -60,7 +61,7 @@ const ModalFormDocumentos = ({ navigateBack }) => {
     }
   });
 
-  const [addNewDocumento] = useAddNewDocumentoMutation();
+  const [addNewDocumento, isLoading] = useAddNewDocumentoMutation();
 
   const titulo = 'Registrar Documento';
 
@@ -148,12 +149,16 @@ const ModalFormDocumentos = ({ navigateBack }) => {
           </QueryHooks>
         </form>
       </Form>
-      <DialogFooter>
+      <DialogFooter className="sm:justify-between">
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
         <div className="flex flex-row gap-4">
-          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
+          <ButtonAction
+            loading={!isLoading}
+            accion={form.handleSubmit(onSubmit)}
+            title={'Guardar'}
+          />
         </div>
       </DialogFooter>
     </DialogContent>

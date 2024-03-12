@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ButtonAction from '../common/ButtonAction';
-import { CardDoc } from './CardDoc';
+import { InfoDocumento } from './InfoDocumento';
 import {
   Select,
   SelectContent,
@@ -95,9 +95,11 @@ export function ContentDocumentos({ userId, group }) {
           })}
         >
           {({ documentos }) => (
-            <div className="border rounded-sm px-4 py-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
+            <div className="border rounded-sm px-4 py-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3 overflow-auto">
               {documentos.length > 0 ? (
-                documentos.map(doc => <CardDoc key={doc.id} documento={doc} />)
+                documentos.map(doc => (
+                  <InfoDocumento key={doc.id} documento={doc} />
+                ))
               ) : (
                 <div className="text-center col-span-3">No hay documentos</div>
               )}
