@@ -80,7 +80,7 @@ export const TableProgramas = ({ data, columns, location, group }) => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No hay clientes cargados.
+                  No hay programas cargados.
                 </TableCell>
               </TableRow>
             )}
