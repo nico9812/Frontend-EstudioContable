@@ -1,19 +1,19 @@
 import ContentProgramas from '@/components/programas/ContentProgramas';
 import { selectCurrentUser } from '@/redux/reducer/authReducerSlice';
-import { Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function Programas() {
   const { group, id: userId } = useSelector(selectCurrentUser);
 
   return (
     <Card>
-      <Card.Header className="text-center">
-        <Card.Title> Programas </Card.Title>
-      </Card.Header>
-      <Card.Body>
+      <CardHeader className="text-center">
+        <CardTitle> Programas </CardTitle>
+      </CardHeader>
+      <CardContent>
         <ContentProgramas group={group} {...(group === 2 && { userId })} />
-      </Card.Body>
+      </CardContent>
     </Card>
   );
 }

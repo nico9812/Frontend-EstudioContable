@@ -1,11 +1,11 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ContentClientes from '@/components/users/ContentClientes';
 
 export const Clientes = () => {
   return (
     <Card>
-      <CardHeader className="pb-0">
-        <h1 className="text-lg font-semibold">Clientes</h1>
+      <CardHeader className="text-center">
+        <CardTitle> Clientes </CardTitle>
       </CardHeader>
       <CardContent>
         <ContentClientes />

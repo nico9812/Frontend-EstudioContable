@@ -9,13 +9,14 @@ import {
   DialogTitle
 } from '../ui/dialog';
 import { Button } from '../ui/button';
+import ButtonAction from '../common/ButtonAction';
 
 const ModalBorradoCategorias = ({ location, navigateBack, navigate }) => {
   const { categoriaId } = useParams();
 
   const titulo = 'Borrar Categoria';
 
-  const [deleteCategoria] = useDeleteCategoriaMutation();
+  const [deleteCategoria, { isLoading }] = useDeleteCategoriaMutation();
 
   const onBorrarClick = async () => {
     try {
@@ -40,9 +41,13 @@ const ModalBorradoCategorias = ({ location, navigateBack, navigate }) => {
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <Button variant="destructive" onClick={onBorrarClick}>
-          Borrar
-        </Button>
+
+        <ButtonAction
+          variant="destructive"
+          loading={isLoading}
+          accion={onBorrarClick}
+          title={'Borrar'}
+        />
       </DialogFooter>
     </DialogContent>
   );

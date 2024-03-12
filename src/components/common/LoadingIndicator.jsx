@@ -1,9 +1,9 @@
-import { Spinner } from 'reactstrap';
+import { FaSpinner } from 'react-icons/fa';
 
 export const LoadingIndicator = () => {
   return (
-    <div className="d-flex justify-content-center mb-4 mt-5 flex-row align-items-center">
-      <Spinner animation="border" variant="success" />
+    <div className="flex justify-center mb-4 mt-5 flex-row items-center">
+      <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
     </div>
   );
 };

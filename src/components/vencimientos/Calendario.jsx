@@ -1,15 +1,28 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
-import { Calendar, dayjsLocalizer } from 'react-big-calendar';
-import dayjs from 'dayjs';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { VencimientoHooks } from '@/hooks/VencimientoHooks';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
 import { Button } from '../ui/button';
 import { useWindowWidth } from '@react-hook/window-size';
 
-dayjs.locale('es');
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import startOfWeek from 'date-fns/startOfWeek';
+import getDay from 'date-fns/getDay';
+import es from 'date-fns/locale/es';
+
+const locales = {
+  es: es
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales
+});
 
 const messages = {
   today: 'Hoy',
@@ -22,20 +35,30 @@ const messages = {
   date: 'Fecha',
   time: 'Hora',
   event: 'Evento',
-  showMore: total => `Ver más (${total})`
+  showMore: total => `+${total} más`
 };
 
 export const Calendario = ({ vencimientos, group }) => {
   const { userId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const localizer = dayjsLocalizer(dayjs);
 
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
 
   const { eventos } = VencimientoHooks(vencimientos);
   const view = mobileWidth ? 'agenda' : 'month';
+
+  const eventPropGetter = event => {
+    if (event.alarma) {
+      return {
+        className: 'bg-red-500'
+      };
+    }
+    return {
+      className: 'bg-blue-500'
+    };
+  };
 
   const CustomToolbar = toolbar => {
     return (
@@ -91,11 +114,13 @@ export const Calendario = ({ vencimientos, group }) => {
   return (
     <div className="w-full p-4 text-dark h-[600px]">
       <Calendar
+        culture="es"
         localizer={localizer}
         views={['month', 'agenda']}
-        view={view}
+        defaultView={view}
         messages={messages}
         events={eventos}
+        eventPropGetter={eventPropGetter}
         {...(group === 1 && { onSelectEvent })}
         onShowMore={onShowMore}
         components={{

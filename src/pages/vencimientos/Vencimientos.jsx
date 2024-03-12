@@ -1,17 +1,17 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ContentCalendario from '@/components/vencimientos/ContentVencimientos';
 import { selectCurrentUser } from '@/redux/reducer/authReducerSlice';
 import { useSelector } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export function Vencimientos() {
   const { group, id: userId } = useSelector(selectCurrentUser);
 
   return (
     <Card>
-      <CardHeader>
-        <h1 className="text-lg font-semibold">Vencimientos</h1>
+      <CardHeader className="text-center">
+        <CardTitle> Vencimientos </CardTitle>
       </CardHeader>
       <CardContent>
         {group === 1 && (

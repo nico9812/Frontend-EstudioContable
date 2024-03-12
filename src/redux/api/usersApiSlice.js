@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { apiSlice } from '@/redux/apiSlice';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
@@ -12,12 +13,16 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return usersAdapter.setAll(initialState, responseData);
       },
-      // eslint-disable-next-line no-unused-vars
       providesTags: (result, error, arg) => {
-        return [
-          { type: 'User', id: 'LIST' },
-          ...result.ids.map(id => ({ type: 'User', id }))
-        ];
+        if (!error) {
+          return [
+            { type: 'User', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'User', id }))
+              : [])
+          ];
+        }
+        return [];
       }
     }),
     addNewUser: builder.mutation({
@@ -28,7 +33,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           ...initialUser
         }
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'User', id: arg.id }];
+        }
+        return [];
+      }
     }),
     updateUser: builder.mutation({
       query: dataReceived => {
@@ -40,7 +50,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           }
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'User', id: arg.id }];
+        }
+        return [];
+      }
     }),
     deleteUser: builder.mutation({
       query: userId => {
@@ -49,7 +64,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           method: 'DELETE'
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'User', id: arg.id }];
+        }
+        return [];
+      }
     })
   })
 });

@@ -94,8 +94,10 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
 
   useEffect(() => {
     if (isEditPage && vencimiento) {
+      const parsedDate = parse(vencimiento.fecha, 'yyyy-MM-dd', new Date());
+
       form.setValue('nombre', vencimiento.nombre);
-      form.setValue('fecha', vencimiento.fecha);
+      form.setValue('fecha', parsedDate);
       form.setValue('alarma', vencimiento.alarma);
     }
   }, [isEditPage, vencimiento, form]);

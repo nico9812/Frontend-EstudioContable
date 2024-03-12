@@ -34,6 +34,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
+import ButtonAction from '../common/ButtonAction';
 
 const yupSchema = yup.object().shape({
   nombre: yup.string().required('Este campo es requerido.'),
@@ -82,8 +83,10 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
     })
   });
 
-  const [addNewPrograma] = useAddNewProgramaMutation();
-  const [updatePrograma] = useUpdateProgramaMutation();
+  const [addNewPrograma, { isLoading: isLoadingNew }] =
+    useAddNewProgramaMutation();
+  const [updatePrograma, { isLoading: isLoadingUpdate }] =
+    useUpdateProgramaMutation();
 
   useEffect(() => {
     if (isEditPage && programa) {
@@ -106,10 +109,10 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
         await addNewPrograma({ ...data, usuario: userId }).unwrap();
         form.reset();
         navigateBack();
-        toast.success('El cliente fue creado exitosamente.');
+        toast.success('El Programa fue creado exitosamente.');
       } catch (err) {
         navigateBack();
-        toast.error('Hubo un error a la hora crear el Usuario.');
+        toast.error('Hubo un error a la hora crear el Programa.');
       }
     } else {
       try {
@@ -119,10 +122,10 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
         }).unwrap();
         form.reset();
         navigateBack();
-        toast.success('El cliente fue editado exitosamente.');
+        toast.success('El Programa fue editado exitosamente.');
       } catch (err) {
         navigateBack();
-        toast.error('Hubo un error a la hora editar el Usuario.');
+        toast.error('Hubo un error a la hora editar el Programa.');
       }
     }
   };
@@ -304,9 +307,11 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
         <Button variant="secondary" onClick={navigateBack}>
           Cerrar
         </Button>
-        <div className="flex flex-row gap-4">
-          <Button onClick={form.handleSubmit(onSubmit)}>Guardar</Button>
-        </div>
+        <ButtonAction
+          loading={!isEditPage ? isLoadingNew : isLoadingUpdate}
+          accion={form.handleSubmit(onSubmit)}
+          title={'Guardar'}
+        />
       </DialogFooter>
     </DialogContent>
   );

@@ -31,7 +31,7 @@ import ModalBorradoCategorias from '@/components/categorias/ModalBorradoCategori
 import { Programas } from '@/pages/programas/Programas';
 import ModalFormProgramas from '@/components/programas/ModalFormProgramas';
 import ModalBorradoProgramas from '@/components/programas/ModalBorradoProgramas';
-import ModalBorradoUser from '@/components/users/ModalBorradoCategorias';
+import ModalBorradoUser from '@/components/users/ModalBorradoUser';
 import Home from '@/pages/home/Home';
 
 function ReactRouting() {

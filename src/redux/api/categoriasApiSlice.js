@@ -13,10 +13,17 @@ export const categoriasApiSlice = apiSlice.injectEndpoints({
       transformResponse: responseData => {
         return categoriasAdapter.setAll(initialState, responseData);
       },
-      providesTags: (result, error, arg) => [
-        { type: 'Categoria', id: 'LIST' },
-        ...result.ids.map(id => ({ type: 'Categoria', id }))
-      ]
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Categoria', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Categoria', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     }),
     addNewCategoria: builder.mutation({
       query: initialCategoria => ({
@@ -26,9 +33,12 @@ export const categoriasApiSlice = apiSlice.injectEndpoints({
           ...initialCategoria
         }
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Categoria', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Categoria', id: arg.id }];
+        }
+        return [];
+      }
     }),
     updateCategoria: builder.mutation({
       query: dataReceived => {
@@ -40,9 +50,12 @@ export const categoriasApiSlice = apiSlice.injectEndpoints({
           }
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Categoria', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Categoria', id: arg.id }];
+        }
+        return [];
+      }
     }),
     deleteCategoria: builder.mutation({
       query: catId => {
@@ -51,9 +64,12 @@ export const categoriasApiSlice = apiSlice.injectEndpoints({
           method: 'DELETE'
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Categoria', id: arg.id }
-      ]
+      invalidatesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Categoria', id: arg.id }];
+        }
+        return [];
+      }
     })
   })
 });

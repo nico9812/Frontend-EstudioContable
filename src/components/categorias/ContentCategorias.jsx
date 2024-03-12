@@ -12,15 +12,15 @@ const ContentCategorias = () => {
     {
       accessorKey: 'nombre',
       header: 'Nombre',
-      cell: props => <>{props.getValue()}</>
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('nombre')}</div>
+      )
     },
     {
       accessorKey: 'actions',
       header: 'Acciones',
-      cell: props => {
-        return (
-          <AccionesBtn sentId={props.row?.original?.id} location={location} />
-        );
+      cell: ({ row }) => {
+        return <AccionesBtn sentId={row.original?.id} location={location} />;
       }
     }
   ];
