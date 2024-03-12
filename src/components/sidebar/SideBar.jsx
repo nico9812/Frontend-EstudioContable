@@ -74,7 +74,7 @@ export const SideBar = ({
 
   return (
     <div
-      className={classNames('flex-col w-full border bg-gray-100/40', {
+      className={classNames('flex-col w-full border-r-2 bg-gray-100/40', {
         hidden: isCollapsed
       })}
     >
