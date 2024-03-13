@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ContentDocumentos } from '@/components/documentos/ContentDocumentos';
 import { selectCurrentUser } from '@/redux/reducer/authReducerSlice';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ export function Documentos() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <h1 className="text-lg font-semibold">Documentos</h1>
+        <CardTitle> Documentos </CardTitle>
       </CardHeader>
       <CardContent>
         {group === 1 && (

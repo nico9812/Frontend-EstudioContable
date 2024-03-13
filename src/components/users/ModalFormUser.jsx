@@ -28,6 +28,7 @@ import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
 import ButtonAction from '../common/ButtonAction';
+import { Asterisco } from '../common/Asterisco';
 
 const addOrEditPasswordSchema = yup.object().shape({
   email: yup
@@ -165,81 +166,92 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
             </div>
           )}
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Usuario</FormLabel>
-                <FormControl>
-                  <Input placeholder="Usuario" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="empresa"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Empresa</FormLabel>
-                <FormControl>
-                  <Input placeholder="Empresa" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Usuario <Asterisco />
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Usuario" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="first_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nombre</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nombre" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="last_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Apellido</FormLabel>
-                <FormControl>
-                  <Input placeholder="Apellido" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Email <Asterisco />
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="first_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nombre" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Apellido</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Apellido" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="empresa"
+              render={({ field }) => (
+                <FormItem className="col-span-2 text-center">
+                  <FormLabel>Empresa</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Empresa" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           {(!isEditPage || passwordChange) && (
-            <>
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contraseña</FormLabel>
+                    <FormLabel>
+                      Contraseña <Asterisco />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -257,7 +269,9 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
                 name="passwordConfirm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirmar Contraseña</FormLabel>
+                    <FormLabel>
+                      Confirmar Contraseña <Asterisco />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -269,7 +283,7 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
                   </FormItem>
                 )}
               />
-            </>
+            </div>
           )}
         </form>
       </Form>

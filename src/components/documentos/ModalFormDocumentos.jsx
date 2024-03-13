@@ -61,7 +61,7 @@ const ModalFormDocumentos = ({ navigateBack }) => {
     }
   });
 
-  const [addNewDocumento, isLoading] = useAddNewDocumentoMutation();
+  const [addNewDocumento, { isLoading }] = useAddNewDocumentoMutation();
 
   const titulo = 'Registrar Documento';
 
