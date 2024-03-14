@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 const ErrorLayout = () => {
   return (
     <div className="container h-screen py-0">
-      <div className="flex">
+      <div className="flex h-full w-full items-center justify-center">
         <Outlet />
       </div>
     </div>

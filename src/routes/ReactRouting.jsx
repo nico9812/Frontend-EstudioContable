@@ -9,7 +9,7 @@ import LoginLayout from '@/layouts/LoginLayout';
 import ContadorLayout from '@/layouts/ContadorLayout';
 import ClienteLayout from '@/layouts/ClienteLayout';
 
-import Error404 from '@/pages/errors/404';
+import Error404 from '@/components/errors/404';
 
 import { Login } from '@/pages/auth/Login';
 import { Logout } from '@/pages/auth/Logout';

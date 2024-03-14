@@ -37,11 +37,12 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Switch } from '../ui/switch';
+import { Asterisco } from '../common/Asterisco';
 
 const addOrEditPasswordSchema = yup.object().shape({
   nombre: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
     .required('Este campo es requerido.'),
   fecha: yup
     .date()
@@ -155,7 +156,9 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
           name="nombre"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nombre de Vencimiento</FormLabel>
+              <FormLabel>
+                Nombre de Vencimiento <Asterisco />
+              </FormLabel>
               <FormControl>
                 <Input placeholder="Nombre de Vencimiento" {...field} />
               </FormControl>
@@ -169,7 +172,9 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
           name="fecha"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Fecha de Vencimiento</FormLabel>
+              <FormLabel>
+                Fecha de Vencimiento <Asterisco />
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -212,7 +217,7 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
           name="alarma"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between">
-              <FormLabel>¿Alarma Activada?</FormLabel>
+              <FormLabel>¿Activar Alarma?</FormLabel>
               <FormControl>
                 <Switch
                   checked={field.value}
@@ -223,6 +228,27 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="alarma"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <FormLabel>¿Es un Vencimiento Anual?</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="text-gray-500">
+          <small>
+            Los campos con un <Asterisco /> son obligatorios de completar.
+          </small>
+        </div>
       </Form>
       <DialogFooter className="flex-row sm:justify-between justify-between">
         <Button variant="secondary" onClick={navigateBack}>
