@@ -1,7 +1,7 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { VencimientoHooks } from '@/hooks/VencimientoHooks';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from '../ui/button';
 import { useWindowWidth } from '@react-hook/window-size';
@@ -38,8 +38,9 @@ const messages = {
   showMore: total => `+${total} más`
 };
 
-export const Calendario = ({ vencimientos, group }) => {
-  const { userId } = useParams();
+export const Calendario = ({ vencimientos, group, refetch, params }) => {
+  console.log(params);
+  const { userId } = params;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -47,6 +48,7 @@ export const Calendario = ({ vencimientos, group }) => {
   const mobileWidth = onlyWidth < 768;
 
   const { eventos } = VencimientoHooks(vencimientos);
+
   const view = mobileWidth ? 'agenda' : 'month';
 
   const eventPropGetter = event => {
@@ -64,7 +66,14 @@ export const Calendario = ({ vencimientos, group }) => {
     return (
       <div className="rbc-toolbar grid w-full grid-cols-1 sm:justify-items-end sm:grid-cols-2 gap-2">
         <div className="w-full rbc-btn-group grid grid-cols-2 lg:grid-cols-4">
-          <Button onClick={() => toolbar.onNavigate('TODAY')}>Hoy</Button>
+          <Button
+            onClick={() => {
+              toolbar.onNavigate('TODAY');
+              refetch();
+            }}
+          >
+            Hoy
+          </Button>
           <Button onClick={() => toolbar.onNavigate('PREV')}>Anterior</Button>
           <Button onClick={() => toolbar.onNavigate('NEXT')}>Siguiente</Button>
           {group == 1 && (

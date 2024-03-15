@@ -24,11 +24,11 @@ import { toast } from 'react-toastify';
 const loginSchema = yup.object().shape({
   username: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
     .required('Este campo es requerido.'),
   password: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
     .required('Este campo es requerido.')
 });
 

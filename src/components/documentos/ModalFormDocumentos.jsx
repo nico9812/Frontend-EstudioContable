@@ -35,6 +35,7 @@ import {
   SelectValue
 } from '../ui/select';
 import ButtonAction from '../common/ButtonAction';
+import { Asterisco } from '../common/Asterisco';
 
 const yupSchema = yup.object().shape({
   archivo: yup
@@ -44,7 +45,7 @@ const yupSchema = yup.object().shape({
     }),
   categoria: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
     .required('Este campo es requerido.')
 });
 
@@ -91,7 +92,9 @@ const ModalFormDocumentos = ({ navigateBack }) => {
             render={({ field: { value, onChange, ...fieldProps } }) => {
               return (
                 <FormItem>
-                  <FormLabel>Archivo</FormLabel>
+                  <FormLabel>
+                    Archivo <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...fieldProps}
@@ -121,7 +124,9 @@ const ModalFormDocumentos = ({ navigateBack }) => {
                   name="categoria"
                   render={({ field: { onChange, value } }) => (
                     <FormItem>
-                      <FormLabel>Categorias</FormLabel>
+                      <FormLabel>
+                        Categorias <Asterisco />
+                      </FormLabel>
                       <Select
                         onValueChange={onChange}
                         defaultValue={value}
@@ -147,6 +152,11 @@ const ModalFormDocumentos = ({ navigateBack }) => {
               );
             }}
           </QueryHooks>
+          <div className="text-gray-500">
+            <small>
+              Los campos con un <Asterisco /> son obligatorios de completar.
+            </small>
+          </div>
         </form>
       </Form>
       <DialogFooter className="sm:justify-between">
@@ -155,7 +165,7 @@ const ModalFormDocumentos = ({ navigateBack }) => {
         </Button>
         <div className="flex flex-row gap-4">
           <ButtonAction
-            loading={!isLoading}
+            loading={isLoading}
             accion={form.handleSubmit(onSubmit)}
             title={'Guardar'}
           />

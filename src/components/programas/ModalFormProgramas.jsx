@@ -35,6 +35,7 @@ import { es } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import ButtonAction from '../common/ButtonAction';
+import { Asterisco } from '../common/Asterisco';
 
 const yupSchema = yup.object().shape({
   nombre: yup.string().required('Este campo es requerido.'),
@@ -75,6 +76,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
     }
   });
 
+  const dateStart = form.watch('fecha_inicio');
+  const dateEnd = form.watch('fecha_final');
+
   const { programa, isLoading } = useGetProgramasQuery(userId, {
     selectFromResult: ({ data, isLoading, isSuccess }) => ({
       programa: data?.entities[programaId],
@@ -100,6 +104,18 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
       form.setValue('estado', programa.estado);
     }
   }, [isEditPage, programa, form]);
+
+  useEffect(() => {
+    if (!isEditPage && dateStart && dateEnd) {
+      const startDate = new Date(dateStart);
+      const endDate = new Date(dateEnd);
+      const differenceInDays = Math.floor(
+        (endDate - startDate) / (1000 * 60 * 60 * 24)
+      );
+
+      form.setValue('dias', differenceInDays);
+    }
+  }, [dateStart, dateEnd, form, isEditPage]);
 
   const titulo = isEditPage ? 'Edición de Programa' : 'Registrar Programa';
 
@@ -145,7 +161,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="nombre"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre</FormLabel>
+                  <FormLabel>
+                    Nombre <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Nombre" {...field} />
                   </FormControl>
@@ -158,7 +176,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="resolucion"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Resolucion</FormLabel>
+                  <FormLabel>
+                    Resolucion <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Resolucion" {...field} />
                   </FormControl>
@@ -171,7 +191,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="localidad"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Localidad</FormLabel>
+                  <FormLabel>
+                    Localidad <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Localidad" {...field} />
                   </FormControl>
@@ -186,7 +208,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="fecha_inicio"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Fecha de Inicio</FormLabel>
+                  <FormLabel>
+                    Fecha de Inicio <Asterisco />
+                  </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -228,7 +252,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="fecha_final"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Fecha de Finalización</FormLabel>
+                  <FormLabel>
+                    Fecha de Finalización <Asterisco />
+                  </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -270,7 +296,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="dias"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Días</FormLabel>
+                  <FormLabel>
+                    Días <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Días" {...field} />
                   </FormControl>
@@ -285,7 +313,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="profesional"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Profesional</FormLabel>
+                  <FormLabel>
+                    Profesional <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Profesional" {...field} />
                   </FormControl>
@@ -298,7 +328,9 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
               name="estado"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Estado</FormLabel>
+                  <FormLabel>
+                    Estado <Asterisco />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Estado" {...field} />
                   </FormControl>
@@ -306,6 +338,11 @@ const ModalFormProgramas = ({ location, navigateBack }) => {
                 </FormItem>
               )}
             />
+          </div>
+          <div className="text-gray-500">
+            <small>
+              Los campos con un <Asterisco /> son obligatorios de completar.
+            </small>
           </div>
         </form>
       </Form>

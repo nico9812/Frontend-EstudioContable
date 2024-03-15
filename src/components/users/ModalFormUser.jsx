@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import YupPassword from 'yup-password';
 
 import { useForm } from 'react-hook-form';
 import {
@@ -30,6 +31,7 @@ import { Button } from '../ui/button';
 import ButtonAction from '../common/ButtonAction';
 import { Asterisco } from '../common/Asterisco';
 
+YupPassword(yup);
 const addOrEditPasswordSchema = yup.object().shape({
   email: yup
     .string()
@@ -37,16 +39,30 @@ const addOrEditPasswordSchema = yup.object().shape({
     .required('Este campo es requerido.'),
   username: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
     .required('Este campo es requerido.'),
   password: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
+    .min(8, 'Debe tener una longitud minima de 8 caracteres')
+    .minUppercase(1, 'Minimo un caracter en mayuscula')
+    .minLowercase(1, 'Minimo un caracter en minuscula')
+    .minNumbers(1, 'Minimo un numero')
+    .minSymbols(1, 'Minimo un simbolo')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
     .required('Este campo es requerido.'),
   passwordConfirm: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir')
-    .required('Este campo es requerido.')
+    .required('Este campo es requerido.'),
+  first_name: yup
+    .string()
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres'),
+  last_name: yup
+    .string()
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres'),
+  empresa: yup
+    .string()
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
 });
 
 const editSchema = yup.object().shape({
@@ -56,8 +72,17 @@ const editSchema = yup.object().shape({
     .required('Este campo es requerido.'),
   username: yup
     .string()
-    .max(30, 'Debe tener una longitud de 30 caracteres')
-    .required('Este campo es requerido.')
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
+    .required('Este campo es requerido.'),
+  first_name: yup
+    .string()
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres'),
+  last_name: yup
+    .string()
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres'),
+  empresa: yup
+    .string()
+    .max(60, 'Debe tener una longitud máxima de 60 caracteres')
 });
 
 const ModalFormUser = ({ location, navigateBack, navigate }) => {
@@ -165,7 +190,6 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
               </FormLabel>
             </div>
           )}
-
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -199,7 +223,6 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
               )}
             />
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -241,7 +264,6 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
               )}
             />
           </div>
-
           {(!isEditPage || passwordChange) && (
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -285,6 +307,11 @@ const ModalFormUser = ({ location, navigateBack, navigate }) => {
               />
             </div>
           )}
+          <div className="text-gray-500">
+            <small>
+              Los campos con un <Asterisco /> son obligatorios de completar.
+            </small>
+          </div>
         </form>
       </Form>
       <DialogFooter className="sm:justify-between">
