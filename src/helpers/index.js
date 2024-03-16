@@ -1,3 +1,5 @@
+import { getMonth, getYear } from 'date-fns';
+
 export const extractRawData = data => {
   const { entities, ids } = data;
   const extractedData = [];
@@ -10,3 +12,8 @@ export const extractRawData = data => {
 
   return extractedData;
 };
+
+export const getMonthAndYear = date => ({
+  month: (getMonth(date) + 1).toString(),
+  year: getYear(date).toString()
+});

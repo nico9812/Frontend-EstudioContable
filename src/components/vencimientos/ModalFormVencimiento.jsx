@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import {
   useAddNewVencimientoMutation,
-  useGetVencimientosQuery,
+  useGetVencimientoByIdQuery,
   useUpdateVencimientoMutation
 } from '@/redux/api/vencimientosApiSlice';
 import { format } from 'date-fns';
@@ -61,16 +61,26 @@ const addOrEditPasswordSchema = yup.object().shape({
       return false;
     }
     return originalValue;
+  }),
+  mensualidad: yup.bool().transform((value, originalValue) => {
+    if (value === '') {
+      return false;
+    }
+    return originalValue;
   })
 });
 
 const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
   const { userId, vencimientoId } = useParams();
+
+  const [shouldFetchVencimiento, setShouldFetchVencimiento] = useState(false);
+
   const isEditPage = location.pathname.includes('edit');
 
-  const { vencimientos: vencimiento, isLoading } = useGetVencimientosQuery(
-    userId,
+  const { vencimientos: vencimiento, isLoading } = useGetVencimientoByIdQuery(
+    vencimientoId,
     {
+      skip: !shouldFetchVencimiento,
       selectFromResult: ({ data, isLoading, isSuccess }) => {
         return {
           vencimientos: data?.entities[vencimientoId],
@@ -89,9 +99,16 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
     defaultValues: {
       nombre: '',
       fecha: '',
-      alarma: ''
+      alarma: '',
+      mensualidad: ''
     }
   });
+
+  useEffect(() => {
+    if (isEditPage) {
+      setShouldFetchVencimiento(true);
+    }
+  }, [isEditPage]);
 
   useEffect(() => {
     if (isEditPage && vencimiento) {
@@ -100,6 +117,7 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
       form.setValue('nombre', vencimiento.nombre);
       form.setValue('fecha', parsedDate);
       form.setValue('alarma', vencimiento.alarma);
+      form.setValue('mensualidad', vencimiento.mensualidad);
     }
   }, [isEditPage, vencimiento, form]);
 
@@ -167,13 +185,22 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
           )}
         />
 
+        {}
         <FormField
           control={form.control}
           name="fecha"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>
-                Fecha de Vencimiento <Asterisco />
+                {isEditPage && vencimiento?.mensualidad ? (
+                  <>
+                    Fecha Desde <Asterisco />
+                  </>
+                ) : (
+                  <>
+                    Fecha de Vencimiento <Asterisco />
+                  </>
+                )}
               </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -200,9 +227,12 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
                   <Calendar
                     locale={es}
                     mode="single"
+                    captionLayout="dropdown"
+                    fromYear={2015}
+                    toYear={2025}
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={date => date < new Date()}
+                    disabled={{ before: new Date() }}
                     initialFocus
                   />
                 </PopoverContent>
@@ -230,7 +260,7 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
         />
         <FormField
           control={form.control}
-          name="alarma"
+          name="mensualidad"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between">
               <FormLabel>¿Es un Vencimiento Anual?</FormLabel>
