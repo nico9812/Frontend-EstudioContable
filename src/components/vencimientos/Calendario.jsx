@@ -69,10 +69,15 @@ export const Calendario = ({
       : new Date();
 
   const eventPropGetter = event => {
-    if (event.alarma) {
+    if (event.alarma && event.mensualidad) {
+      return {
+        className: '!bg-orange-500'
+      };
+    }
+    if (event.alarma && !event.mensualidad) {
       return {
         className: '!bg-red-500'
-      };
+      }
     }
     return {
       className: '!bg-blue-500'

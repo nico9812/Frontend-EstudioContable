@@ -17,32 +17,39 @@ const VerMasVencimientos = ({ location, navigateBack }) => {
 
   const diaLocation = location?.state?.day;
 
+  const splitDia = diaLocation.split('-');
+  const month = splitDia[1];
+  const year = splitDia[0];
+
   const nombreDia = new Date(diaLocation).toLocaleDateString('es-AR', {
     timeZone: 'UTC'
   });
 
-  const titulo = `Vencimientos - ${nombreDia}`;
+  const titulo = `Día: ${nombreDia}`;
 
-  const { vencimientos, isLoading } = useGetVencimientosQuery(userId, {
-    selectFromResult: ({ data, isLoading, isSuccess }) => {
-      const entities = data?.entities;
-      const extractedData = [];
+  const { vencimientos, isLoading } = useGetVencimientosQuery(
+    { userId, month, year },
+    {
+      selectFromResult: ({ data, isLoading, isSuccess }) => {
+        const entities = data?.entities;
+        const extractedData = [];
 
-      if (entities !== undefined) {
-        for (const value of Object.values(entities)) {
-          if (value.fecha === diaLocation) {
-            extractedData.push(value);
+        if (entities !== undefined) {
+          for (const value of Object.values(entities)) {
+            if (value.fecha === diaLocation) {
+              extractedData.push(value);
+            }
           }
         }
-      }
 
-      return {
-        vencimientos: extractedData,
-        isLoading,
-        isSuccess
-      };
+        return {
+          vencimientos: extractedData,
+          isLoading,
+          isSuccess
+        };
+      }
     }
-  });
+  );
 
   return (
     <DialogContent closeAction={navigateBack}>
@@ -55,7 +62,8 @@ const VerMasVencimientos = ({ location, navigateBack }) => {
         ) : (
           <ScrollArea className="w-4/5 h-full text-center">
             <div className="p-4">
-              <div className="flex flex-col gap-1">
+              <span className="text-sm font-medium"> Vencimientos </span>
+              <div className="flex flex-col gap-1 mt-2">
                 {vencimientos !== undefined &&
                   vencimientos?.map(ven => (
                     <Link
@@ -67,10 +75,10 @@ const VerMasVencimientos = ({ location, navigateBack }) => {
                     >
                       <div
                         className={classNames(
-                          'text-gray-700  p-1 border  border-gray-300 rounded-md',
+                          'text-white  p-1 border  border-gray-300 rounded-md',
                           {
-                            'bg-red-400 hover:bg-red-700': ven.alarma,
-                            'bg-blue-400 hover:bg-blue-700': !ven.alarma
+                            'bg-red-400 hover:bg-red-500': ven.alarma,
+                            'bg-blue-400 hover:bg-blue-500': !ven.alarma
                           }
                         )}
                       >

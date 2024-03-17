@@ -227,8 +227,8 @@ const ModalFormVencimiento = ({ location, navigateBack, navigate }) => {
                   <Calendar
                     locale={es}
                     mode="single"
-                    captionLayout="dropdown"
-                    fromYear={2015}
+                    captionLayout="dropdown-buttons"
+                    fromYear={2023}
                     toYear={2025}
                     selected={field.value}
                     onSelect={field.onChange}
