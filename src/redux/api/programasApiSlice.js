@@ -82,6 +82,23 @@ export const programasApiSlice = apiSlice.injectEndpoints({
         }
         return [];
       }
+    }),
+    getProgramasRecientes: builder.query({
+      query: () => 'dashboard/programas_recientes',
+      transformResponse: responseData => {
+        return programasAdapter.setAll(initialState, responseData);
+      },
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Programa', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Programa', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     })
   })
 });
@@ -90,5 +107,6 @@ export const {
   useGetProgramasQuery,
   useAddNewProgramaMutation,
   useUpdateProgramaMutation,
-  useDeleteProgramaMutation
+  useDeleteProgramaMutation,
+  useGetProgramasRecientesQuery
 } = programasApiSlice;

@@ -1,11 +1,15 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Children, cloneElement } from 'react';
-import { Dialog } from "../ui/dialog";
+import { Dialog } from '../ui/dialog';
+import { useSelector } from 'react-redux';
+import { selectCurrentGroup } from '@/redux/reducer/authReducerSlice';
 
 export const ModalUsable = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const group = useSelector(selectCurrentGroup);
 
   function navigateBack() {
     navigate(-1, { replace: true });
@@ -13,9 +17,10 @@ export const ModalUsable = ({ children }) => {
 
   const childrenWithProps = Children.map(children, child =>
     cloneElement(child, {
-      location: location,
-      navigateBack: navigateBack,
-      navigate: navigate
+      location,
+      navigateBack,
+      navigate,
+      group
     })
   );
 

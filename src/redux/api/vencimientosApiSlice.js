@@ -104,6 +104,23 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
         }
         return [];
       }
+    }),
+    getVencimientosRecientes: builder.query({
+      query: () => '/dashboard/vencimientos_recientes',
+      transformResponse: responseData => {
+        return vencimientosAdapter.setAll(initialState, responseData);
+      },
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Vencimiento', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Vencimiento', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     })
   })
 });
@@ -113,5 +130,6 @@ export const {
   useGetVencimientoByIdQuery,
   useAddNewVencimientoMutation,
   useUpdateVencimientoMutation,
-  useDeleteVencimientoMutation
+  useDeleteVencimientoMutation,
+  useGetVencimientosRecientesQuery
 } = vencimientosApiSlice;

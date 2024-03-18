@@ -12,7 +12,7 @@ import { FaFilePdf, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 // contador
-export function InfoDocumento({ documento }) {
+export function InfoDocumento({ documento, group }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -67,12 +67,14 @@ export function InfoDocumento({ documento }) {
         >
           <FaFilePdf /> Ver Documento
         </ContextMenuItem>
-        <ContextMenuItem
-          onClick={() => handleBorrarDoc()}
-          className="flex flex-row gap-2"
-        >
-          <FaTrash /> Eliminar Documento
-        </ContextMenuItem>
+        {group === 1 && (
+          <ContextMenuItem
+            onClick={() => handleBorrarDoc()}
+            className="flex flex-row gap-2"
+          >
+            <FaTrash /> Eliminar Documento
+          </ContextMenuItem>
+        )}
       </ContextMenuContent>
     </ContextMenu>
   );

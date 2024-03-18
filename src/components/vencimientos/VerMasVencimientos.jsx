@@ -12,7 +12,7 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import classNames from 'classnames';
 
-const VerMasVencimientos = ({ location, navigateBack }) => {
+const VerMasVencimientos = ({ location, navigateBack, group }) => {
   const { userId } = useParams();
 
   const diaLocation = location?.state?.day;
@@ -66,25 +66,34 @@ const VerMasVencimientos = ({ location, navigateBack }) => {
               <div className="flex flex-col gap-1 mt-2">
                 {vencimientos !== undefined &&
                   vencimientos?.map(ven => (
-                    <Link
+                    <Button
+                      className={classNames(
+                        'text-white p-1 border border-gray-300 rounded-m hover:text-white',
+                        {
+                          'bg-red-400 hover:bg-red-500': ven.alarma,
+                          'bg-blue-400 hover:bg-blue-500': !ven.alarma,
+                          'cursor-default': group === 2
+                        }
+                      )}
+                      variant="ghost"
                       key={ven.id}
-                      to={`/dashboard/contador/vencimientos/${userId}/editar/${ven.id}`}
-                      state={{
-                        backgroundLocation: location.state.backgroundLocation
-                      }}
+                      asChild={group === 1}
                     >
-                      <div
-                        className={classNames(
-                          'text-white  p-1 border  border-gray-300 rounded-md',
-                          {
-                            'bg-red-400 hover:bg-red-500': ven.alarma,
-                            'bg-blue-400 hover:bg-blue-500': !ven.alarma
-                          }
-                        )}
-                      >
-                        {ven.nombre}
-                      </div>
-                    </Link>
+                      {group === 1 ? (
+                        <Link
+                          className="w-full"
+                          to={`/dashboard/contador/vencimientos/${userId}/editar/${ven.id}`}
+                          state={{
+                            backgroundLocation:
+                              location.state.backgroundLocation
+                          }}
+                        >
+                          {ven.nombre}
+                        </Link>
+                      ) : (
+                        <>{ven.nombre}</>
+                      )}
+                    </Button>
                   ))}
               </div>
             </div>
