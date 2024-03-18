@@ -15,8 +15,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: '/logout/',
         method: 'GET'
       })
+    }),
+    validateToken: builder.mutation({
+      query: () => ({
+        url: '/validate_token/',
+        method: 'GET'
+      })
     })
   })
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useValidateTokenMutation } =
+  authApiSlice;
