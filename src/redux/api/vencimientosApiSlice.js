@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
+import { getMonthAndYear } from '@/helpers';
 import { apiSlice } from '@/redux/apiSlice';
 import { createEntityAdapter } from '@reduxjs/toolkit';
+import { getMonth, getYear } from 'date-fns';
 
 const vencimientosAdapter = createEntityAdapter();
 
@@ -9,7 +11,14 @@ const initialState = vencimientosAdapter.getInitialState();
 export const vencimientosApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getVencimientos: builder.query({
-      query: userId => `/vencimiento/${userId}/`,
+      query: ({ userId, month, year }) => {
+        if (month && year) {
+          return `/vencimiento/${userId}/${month}/${year}/`;
+        } else {
+          const { month, year } = getMonthAndYear(new Date());
+          return `/vencimiento/${userId}/${month}/${year}/`;
+        }
+      },
       transformResponse: responseData => {
         return vencimientosAdapter.setAll(initialState, responseData);
       },
@@ -21,6 +30,18 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
               ? result.ids.map(id => ({ type: 'Vencimiento', id }))
               : [])
           ];
+        }
+        return [];
+      }
+    }),
+    getVencimientoById: builder.query({
+      query: vencimientoId => `/vencimientos/${vencimientoId}/`,
+      transformResponse: responseData => {
+        return vencimientosAdapter.setOne(initialState, responseData);
+      },
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [{ type: 'Vencimiento', id: arg.id }];
         }
         return [];
       }
@@ -89,6 +110,7 @@ export const vencimientosApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetVencimientosQuery,
+  useGetVencimientoByIdQuery,
   useAddNewVencimientoMutation,
   useUpdateVencimientoMutation,
   useDeleteVencimientoMutation

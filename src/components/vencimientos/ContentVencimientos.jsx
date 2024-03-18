@@ -19,12 +19,14 @@ const ContentCalendario = ({ userId, group }) => {
   }
 
   const params = {
+    month: monthFilter,
+    year: yearFilter,
     userId
   };
 
   return (
     <QueryHooks
-      useQuery={useGetVencimientosQuery(userId)}
+      useQuery={useGetVencimientosQuery({ ...params })}
       childrenObjects={renderArray => ({
         vencimientos: renderArray,
         location: location
@@ -36,6 +38,8 @@ const ContentCalendario = ({ userId, group }) => {
           group={group}
           refetch={refetch}
           params={params}
+          setSearchParams={setSearchParams}
+          searchParams={searchParams}
         />
       )}
     </QueryHooks>

@@ -3,6 +3,8 @@ import { logOut } from '@/redux/reducer/authReducerSlice';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { toast } from 'react-toastify';
 
+let tokenExpiredToastShown = false;
+
 export const baseQuery = fetchBaseQuery({
   baseUrl: VITE_APP_API_URL,
   credentials: 'same-origin',
@@ -18,9 +20,12 @@ export const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 403 || result?.error?.status === 401) {
-    api.dispatch(logOut());
-    api.dispatch(apiSlice.util.resetApiState());
-    toast.error(`Tu sesión ha expirado.`);
+    if (!tokenExpiredToastShown) {
+      tokenExpiredToastShown = true;
+      api.dispatch(logOut());
+      api.dispatch(apiSlice.util.resetApiState());
+      toast.error(`Tu sesión ha expirado.`);
+    }
   }
   if (args.url === '/logout/') {
     api.dispatch(logOut());

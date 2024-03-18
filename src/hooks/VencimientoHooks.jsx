@@ -12,7 +12,8 @@ export const VencimientoHooks = vencimientos => {
           title: evento.nombre,
           start: dayjs(evento.fecha),
           end: dayjs(evento.fecha),
-          alarma: evento.alarma
+          alarma: evento.alarma,
+          mensualidad: evento.mensualidad
         };
       });
 
