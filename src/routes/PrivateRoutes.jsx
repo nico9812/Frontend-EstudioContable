@@ -1,25 +1,43 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom';
+import { useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken } from '@/redux/reducer/authReducerSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useValidateTokenMutation } from '@/redux/api/authApiSlice';
 
 const RequireAuth = () => {
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const token = useSelector(selectCurrentToken);
   const location = useLocation();
 
   const [validateToken] = useValidateTokenMutation();
 
-  if (token && !validated) {
-    validateToken().unwrap();
-    setValidated(true);
+  const callValidate = async () => {
+    await validateToken()
+      .unwrap()
+      .then(() => {
+        setValidated(true);
+      })
+      .catch(() => {
+        return navigate('/login', {
+          replace: true
+        });
+      });
+  };
+
+  useEffect(() => {
+    if (!validated) {
+      callValidate();
+    }
+  }, []);
+
+  if (!token) {
+    return navigate('/login', {
+      replace: true,
+      state: { from: location }
+    });
   }
 
-  return validated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
+  return validated && token !== '' && <Outlet />;
 };
 export default RequireAuth;
