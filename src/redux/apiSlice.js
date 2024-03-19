@@ -25,6 +25,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       api.dispatch(logOut());
       api.dispatch(apiSlice.util.resetApiState());
       toast.error(`Tu sesión ha expirado.`);
+      tokenExpiredToastShown = false;
     }
   }
   if (args.url === '/logout/') {

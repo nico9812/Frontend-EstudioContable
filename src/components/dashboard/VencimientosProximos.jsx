@@ -8,12 +8,12 @@ const VencimientosProximos = ({ vencimientos }) => {
   }));
 
   return (
-    <div className="grid gap-2 w-full">
+    <div className="grid grid-cols-1 xl:grid-cols-4 sm:grid-cols-2 gap-2 w-full">
       {vencimientos.length > 0 ? (
         vencimientos.map(vencimiento => (
           <div
             key={vencimiento.id}
-            className="flex items-center font-medium text-sm"
+            className="flex items-center font-medium text-sm border rounded-md p-3"
           >
             <div className="flex flex-row items-center justify-center gap-2">
               <CalendarIcon className="h-4 w-4" />
