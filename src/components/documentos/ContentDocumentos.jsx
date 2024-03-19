@@ -98,7 +98,7 @@ export function ContentDocumentos({ userId, group }) {
             <div className="border rounded-sm px-4 py-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3 overflow-auto">
               {documentos.length > 0 ? (
                 documentos.map(doc => (
-                  <InfoDocumento key={doc.id} documento={doc} />
+                  <InfoDocumento key={doc.id} documento={doc} group={group} />
                 ))
               ) : (
                 <div className="text-center col-span-3">No hay documentos</div>

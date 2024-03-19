@@ -112,6 +112,23 @@ export const documentosApiSlice = apiSlice.injectEndpoints({
         }
         return [];
       }
+    }),
+    getDocumentosRecientes: builder.query({
+      query: () => `/dashboard/documentos_recientes`,
+      transformResponse: responseData => {
+        return documentosAdapter.setAll(initialState, responseData);
+      },
+      providesTags: (result, error, arg) => {
+        if (!error) {
+          return [
+            { type: 'Documento', id: 'LIST' },
+            ...(result && result.ids
+              ? result.ids.map(id => ({ type: 'Documento', id }))
+              : [])
+          ];
+        }
+        return [];
+      }
     })
   })
 });
@@ -121,5 +138,6 @@ export const {
   useGetDocumentosFiltradosQuery,
   useAddNewDocumentoMutation,
   useDeleteDocumentoMutation,
-  useOpenDocumentoMutation
+  useOpenDocumentoMutation,
+  useGetDocumentosRecientesQuery
 } = documentosApiSlice;

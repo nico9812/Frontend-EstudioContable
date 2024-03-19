@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import 'simplebar-react/dist/simplebar.min.css';
 import { useSelector } from 'react-redux';
 import { selectCurrentGroup } from '@/redux/reducer/authReducerSlice';
-import { X } from 'lucide-react';
-import { FaUser } from "react-icons/fa";
-import { FaSheetPlastic } from "react-icons/fa6";
+import { Calendar, FileArchive, Sheet, User, X } from 'lucide-react';
 
 export const SideBar = ({
   mobileToggleIsCollapsed,
@@ -25,7 +23,7 @@ export const SideBar = ({
             to={'/dashboard/contador'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FaUser className="h-6 w-6 mr-2" />
+            <User className="h-5 w-5 mr-2" />
             Clientes
           </Link>
           <Link
@@ -33,7 +31,7 @@ export const SideBar = ({
             to={'/dashboard/contador/categorias'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FaSheetPlastic className="h-6 w-6 mr-2" />
+            <Sheet className="h-5 w-5 mr-2" />
             Categorias
           </Link>
         </>
@@ -48,7 +46,7 @@ export const SideBar = ({
             to={'/dashboard/cliente/vencimientos'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FaUser className="h-6 w-6 mr-2" />
+            <User className="h-5 w-5 mr-2" />
             Mis vencimientos
           </Link>
           <Link
@@ -56,7 +54,7 @@ export const SideBar = ({
             to={'/dashboard/cliente/programas'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FaUser className="h-6 w-6 mr-2" />
+            <Calendar className="h-5 w-5 mr-2" />
             Mis Programas
           </Link>
           <Link
@@ -64,7 +62,7 @@ export const SideBar = ({
             to={'/dashboard/cliente/documentos'}
             onClick={mobileToggleIsCollapsed}
           >
-            <FaUser className="h-6 w-6 mr-2" />
+            <FileArchive className="h-5 w-5 mr-2" />
             Mis Documentos
           </Link>
         </>
